@@ -3,7 +3,10 @@ https://www.ipaddress.com/   查看IP地址替换下面
 
 hosts
 路径：C:\Windows\System32\drivers\etc\hosts
-```
+
+<!-- more -->
+
+```shell
 # GitHub Start 
 192.30.253.113    github.com 
 192.30.253.118    gist.github.com

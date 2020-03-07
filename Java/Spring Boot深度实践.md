@@ -6,6 +6,8 @@
 2. 嵌入式Web容器：Tomcat、Jetty以及Undertow
 3. 生产准备特性：指标、健康检查、外部化配置等
 
+<!--more-->
+
 ## 核心特性
 
 1. 激活：@EnableAutoConfiguration
