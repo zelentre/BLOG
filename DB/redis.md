@@ -1,6 +1,6 @@
 # Redis学习
 
-## Redis初始
+## 一、Redis初始
 
 ### redis特性
  <!-- more -->
@@ -125,7 +125,7 @@
 - logfile ---> redis系统日志
 - dir ---> redis工作目录
 
-## API的理解和使用
+## 二、API的理解和使用
 
 ### 通用命令
 
@@ -550,7 +550,7 @@
 
     ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305173949.png)
 
-## Redis客户端的使用
+## 三、Redis客户端的使用
 
 ### Java客户端：Jedis
 
@@ -690,3 +690,311 @@
       - 资源池参数不合理：例如QPS高、池子小。
       - 连接泄密（没有close()）：此类问题比较难定位，例如client list、netstat等，最重要的是代码。
       - DNS异常等。
+
+## 四、Redis其他功能
+
+### 慢查询
+
+1. 生命周期
+
+   - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309095118.png)
+
+2. 两个配置
+
+   ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309095543.png)
+
+   + slowlog-max-len
+     1. 先进先出队列
+     2. 固定长度
+     3. 保存在内存内
+   + slowlog-log-slower-than
+     1. 慢查询阈值（单位：微秒）
+     2. slowlog-log-slower-than=0，记录所有命令
+     3. slowlog-log-slower-than<0，不记录任何命令
+   + 配置方法
+     1. 默认值
+        - `config get slowlog-max-len = 128`
+        - `config get slowlog-log-slower-than = 10000`
+     2. 修改配置文件重启
+     3. 动态配置
+        - `config set slowlog-max-len 1000`
+        - `config set slowlog-log-slower-than 1000`
+
+3. 三个命令
+
+   1. slowlog get [n]：获取慢查询队列
+   2. slowlog len：获取慢查询队列长度
+   3. slowlog reset：清空慢查询队列
+
+4. 运维经验
+
+   1. slowlog-max-len不要设置过大，默认10ms，通常设置1ms
+   2. slowlog-log-slower-than不要设置国国小，通常设置1000左右
+   3. 理解命令生命周期
+   4. 定期持久化慢查询
+
+### pipeline
+
+- 什么是流水线
+
+  - **一次网路命令通信模型**![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304171244.png)
+
+  - **批量网络命令通信模型**![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304171152.png)
+  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309103325.png)
+  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309103738.png)
+
+- 客户端使用
+
+  - 没有pipeline
+
+    ```java
+    Jedis jedis = new Jedis("127.0.0.1",6379);
+    for(int i = 0; i < 10000; i++){
+        jedis.hset("hashKey:"+i, "field"+i, "value"+i);
+        // 1W hset ---> 50s（预估）
+    }
+    ```
+
+  - 使用pipeline
+
+    ```java
+    Jedis jedis = new Jedis("127.0.0.1",6379);
+    for(int i = 0; i < 100; i++){
+        Pipeline pipeline = jedis.pipelined();
+        for(int j = i*100; j < (i+1)*100; j++){
+            pipeline.hset("hashKey:"+j, "field"+j, "value"+j);
+        }
+        pipeline.syncAndReturnAll();
+        //1W hset ---> 0.7s（预估）
+    }
+    ```
+
+    
+
+- 与原生操作对比
+
+  - **与原生相比 pipeline是非原子**
+
+- 使用建议
+
+  1. 注意每次pipeline携带数据量
+  2. pipeline每次只能作用在一个Redis节点上
+  3. M操作与pipeline区别
+
+### 发布订阅
+
+- 角色
+
+  - 发布者（publisher）
+  - 订阅者（subscriber）
+  - 频道（channel）
+
+- 模型
+
+  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309111739.png)
+  - **订阅这可以订阅多个频道**
+
+- API
+
+  - publish
+
+    - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309112125.png)
+
+  - subscribe
+
+    - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309112203.png)
+
+  - unsubscribe
+
+    - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309112241.png)
+
+  - 其他
+
+    ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309112346.png)
+
+- 发布订阅与消息队列
+
+  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309112429.png)
+  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309112608.png)
+
+### Bitmap
+
+- 位图
+
+  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309113011.png)
+
+- 相关命令
+
+  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309143205.png)
+  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309143831.png)
+  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309143926.png)
+  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309144012.png)
+  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309144120.png)
+
+- 独立用户统计
+
+  1. 使用set和Bitmap
+  2. 1亿用户，5千万独立
+
+  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309144549.png)
+  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309144651.png)
+  - **使用经验**
+    - 1. type=string，最大512MB
+      2. 注意setbit时的偏移量，可能有较大耗时
+      3. 位图不是绝对好。
+
+### HyperLogLog
+
+- 新的数据结构？
+
+  1. 基于HyperLogLog算法：极小空间完成独立数量统计
+
+  2. 本质还是字符串
+
+     ```shell
+     127.0.0.1:6379> type hyperloglog_key
+     string
+     ```
+
+- 三个命令
+
+  1. `pfadd key element [element ...]`：向hyperloglog添加元素
+  2. `pfcount key [key ...]`：计算hyperloglog的独立总数
+  3. `pfmerge destkey sourcekey [sourcekey ...]`：合并多个hyperloglog
+
+- 内存消耗
+
+  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309151432.png)
+
+- 使用经验
+
+  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309151656.png)
+
+### GEO
+
+- GEO是什么
+
+  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309151922.png)
+  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309152004.png)
+
+- 5个城市经纬度
+
+  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309152029.png)
+
+- 相关命令
+
+  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309152309.png)
+
+  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309152422.png)
+
+  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309152513.png)
+
+  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309152538.png)
+
+    ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309152646.png)
+
+- 相关说明
+
+  1. since 3.2+
+  2. type geoKey = zset
+  3. 没有删除API：zrem key member
+
+## 五、Redis持久化的取舍和选择
+
+### 持久化的作用
+
+- 什么是持久化
+  - redis所有数据保持在内存中，对数据的更新将异步地保存到磁盘上
+- 持久化的实现方式
+  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309154132.png)
+
+### RDB
+
+- 什么是RDB
+
+  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309154714.png)
+
+- 触发机制-主要三种方式
+
+  - save（同步）
+
+    - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309155136.png)
+    - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309155204.png)
+    - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309155246.png)
+
+  - bgsave（异步）
+
+    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309164147.png)
+    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309164246.png)
+    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309164333.png)
+    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309164353.png)
+
+  - 自动
+
+    - **自动生成RDB**
+
+      ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309165036.png)
+
+    - ```
+      # 配置文件
+      save 900 1
+      save 300 10
+      save 60 10000
+      dbfilename dump.rdb
+      dir ./
+      stop-writes-on-bgsave-error yes
+      rdbcompression yes
+      rdbchecksum yes
+      ```
+
+    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309165940.png)
+
+- 触发机制-不容忽视方式
+
+  1. 全量复制
+  2. debug reload
+  3. shutdown
+
+- 总结
+
+  1. RDB是Redis内存到硬盘的快照，用于持久化
+  2. save通常会阻塞Redis
+  3. bgsave不会阻塞Redis，但是会fork新进程
+  4. save自动配置满足任一就会被执行
+  5. 有些触发机制不容忽视
+
+### AOF
+
+- RDB现存问题
+  - 耗时、耗性能
+    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309173446.png)
+  - 不可控、丢失数据
+    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309173612.png)
+- 什么是AOF
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309173720.png)
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309173807.png)
+- AOF三种策略
+  - always
+    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309174020.png)
+  - everysec
+    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309174135.png)
+  - no
+    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309174219.png)
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309174304.png)
+- AOF重写
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309174657.png)
+  - 作用：
+    - 减少硬盘占用量
+    - 加速恢复速度
+  - AOF重写实现两种方式
+    - bgrewriteaof
+      - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309175535.png)
+    - AOF重写配置
+      - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309175607.png)
+      - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309180145.png)
+      - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309180238.png)
+      - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309180304.png)
+      - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309180622.png)
+
+### RDB和AOF的抉择
+
