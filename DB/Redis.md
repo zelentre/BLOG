@@ -66,11 +66,7 @@
 1. redis安装
 
    - ![安装](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304094433.png)
-
-   - ```linux
-     ## 创建redis的软连接，方便以后升级
-     ln -s redis-3.0.7 redis
-     ```
+   - **创建redis的软连接，方便以后升级**     ` ln -s redis-3.0.7 redis` 
 
 2. 可执行文件说明
 
@@ -87,7 +83,7 @@
 
      - redis-server
 
-     - ```linux
+       ```shell
        ps -ef | grep redis
        netstat -antpl | grep redis
        redis-cli -h ip -p port ping
@@ -96,9 +92,7 @@
 
    - 动态参数启动
 
-     - ```linux
-       redis-server --port 6380 ## 端口随意指定
-       ```
+     - **端口随意指定**   `redis-server --port 6380  `
 
    - 配置文件启动
 
@@ -193,7 +187,7 @@
 
   - 实现：记录网址每个用户个人主页的访问量？
 
-    ```
+    ```java
     incr userid:pageview（单线程无竞争）
     ```
 
@@ -241,7 +235,7 @@
 
   - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304180239.png)
 
-    ```
+    ```shell
     127.0.0.1:6379> hset user:1:info age 23
     (integer) 1
     127.0.0.1:6379>  hget user:1:info age
@@ -262,7 +256,7 @@
 
   - ![img](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200305103327.png)
 
-    ```
+    ```shell
     127.0.0.1:6379> hgetall user:1:info
     1) "name"
     2) "ronaldo"
@@ -276,7 +270,7 @@
 
   - ![img](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200305103100.png)
 
-    ```
+    ```shell
     127.0.0.1:6379> hmset user:2:info age 30 name kaka page 50
     OK
     127.0.0.1:6379> hlen user:2:info
@@ -288,7 +282,7 @@
 
   - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305112446.png)
 
-    ```
+    ```shell
     127.0.0.1:6379> hgetall user:2:info
     1) "age"
     2) "30"
@@ -377,7 +371,7 @@
 
   - **改**![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305142501.png)
 
-    ```
+    ```shell
     127.0.0.1:6379> rpush listkey a b c
     (integer) 3
     127.0.0.1:6379> lrange listkey 0 -1
@@ -430,7 +424,7 @@
 
   - **srandmember和spop：spop从集合弹出、srandmember不会破坏集合**
 
-  - ```
+    ```shell
     127.0.0.1:6379> sadd user:1:follow it news his sports
     (integer) 4
     127.0.0.1:6379> smembers user:1:follow
@@ -478,26 +472,26 @@
 
   - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305174533.png)
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305174633.png)
+  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305174633.png)
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305171233.png)
+  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305171233.png)
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305171320.png)
+  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305171320.png)
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305171437.png)
+  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305171437.png)
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305172209.png)
+  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305172209.png)
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305172314.png)
+  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305172314.png)
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305172429.png)
+  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305172429.png)
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305174255.png)
+  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305174255.png)
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305174339.png)
+  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305174339.png)
 
-    ```
-    127.0.0.1:6379> zadd player:rank 1000 ronaldo 900 messi 800 c-ronaldo 600 kaka
+    ```shell
+  127.0.0.1:6379> zadd player:rank 1000 ronaldo 900 messi 800 c-ronaldo 600 kaka
     (integer) 4
     127.0.0.1:6379> zscore player:rank kaka
     "600"
@@ -539,7 +533,7 @@
     3) "ronaldo"
     4) "1000"
     ```
-
+  
 - 实战
 
   - 实现：排行榜![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305173811.png)
@@ -582,50 +576,42 @@
 
 + jedis的基本使用
 
-  + ```java
-    // 1.String
-    // 输出结果：ok
-    jedis.set("hello","world");
-    // 输出结果：world
-    jedis.get("hello");
-    // 输出结果：1
-    jedis.incr("counter");
-    ```
-
-  + ```java
-    // 2.hash
-    jedis.hset("myhash","f1","v1");
-    jedis.hset("myhash","f2","v2")；
-    // 输出结果：{f1=v1, f2=v2}
-    jedis.hgetall("myhash");
-    ```
-
-  + ```java
-    // 3.list
-    jedis.rpush("mylist","1");
-    jedis.rpush("mylist","2");
-    jedis.rpush("mylist","3");
-    // 输出结果：[1,2,3]
-    jedis.lrange("mylist",0,-1);
-    ```
-
-  + ```java
-    // 4.set
-    jedis.sadd("myset","a");
-    jedis.sadd("myset","b");
-    jedis.sadd("myset","a");
-    // 输出结果：[b, a]
-    jedis.smembers("myset");
-    ```
-
-  + ```java
-    // 5.zset
-    jedis.zadd("myzset",99,"tom");
-    jedis.zadd("myzset",66,"peter");
-    jedis.zadd("myzset",33,"james");
-    // 输出结果：[[["james"],33.0],[["peter"],66.0],[["tom"],99.0]]
-    jedis.zrangeWithScores("myzset",0,-1);
-    ```
+  ```java
+  // 1.String
+  // 输出结果：ok
+  jedis.set("hello","world");
+  // 输出结果：world
+  jedis.get("hello");
+  // 输出结果：1
+  jedis.incr("counter");
+  
+  // 2.hash
+  jedis.hset("myhash","f1","v1");
+  jedis.hset("myhash","f2","v2")；
+  // 输出结果：{f1=v1, f2=v2}
+  jedis.hgetall("myhash");
+  
+  // 3.list
+  jedis.rpush("mylist","1");
+  jedis.rpush("mylist","2");
+  jedis.rpush("mylist","3");
+  // 输出结果：[1,2,3]
+  jedis.lrange("mylist",0,-1);
+  
+  // 4.set
+  jedis.sadd("myset","a");
+  jedis.sadd("myset","b");
+  jedis.sadd("myset","a");
+  // 输出结果：[b, a]
+  jedis.smembers("myset");
+  
+  // 5.zset
+  jedis.zadd("myzset",99,"tom");
+  jedis.zadd("myzset",66,"peter");
+  jedis.zadd("myzset",33,"james");
+  // 输出结果：[[["james"],33.0],[["peter"],66.0],[["tom"],99.0]]
+  jedis.zrangeWithScores("myzset",0,-1);
+  ```
 
 + jedis连接池使用
 
@@ -645,26 +631,25 @@
 
     + 初始化Jedis连接池，通常来讲JedisPool是单例的。
 
-      + ```java
-        GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
-        JedisPool jedisPool = new JedisPool(poolConfig,"127.0.0.1","6379");
-        Jedis jedis = null;
-        try{
-            // 1.从连接池获取jedis对象
-            jedis = jedisPool.getResource();
-            // 2.执行操作
-            jedis.set("hello","world");
-        }catch(Exception e){
-            e.printStackTrace();
-            // Logger logger = LoggerFactory.getLogger(getClass().getName());
-            //logger.error(e.getMessage(),e);
-        }finally{
-            if(jedis != null)
-                // 如果使用JedisPool，close操作不是关闭连接，代表归还连接池
-                jedis.close();
-        }
-            
-        ```
+      ```java
+      GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
+      JedisPool jedisPool = new JedisPool(poolConfig,"127.0.0.1","6379");
+      Jedis jedis = null;
+      try{
+          // 1.从连接池获取jedis对象
+          jedis = jedisPool.getResource();
+          // 2.执行操作
+          jedis.set("hello","world");
+      }catch(Exception e){
+          e.printStackTrace();
+          // Logger logger = LoggerFactory.getLogger(getClass().getName());
+          //logger.error(e.getMessage(),e);
+      }finally{
+          if(jedis != null)
+              // 如果使用JedisPool，close操作不是关闭连接，代表归还连接池
+              jedis.close();
+      }
+      ```
 
   + Jedis配置优化
 
@@ -935,7 +920,7 @@
 
       ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309165036.png)
 
-    - ```
+    - ```shell
       # 配置文件
       save 900 1
       save 300 10
