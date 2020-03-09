@@ -1,9 +1,9 @@
-# Redis.md
+# Redis学习
 
 ## Redis初始
 
 ### redis特性
-
+ <!-- more -->
 1. 速度快
 
    ![内存](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200303174922.png)
@@ -12,8 +12,6 @@
    - 数据存在内存中
    - 用C语言编程（50000 line）
    - 单线程模型
-
-   <!-- more -->
 
 2. 持久化（断电不丢数据）
 
