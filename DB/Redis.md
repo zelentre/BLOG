@@ -921,7 +921,7 @@
 
       ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309165036.png)
 
-    - ```shell
+      ```shell
       # 配置文件
       save 900 1
       save 300 10
