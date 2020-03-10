@@ -932,8 +932,7 @@
       rdbcompression yes
       rdbchecksum yes
       ```
-
-    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309165940.png)
+      ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309165940.png)
 
 - 触发机制-不容忽视方式
 
