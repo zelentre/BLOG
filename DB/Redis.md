@@ -1,10 +1,6 @@
-
+# Redis
 
 <!-- more -->
-
-[TOC]
-
-----https://www.bilibili.com/video/av94180858/
 
 ## 一、Redis初始
 
