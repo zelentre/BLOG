@@ -1,9 +1,14 @@
-# Redis学习
+
+
+<!-- more -->
+
+[TOC]
+
+----https://www.bilibili.com/video/av94180858/
 
 ## 一、Redis初始
 
 ### redis特性
- <!-- more -->
 1. 速度快
 
    ![内存](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200303174922.png)
@@ -983,3 +988,199 @@
 
 ### RDB和AOF的抉择
 
+- RDB和AOF比较
+
+  |    命令    |  RDB   |     AOF      |
+  | :--------: | :----: | :----------: |
+  | 启动优先级 |   低   |      高      |
+  |    体积    |   小   |      大      |
+  |  恢复速度  |   快   |      慢      |
+  | 数据安全性 | 丢数据 | 根据策略决定 |
+  |    轻重    |   重   |      轻      |
+
+- RDB最佳策略
+
+  - “关”
+  - 集中管理
+  - 主从，从开？
+
+- AOF最佳策略
+
+  - "开"：缓存和存储
+  - AOF重写集中管理
+  - everysec
+
+- 最佳策略
+
+  - 小分片
+  - 缓存或者存储
+  - 监控（硬盘、内存、负载、网络）
+  - 足够的内存
+
+## 六、常见的持久化开发运维问题
+
+### fork操作
+
+1. 同步操作
+2. 与内存量息息相关：内存越大,耗时越长（与机器类型有关）
+3. info：latest_fork_usec
+
+- 改善fork
+  1. 优先使用物理机或者高效支持fork操作的虚拟化技术
+  2. 控制Redis实例最大可用内存：maxmemory
+  3. 合理配置Linux内存分配策略：vm.overcommit_memory = 1
+  4. 降低fork频率：例如放宽AOF重写自动触发时机，不必要的全量复制
+
+### 子进程开销和优化
+
+1. CPU：
+   - 开销：RDB和AOF文件生成，属于CPU密集型
+   - 优化：不做CPU绑定，不和CPU密集型部署
+2. 内存
+   - 开销：fork内存开销，copy-on-write
+   - 优化：echo never > /sys/kernel/mm/transparent_hugepage/enabled
+3. 硬盘
+   - 开销：AOF和RDB文件写入，可以结合iostat，iotop分析
+   - 优化：
+     1. 不要和高硬盘负载服务部署一起：存储服务、消息队列等
+     2. no-appendfsync-on-rewrite = yes
+     3. 根据写入量决定磁盘类型：例如ssd
+     4. 单机多实例持久化文件目录可以考虑分盘
+
+### AOF追加阻塞
+
+- ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310114122.png)
+- AOF阻塞定位
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310134905.png)
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310134922.png)
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310134939.png)
+
+## 七、Redis复制的原理与优化
+
+### 什么是主从复制
+
+- 单机问题：
+
+  - 机器故障
+  - 容量瓶颈
+  - QPS瓶颈
+
+- 主从复制的作用
+
+  - **一主一从**
+
+    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310140307.png)
+
+  - **一主多从**
+
+    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310140451.png)
+
+  - **作用**
+
+    - 数据副本
+    - 扩展读性能
+
+  - **总结**
+
+    1. 一个master可以有多个slave
+    2. 一个slave只能有一个master
+    3. 数据流向是单向的，master到slave
+
+### 复制的配置
+
+- slaveof命令
+
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310141243.png)
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310141458.png)
+
+- 配置
+
+  ```shell
+  slaveof ip port
+  slave-read-only yes
+  ```
+
+- **比较**
+
+  | 方式 |    命令    |   配置   |
+  | :--: | :--------: | :------: |
+  | 优点 |  无需重启  | 统一配置 |
+  | 缺点 | 不便于管理 | 需要重启 |
+
+### 全量复制和部分复制
+
+- **全量复制**
+
+  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310152018.png)
+
+- **全量复制开销**
+
+  1. bgsave时间
+  2. RDB文件网络传输时间
+  3. 从节点清空数据时间
+  4. 从节点加载RDB的时间
+  5. 可能的AOF重写时间
+
+- **部分复制**
+
+  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310160012.png)
+
+### 故障处理
+
+- **主从结构-故障转移**
+
+  - slave宕掉
+
+    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310160740.png)
+
+  - master宕掉
+
+    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310160902.png)
+
+### 开发运维常见问题
+
+1. 读写分离
+
+   ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310161840.png)
+
+   1. 读流量分摊到从节点
+   2. 可能遇到的问题：
+      - 复制数据延迟（发生阻塞）
+      - 读到过期数据
+        - [删除过期数据的策略](https://blog.csdn.net/zmflying8177/article/details/104215634)
+          1. 懒惰性策略（操作key时才会检查key是否过期，过期才删除，然后返回null）
+          2. 定时删除策略（定时扫描所有键值对，发现过期数据立即删除）
+      - 从节点故障
+
+2. 主从配置不一致
+
+   1. 例如maxmemory不一致：丢失数据
+   2. 例如数据结构优化参数（例如hash-max-ziplist-entries）：内存不一致
+
+3. 规避全量复制
+
+   1. 第一次全量复制
+      - 第一次不可避免
+      - 小主节点、低峰
+   2. 节点运行ID不匹配
+      - 主节点重启（运行ID变化）
+      - 故障转移，例如哨兵或集群
+   3. 复制积压缓冲区不足
+      - 网络中断，部分复制无法满足
+      - 增大复制缓冲区配置rel_backlog_size，网络“增强”
+
+4. 规避复制风暴
+
+   1. 单主节点复制风暴：
+
+      ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310173149.png)
+
+      - 问题：主节点重启，多从节点复制
+      - 解决：更换复制拓扑
+
+   2. 单机器复制风暴
+
+      ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310173236.png)
+
+      - 机器宕机后，大量全量复制
+      - 主节点分散多机器
