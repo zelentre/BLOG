@@ -1179,3 +1179,221 @@
 
       - 机器宕机后，大量全量复制
       - 主节点分散多机器
+
+## 八、Redis Sentinel
+
+### 主从复制高可用？
+
+- 手动故障转移
+
+  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310160902.png)
+
+- 写能力和存储能力受限
+
+### 架构说明
+
+- ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200311092857.png)
+
+- ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200311093130.png)
+
+  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200311093208.png)
+
+### 安装配置
+
+1. 配置开启主从节点
+   - 主节点
+   - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200311162522.png)
+   - 从节点
+   - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200311162637.png)
+   - 主要配置
+   - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200311162829.png)
+2. 配置开启sentinel监控主节点。（sentinel是特殊的redis）
+3. 实际应该多机器
+4. 详细配置节点
+
+### 客户端连接
+
+- 请求流程
+
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200311165122.png)
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200311165212.png)
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200311165229.png)
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200311165336.png)
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200311165359.png)
+  - **客户端接入流程：**
+    1. Sentinel地址集合
+    2. masterName
+    3. 不是代理模式
+
+- jedis
+
+  ```java
+  JedisSentinelPool sentinelPool = new JedisSentinelPool(masterName,sentinelSet,poolConfig,timeout);
+  Jedis jedis = null;
+  try{
+      // jedis command
+      jedis = sentinelPool.getResource();
+  } catch(Exception e){
+      logger.error(e.getMessage(),e);
+  } finally{
+      if(jedis != null){
+          jedis.close();
+      }
+  }
+  ```
+
+### 实现原理
+
+- 故障转移演练
+
+  1. 客户端高可用观察
+
+  2. 服务端日志分析：数据节点和sentinel节点
+
+     ```java
+     public static void main(String[] args) {
+     	private static Logger logger =
+             LoggerFactory.getLogger(RedisSentinelTest.class);
+     
+         String masterName = "myMaster";
+         Set<String> sentinels = new HashSet<>();
+         sentinels.add("127.0.0.1:26379");
+         sentinels.add("127.0.0.1:26380");
+         sentinels.add("127.0.0.1:26381");
+     
+         JedisSentinelPool jedisSentinelPool = new
+             JedisSentinelPool(masterName,sentinels);
+         
+         int counter = 0;
+         while (true){
+             counter++;
+             Jedis jedis = null;
+             try {
+                 jedis = jedisSentinelPool.getResource();
+                 int index = new Random().nextInt(100000);
+                 String key = "k-" + index;
+                 String value = "v-" + index;
+                 jedis.set(key,value);
+                 if(counter % 100 == 0){
+                     logger.info("{} value is {}", key, jedis.get(key));
+                 }
+                 TimeUnit.MILLISECONDS.sleep(10);
+              } catch (Exception e){
+                 logger.error(e.getMessage(),e);
+              } finally {
+                 if(jedis != null){
+                     jedis.close();}
+              }
+    }
+     }
+     ```
+     
+  
+- 三个定时任务
+
+  1. 每10秒每个sentinel对master和slave执行info
+
+     - 发现slave节点
+     - 确认主从关系
+
+     ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200312113712.png)
+
+  2. 每2秒每个sentinel通过master节点的channel交换信息（pub/sub）
+
+     - 通过 `_sentinel_:hello`频道交换
+     - 交换对节点的“看法”和自身信息
+
+     ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200312134718.png)
+
+  3. 每1秒每个sentinel对其他sentinel和redis执行ping
+
+     ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200312153224.png)
+
+- 主观下线和客观下线
+
+  - 配置示例
+
+    ```shell
+    sentinel monitor <masterName> <ip> <port> <quorum>
+    sentinel monitor myMaster 127.0.0.1 6379 2
+    sentinel down-after-milliseconds <masterName> <timeout>
+    sentinel down-after-milliseconds myMaster 30000
+    ```
+
+  - 主观下线：每个sentinel节点对Redis节点失败的“偏见”
+
+  - 客观下线：所有sentinel节点对Redis节点失败“达成共识”（超过quorum个统一）
+
+    `sentinel is-master-down-by-addr`
+
+- 领导者选举
+
+  - 原因：只有一个sentinel节点完成故障转移
+  - 选举：通过`sentinel is-master-down-by-addr`命令都希望成为领导者
+    1. 每个做主观下线的sentinel节点向其他sentinel节点发送命令，要求将它设置为领导者
+    2. 收到命令的sentinel节点如果没有同意通过其他sentinel节点发送的命令，那么将同意该请求，否则拒绝
+    3. 如果该sentinel节点发现自己的票数已经超过sentinel集合半数且超过quorum，那么它将成为领导者
+    4. 如果此过程有多个sentinel节点成为了领导者，那么将等待一段时间重新进行选举
+
+- 故障转移（sentinel领导者节点完成）
+
+  1. 从slave节点中选出一个“合适”节点作为新的master节点
+  2. 对上面的slave节点执行slaveof no one 命令让其成为master节点
+  3. 向剩余的slave节点发送命令，让它们成为新master节点的slave节点，复制规则和parallel-syncs参数有关
+  4. 更新对原来master节点配置为slave，并保持着对其“关注”，当其恢复后命令它去复制新的master节点
+
+- 选择“合适的”slave节点
+
+  1. 选择slave-priority（slave节点优先级）最高的slave节点，如果存在则返回，不存在则继续
+  2. 选择复制偏移量最大的slave节点（复制的最完整），如果存在则返回，不存在则继续
+  3. 选择runId最小的slave节点
+
+### 开发运维常见问题
+
+- 节点运维
+
+  - 节点下线
+
+    - 主节点
+
+      `sentinel failover <masterName>`
+
+      ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200312165933.png)
+
+    - 从节点：临时下线还是永久下线，例如是否做一些清理工作，但是要考虑读写分离的情况
+
+    - sentinel节点：类同于从节点
+
+    - 机器下线：例如过保等情况
+
+    - 机器性能不足：例如CPU、内存、硬盘、网络等
+
+    - 机器自身故障：例如服务不稳定等
+
+  - 节点上线
+    - 主节点：sentinel failover进行替换
+    - 从节点：slaveof即可，sentinel节点可以感知
+    - sentinel节点：参考其他sentinel节点启动即可
+
+- 高可用读写分离
+
+  - 从节点的作用
+    1. 副本：高可用的基础
+    2. 扩展：读能力
+  - 三个“消息”
+    - +switch-master：切换主节点（从节点晋升主节点）
+    - +convert-to-slave：切换从节点（原主节点降为从节点）
+    - +sdown：主观下线
+
+### 总结
+
+- redis sentinel是redis的高可用实现方案：故障发现、故障自动转移、配置中心、客户端通知
+- redis sentinel从redis2.8版本开始才正式生产可用，之前版本生产不可用
+- 尽可能在不同物理机上部署redis sentinel所有节点
+- redis sentinel中的sentinel节点个数应该大于等于3且最好为奇数
+- redis sentinel中的数据节点与普通数据节点没有区别
+- 客户端初始化时连接的是sentinel节点集合，不再是具体的redis节点，但sentinel只是配置中心不是代理
+- redis sentinel 通过三个定时任务实现了sentinel节点对于主节点、从节点、其余sentinel节点的监控
+- redis sentinel在对节点做失败判定时分为主观下线和客观下线
+- 看懂redis sentinel故障转移日志对于redis sentinel以及问题排查非常有帮助
+- redis sentinel实现读写分离高可用可以依赖sentinel节点的消息通知，获取redis数据节点的状态变化
