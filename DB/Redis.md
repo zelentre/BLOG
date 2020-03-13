@@ -7,7 +7,7 @@
 ### redis特性
 1. 速度快
 
-   ![内存](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200303174922.png)
+   ![内存](https://gitee.com/zelen/IMG/raw/master/PicGo/20200303174922.png)
 
    - 10W OPS（每秒可以实现10万次读写 官方数字）
    - 数据存在内存中
@@ -20,7 +20,7 @@
 
 3. 多种数据结构
 
-   ![数据结构](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200303180006.png)
+   ![数据结构](https://gitee.com/zelen/IMG/raw/master/PicGo/20200303180006.png)
 
    - BitMaps：位图
    - HyperLogLog：超小内存唯一值计数
@@ -52,13 +52,13 @@
 ### Redis典型应用场景
 
 1. 缓存系统
-   - ![缓存](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304092708.png) 当redis中有data时直接返回data，当redis中无data-->storage,storage-->appserver、storage-->redis,以便下次访问直接走redis
+   - ![缓存](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304092708.png) 当redis中有data时直接返回data，当redis中无data-->storage,storage-->appserver、storage-->redis,以便下次访问直接走redis
 2. 计数器
-   - ![计数](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304093255.png)转发数、评论数用缓存计数，还有视频播放数等等
+   - ![计数](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304093255.png)转发数、评论数用缓存计数，还有视频播放数等等
 3. 消息队列系统
 4. 排行榜
 5. 社交网络
-   - ![img](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304093712.png) 粉丝数、共同关注数。。
+   - ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304093712.png) 粉丝数、共同关注数。。
 6. 实时系统
    - 垃圾邮件系统
 
@@ -66,7 +66,7 @@
 
 1. redis安装
 
-   - ![安装](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304094433.png)
+   - ![安装](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304094433.png)
    - **创建redis的软连接，方便以后升级**     ` ln -s redis-3.0.7 redis` 
 
 2. 可执行文件说明
@@ -106,12 +106,12 @@
 
 4. 简单的客户端连接
 
-   - ![img](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304100658.png)
+   - ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304100658.png)
 
 5. redis客户端返回值
 
-   - ![img](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304100959.png)
-   - ![img](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304101031.png)
+   - ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304100959.png)
+   - ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304101031.png)
 
 ### redis常用配置
 
@@ -126,7 +126,7 @@
 
 - 通用命令
 
-  - keys（redis里的所有的键）![img](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304105306.png)
+  - keys（redis里的所有的键）![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304105306.png)
 
   - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304173232.png)
 
@@ -134,47 +134,47 @@
 
   - dbsize（计算数据库大小） 
 
-    ![img](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304105824.png)
+    ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304105824.png)
 
   - exists key（键是否存在） 
 
-  ![img](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304110033.png)
+  ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304110033.png)
 
   - del key [key ...]（删除key，可以多个） 
 
-    ![img](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304110127.png)
+    ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304110127.png)
 
-  - expire key seconds（设置过期时间） ![img](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304110526.png)
+  - expire key seconds（设置过期时间） ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304110526.png)
 
-    ![img](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304110712.png)
+    ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304110712.png)
 
-    ![img](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304110829.png)
+    ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304110829.png)
 
-  - type key（key类型） ![img](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304111007.png)![img](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304111055.png)
+  - type key（key类型） ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304111007.png)![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304111055.png)
 
   - **时间复杂度大部分是O(1)**
 
 - 数据结构和内部编码
 
-  ![img](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304112932.png)
+  ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304112932.png)
 
-  ![img](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304140640.png)
+  ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304140640.png)
 
-- 单线程架构 ![redis同一时间只会执行一个命令](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304141413.png)**单线程快的原因**
+- 单线程架构 ![redis同一时间只会执行一个命令](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304141413.png)**单线程快的原因**
 
   - 纯内存
-  - 非阻塞IO![img](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304141813.png)
-  - 避免线程切换和竞态消耗 ![img](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304142116.png)
+  - 非阻塞IO![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304141813.png)
+  - 避免线程切换和竞态消耗 ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304142116.png)
 
 ### 字符串类型
 
 - 结构和命令
 
-  - ![img](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304142451.png)**建议在100KB以内**
+  - ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304142451.png)**建议在100KB以内**
 
-  - ![img](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304143253.png)![img](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304143346.png)
+  - ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304143253.png)![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304143346.png)
 
-  - ![img](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200304143927.png)![img](https://gitee.com//zelentre/IMG/raw/master/PicGo/20200304151748.png)
+  - ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304143927.png)![img](https://gitee.com//zelentre/IMG/raw/master/PicGo/20200304151748.png)
 
   - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304170522.png)![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304170853.png)
 
@@ -255,7 +255,7 @@
     2) "ronaldo"
     ```
 
-  - ![img](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200305103327.png)
+  - ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200305103327.png)
 
     ```shell
     127.0.0.1:6379> hgetall user:1:info
@@ -269,7 +269,7 @@
     (integer) 2
     ```
 
-  - ![img](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/20200305103100.png)
+  - ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200305103100.png)
 
     ```shell
     127.0.0.1:6379> hmset user:2:info age 30 name kaka page 50
@@ -1284,7 +1284,7 @@
                  if(jedis != null){
                      jedis.close();}
               }
-    }
+      }
      }
      ```
      
@@ -1397,3 +1397,178 @@
 - redis sentinel在对节点做失败判定时分为主观下线和客观下线
 - 看懂redis sentinel故障转移日志对于redis sentinel以及问题排查非常有帮助
 - redis sentinel实现读写分离高可用可以依赖sentinel节点的消息通知，获取redis数据节点的状态变化
+
+## 九、Redis Cluster
+
+### 呼唤集群
+
+- **扩容最好翻倍扩容**
+
+- 使用集群原因：
+  1. 并发量：最大10W/s，业务需求更多呢
+  2. 数据量：机器内存有限，业务需求大呢
+- 解决方法：
+  - 配置强悍的机器（×）
+  - 分布式：简单的认为 加机器
+- 集群：规模化需求
+  - 并发量：QPS
+  - 数据量
+
+### 数据分布
+
+- ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313101436.png)
+
+- 顺序分布和哈希分布
+
+  - 顺序分布
+
+    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313110955.png)
+
+  - 哈希分布（例如节点取模）
+
+    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313111241.png)
+
+- 数据分布对比
+
+  | 分布方式 |                            特点                            |                   典型产品                    |
+  | :------: | :--------------------------------------------------------: | :-------------------------------------------: |
+  | 哈希分布 | 数据分散度高  键值分布业务无关  无法顺序访问  支持批量操作 | 一致性哈希Memcache Redis Cluster 其他缓存产品 |
+  | 顺序分布 |  数据分散度易倾斜  键值业务相关  可顺序访问  支持批量操作  |               BigTable   HBase                |
+
+- 哈希分布
+
+  - 节点取余分区：hash(Key)%nodes
+
+    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313111241.png)
+
+    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313134742.png)
+
+    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313135502.png)
+
+  - 节点取余：
+
+    - 客户端分片：哈希+取余
+    - 节点伸缩：数据节点关系变化，导致数据迁移
+    - 迁移数量和添加节点数量有关：建议翻倍扩容
+
+  - 一致性哈希分区
+
+    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313140707.png)
+
+    - n1 和 n2之间的key的数据将偏移到n5
+
+      ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313141030.png)
+
+    - 一致性哈希
+      - 客户端分片：哈希+顺时针（优化取余）
+      - 节点伸缩：只影响邻近节点，但是还是有数据迁移
+      - 翻倍伸缩：保证最小迁移数据和负载均衡
+
+  - 虚拟槽分区
+
+    - 预设虚拟槽：每个槽映射一个数据子集，一般比节点数大
+
+    - 良好的哈希函数：例如CRC16
+
+    - 服务端管理节点、槽、数据：例如Redis Cluster
+
+    - 虚拟槽分配
+
+      ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313142046.png)
+
+### 搭建集群
+
+- 基本架构
+
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313142530.png)
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313142550.png)
+
+- Redis Cluster架构
+
+  - 节点
+
+    - cluster-enabled:yes  即集群启动
+
+      ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313142550.png)
+
+  - meet
+
+    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313151106.png)
+
+  - 指派槽
+
+    - 客户端与指派槽
+
+      ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313151255.png)
+
+    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313151145.png)
+
+  - 复制
+
+  - 特性
+
+    - 复制
+    - 高可用
+    - 分片
+
+- Redis Cluster安装
+
+  - 原生命令安装
+
+    1. 配置开启节点
+
+       ```shell
+       port ${port}
+       daemonize yes
+       dir "/opt/redis/redis/data/"
+       dbfilename "dump-${port}.db"
+       logfile "${port}.log"
+       cluster-enabled yes
+       cluster-config-file nodes-${port}.conf
+       
+       redis-server redis-7000.conf
+       redis-server redis-7001.conf
+       redis-server redis-7002.conf
+       redis-server redis-7003.conf
+       redis-server redis-7004.conf
+       redis-server redis-7005.conf
+       ```
+
+       - cluster节点主要配置
+
+         ```shell
+         cluster-enabled yes
+         cluster-node-timeout 15000
+         cluster-config-file "nodes.conf"
+         cluster-require-full-coverage yes
+         ```
+
+         
+
+    2. meet
+
+       ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313161429.png)
+
+    3. 指派槽
+
+       ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313161916.png)
+
+    4. 主从
+
+       - 设置主从
+
+         ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313162242.png)
+
+    5. 总结
+
+       - 理解redis cluster架构
+       - 生产环境不使用
+
+  - 官方工具安装
+
+    - 可以查看这个博客[Redis-cluster集群](https://www.cnblogs.com/cqming/p/11191079.html)
+
+    - 高效、准确
+    - 生产环境可以使用
+
+  - 其他：可视化部署
