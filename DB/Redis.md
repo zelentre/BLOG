@@ -1543,32 +1543,30 @@
          cluster-require-full-coverage yes
          ```
 
-         
-
     2. meet
 
-       ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313161429.png)
+       - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313161429.png)
 
     3. 指派槽
 
-       ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313161916.png)
+       - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313161916.png)
 
     4. 主从
 
        - 设置主从
 
-         ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313162242.png)
+         - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313162242.png)
 
     5. 总结
 
        - 理解redis cluster架构
-       - 生产环境不使用
-
+   - 生产环境不使用
+    
   - 官方工具安装
 
     - 可以查看这个博客[Redis-cluster集群](https://www.cnblogs.com/cqming/p/11191079.html)
 
     - 高效、准确
-    - 生产环境可以使用
-
+  - 生产环境可以使用
+  
   - 其他：可视化部署
