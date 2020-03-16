@@ -1570,3 +1570,150 @@
   - 生产环境可以使用
   
   - 其他：可视化部署
+
+### 集群伸缩
+
+- 伸缩原理
+
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316135757.png)
+
+- 扩容集群
+
+  - 准备新节点
+
+    - 集群模式
+
+    - 配置和其他节点统一
+
+    - 启动后是孤儿节点
+
+      `redis-server conf/redis-6385.conf`
+
+      `redis-server conf/redis-6386.conf`
+
+  - 加入集群
+
+    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316140616.png)
+    - 作用：
+      - 为它迁移槽和数据实习扩容
+      - 作为从节点负责故障转移
+    - 加入集群-redis-trib.rb
+      - `redis-trib.rb add-node new_host:new_port existing_host:existing_port --slave --master-id <arg>`
+      - `redis-trib.rb add-node 127.0.0.1:6385 127.0.0.1:6379`
+      - 建议使用redis-trib.rb能够避免新节点已经加入了其他集群，造成故障
+
+  - 迁移槽和数据
+
+    - 槽迁移计划
+      - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316143153.png)
+    - 迁移数据
+      1. 对目标节点发送：`cluster setslot {slot} importing {sourceNodeId}`命令，让目标节点准备导入槽的数据
+      2. 对源节点发送：`cluster setslot {slot} migrating {targetNodeId}`命令，让源节点准备迁出槽的数据
+      3. 源节点循环执行`cluster getkeysinslot {slot} {count}`命令，每次获取count个属于槽的键
+      4. 在源节点上执行`migrate {targetId} {targetPort} key 0 {timeout}`命令把指定key迁移
+      5. 重复执行步骤3~4知道槽下所有的键数据迁移到目标节点
+      6. 向集群内所有主节点发送`cluster setslot {slot} node {tartgetNodeId}`命令，通知槽分配给目标节点 
+      7. ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316144823.png)
+    - 添加从节点
+
+- 缩容集群
+
+### 客户端路由
+
+- moved重定向
+
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316152159.png)
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316152247.png)
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316152428.png)
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316152657.png)
+
+- ask重定向
+
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316152940.png)
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316153110.png)
+  - moved和ask
+    - 两者都是客户单重定向
+    - moved：槽已经确定迁移
+    - ask：槽还在迁移中
+
+- smart客户端
+
+  - smart客户端原理（追求性能）
+
+    1. 从集群中选一个可运行节点，使用cluster slots初始化槽和节点映射
+    2. 将cluster slots的结果映射到本地，为每个节点创建JedisPool
+    3. 准备执行命令
+       - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316154352.png)
+
+  - smart客户端使用：JedisCluster
+
+    - JedisCluster基本使用
+
+      ```java
+      Set<HostAndPort> nodeList = new HashSet<HostAndPort>();
+      nodeList.add(new HostAndPort(HOST1,PORT1));
+      nodeList.add(new HostAndPort(HOST1,PORT2));
+      nodeList.add(new HostAndPort(HOST1,PORT3));
+      nodeList.add(new HostAndPort(HOST1,PORT4));
+      nodeList.add(new HostAndPort(HOST1,PORT5));
+      nodeList.add(new HostAndPort(HOST1,PORT6));
+      JedisCluster redisCluster = new JedisCluster(nodeList,timeout,poolConfig);
+      redisCluster.command ...
+      ```
+
+      - 使用技巧：
+        1. 单例：内置了所有节点的连接池
+        2. 无需手动接环连接池
+        3. 合理设置commons-pool
+
+    - 整合spring
+
+      - [jedisCluster](https://github.com/zelentre/tem/blob/master/src/main/java/com/zelentre/jedis/JedisClusterFactory.java)
+
+    - 多节点命令实现
+
+      ```java
+      Map<String, JedisPool> jedisPoolMap = jedisCluster.getClusterNodes();
+      for(Entry<String,JedisPool> entry : jedisPoolMap.entrySet()){
+          //获取每个节点的Jedis连接
+          Jedis jedis = entry.getValue.getResource();
+          //只删除主节点数据
+          if(!isMaster(jedis)){
+              continue;
+          }
+          //finally close
+      }
+      ```
+
+    - 批量命令实现
+
+      - mget mset必须在一个槽上
+
+      - 四种批量优化的方法
+
+        1. 串行mget
+
+           - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316171442.png)
+
+        2. 串行IO
+
+           - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316171622.png)
+
+        3. 并行IO
+
+           - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316171711.png)
+
+        4. hash_tag
+
+           - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316172031.png)
+
+        5. 总结
+
+           |   方案   |                优点                |                  缺点                  |      网络IO       |
+           | :------: | :--------------------------------: | :------------------------------------: | :---------------: |
+           | 串行mget |     编程简单  少量keys满足需求     |          大量keys请求延迟严重          |      O(keys)      |
+           |  串行IO  |     编程简单  少量节点满足需求     |            大量node延迟严重            |     O(nodes)      |
+           |  并行IO  | 利用并行特性  延迟取决于最慢的节点 |        编程复杂  超时定位问题难        | O(max_slow(node)) |
+           | hash_tag |              性能最高              | 读写增加tag成本  tag分布易出现数据倾斜 |       O(1)        |
+
+           
