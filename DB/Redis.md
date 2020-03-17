@@ -1716,4 +1716,62 @@
            |  并行IO  | 利用并行特性  延迟取决于最慢的节点 |        编程复杂  超时定位问题难        | O(max_slow(node)) |
            | hash_tag |              性能最高              | 读写增加tag成本  tag分布易出现数据倾斜 |       O(1)        |
 
-           
+
+### 故障转移
+
+- 故障发现
+  - 通过ping/pong消息实现故障发现：不需要sentinel
+  - 主观下线
+    - 定义：某个节点认为另一个节点不可用，“偏见”
+    - 流程：![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200317091147.png)
+  - 客观下线
+    - 定义：当半数以上持有槽的主节点都标记某几点主观下线
+    - 逻辑流程：![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200317091350.png)
+    - 流程：![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200317091506.png)
+      - 通知集群内所有节点标记故障节点为客观下线
+      - 通知故障节点的从节点触发故障转移流程
+- 故障恢复
+  - 资格检查
+    - 每个从节点检查与故障主节点的断线时间
+    - 超过`cluster-node-timeout`*`cluster-slave-validity-factor`取消资格（都是默认值得话为150s）
+    - cluster-slave-validity-factor：默认是10
+  - 准备选举时间
+    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200317094316.png)
+  - 选举投票
+    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200317094419.png)
+  - 替换主节点
+    1.  当前从节点取消复制变为主节点（slave no one）
+    2. 执行clusterDelSlot撤销故障主节点负责的槽，并执行clusterAddSlot把这些槽分配给自己
+    3. 向集群广播自己的pong消息，表明已经替换了故障从节点
+- 故障转移演练
+  - 步骤：
+    1. 执行kill -9节点模拟宕机
+    2. 观察客户端故障恢复时间
+
+### 常见问题
+
+- 集群完整性
+  - cluster-require-full-coverage默认为yes
+    - 集群中16384个槽全部可用：保证集群完整性
+    - 节点故障或者正在故障转移：（error）CLUSTERDOWN The cluster is down
+  - 大多数业务无法容忍，cluster-require-full-coverage建议设置为no
+- 带宽消耗
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200317104154.png)
+  - 消息发送频率：节点发现与其他节点最后通信时间超过cluster-node-timeout/2时会直接发送ping消息
+  - 消息数据量：slots槽数组（2KB空间）和整个集群1/10的状态数据（10个节点状态数据约1KB）
+  - 节点部署的机器规模：集群分布的机器越多且每台机器划分的节点数越均匀，则集群内整体的可用带宽越高
+  - 例子：
+    - 规模：节点200个、20台物理机（每台10个节点）
+    - cluster-node-timeout = 15000，ping/pong带宽为25ＭB
+    - cluster-node-timeout = 20000，ping/pong带宽为25ＭB
+  - 优化：
+    - 避免“大”集群：避免多业务使用一个集群，大业务可以多集群
+    - cluster-node-timeout：带宽和故障转移速度的均衡
+    - 尽量均匀分配到多机器上：保证高可用和带宽
+- Pub/Sub广播
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200317112845.png)
+  - 问题：publish在集群每个节点广播：加重宽带
+- 数据倾斜
+- 读写分离
+- 数据迁移
+- 集群vs单机

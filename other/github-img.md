@@ -3,7 +3,7 @@ https://www.ipaddress.com/   查看IP地址替换下面
 
 hosts
 路径：C:\Windows\System32\drivers\etc\hosts
-
+**最好不要替换**
 <!-- more -->
 
 ```shell
