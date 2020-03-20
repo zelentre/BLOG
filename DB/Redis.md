@@ -1835,3 +1835,238 @@
 - 使用smart客户端操作集群达到通信效率最大化，客户端内部负责计算维护键 -> 槽 -> 节点的映射，用于快速定位到目标节点
 - 集群自动故障转移过程分为故障发现和节点恢复。节点下线分为主观下线和客观下线，当超过半数主节点认为故障节点为主观下线时标记他为客观下线状态。从节点负责对客观下线的主节点触发故障恢复流程，保证集群的可用性
 - 开发运维常见问题包括：超大规模集群带宽消耗，pub/sub广播问题，集群倾斜问题，单机和集群对比等
+
+## 十、缓存设计与优化
+
+### 缓存的受益与成本
+
+- 受益
+  1. 加速读写
+     - 通过缓存加速读写速度：CPU L1/L2/L3 Cache、Linux page Cache加速硬盘读写、浏览器缓存、Ehcache缓存数据库结果
+  2. 降低后端负载
+     - 后端服务器通过前端缓存降低负载：业务端使用Redis降低后端MySQL负载等
+- 成本
+  1. 数据不一致：缓存层和数据层有时间窗口不一致，和更新策略有关
+  2. 代码维护成本：多了一层缓存逻辑
+  3. 运维成本：例如Redis Cluster
+- 使用场景
+  1. 降低后端负载
+     - 对高消耗的SQL：join结果集/分组统计结果缓存
+  2. 加速请求响应
+     - 利用Redis/Memcache优化IO响应时间
+  3. 大量写合并为批量写
+     - 如计数器先Redis累加在批量写DB
+
+### 缓存跟新策略
+
+1. LRU/LFU/FIFO算法剔除：例如：maxmemory-policy
+
+2. 超时剔除：例如expire
+
+3. 主动更新：开发控制生命周期
+
+4. 比较：
+
+   |       策略       | 一致性 | 维护成本 |
+   | :--------------: | :----: | :------: |
+   | LRU/LIRS算法剔除 |  最差  |    低    |
+   |     超时剔除     |  较差  |    低    |
+   |     主动更新     |   强   |    高    |
+
+5. 建议：
+
+   1. 低一致性：最大内存和淘汰策略
+   2. 高一致性：超时剔除和主动更新结合，最大内存和淘汰策略兜底
+
+### 缓存粒度控制
+
+![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200318155735.png)
+
+1. 从MySQL获取用户信息：`select * from user where id={id}`
+2. 设置用户信息缓存：`set user:{id}` ` select * from user where id={id}`
+3. 缓存粒度：
+   - 全部属性：`set user:{id}` `select*from user where id={id}`
+   - 部分重要属性：`set user:{id}` `select importantCoumn1,..importantComnK from user where id={id}`
+4. 三个角度：
+   1. 通用性：全量属性更好
+   2. 占用空间：部分属性更好
+   3. 代码维护：表面上全量属性更好
+
+### 缓存穿透优化
+
+![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200318161322.png)
+
+- 原因：
+
+  1. 业务代码自身问题
+  2. 恶意攻击、爬虫等等
+
+- 发现
+
+  1. 业务的相应时间
+  2. 业务本身问题
+  3. 相关指标：总调用数、缓存层命中数、存储层命中数
+
+- 解决
+
+  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200318164417.png)
+
+- 问题：
+
+  1. 需要更多的键
+  2. 缓存层和存储层数据“短期”不一致
+
+```java
+public String getPassThrough(String key){
+    String cacheValue = cache.get(key);
+    if(StringUtils.isBlink(cacheValue)){
+        String storageValue = storage.get(key);
+        cache.set(key,storageValue);
+        //如果存储数据为空，需要设置一个过期时间（300秒）
+        if(StringUtils.isBlink(storageValue)){
+            cache.expire(key,60*5);
+        }
+        return storageValue;
+    }else{
+        return cacheValue;
+    }
+}
+```
+
+- ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200318165903.png)
+
+### 无底洞问题优化
+
+- 问题：
+  - 2010年，Facebook有了3000个Memcache节点
+  - 发现问题：“加”机器性能没能提升，反而下降
+- ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200318174658.png)
+- 优化IO的几种方法
+  1. 命令本身优化：例如慢查询keys、hgetall bigkey
+  2. 减少网络通信次数
+  3. 降低接入成本：例如客户端长连接/连接池、NIO等
+
+### 缓存雪崩优化
+
+- 机器部署
+  1. 机器添加部署脚本：ssh账号、redis安装部署
+  2. [Cachecloud](https://github.com/sohutv/cachecloud)添加机器
+
+### 热点key重建优化
+
+- ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200318175519.png)
+
+- 三个目标
+
+  - 减少重缓存的次数
+  - 数据尽可能一致
+  - 减少潜在危险
+
+- 两个解决
+
+  - 互斥锁（mutex key）
+
+    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200318175933.png)
+
+      ```java
+      String get(String key){
+          String value = redis.get(key);
+          if(value == null){
+              String mutexKey = "mutex:key:"+key;
+              if(redis.set(mutexKey,"1","ex 180","nx")){
+                  value = db.get(key);
+                  redis.set(key,value);
+                  redis.delete(mutexKey);
+              }else{
+                  //其他线程休息50毫秒后重试
+                  Thread.sleep(50);
+                  get(key);
+              }
+          }
+          return value;
+      }
+      ```
+
+  - 永远不过期
+
+    1. 缓存层面：没有设置过期时间（没有用expire）
+
+    2. 功能层面：为每个value添加逻辑过期时间，但发现超过逻辑过期时间后，会使用单独的线程去构建缓存
+
+       ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200318180917.png)
+
+       ```java
+       String get(final String key){
+           V v = redis.get(key);
+           String value = redis.get(key);
+           long logicTimeout = v.getLogicTimeout();
+           if(logicTimeout >= System.currentTimeMillis()){
+               String mutexKey = "mutex:key:"+key;
+               if(redis.set(mutexKey,"1","ex 180","nx")){
+                   //异步更新后台异常执行
+                   threadPool.execute(new Runnable(){
+                       public void run(){
+                           String dbValue = db.get(key);
+                   		redis.set(key,(dbValue,newLogicTimeout));
+                   		redis.delete(keyMutex);
+                       }
+                   });
+               }
+           }
+           return value;
+       }
+       ```
+
+  - 对比
+
+    |   方案   |          优点           |                       缺点                       |
+    | :------: | :---------------------: | :----------------------------------------------: |
+    |  互斥锁  |  思路简单  保证一致性   |          代码复杂度增加  存在死锁的风险          |
+    | 永不过期 | 基本杜绝热点key重建问题 | 不保证一致性  逻辑过期时间增加维护成本和内存成本 |
+
+### 总结
+
+- 缓存收益：加速读写、降低后端存储负载
+- 缓存成本：缓存和存储数据不一致性、代码维护成本、运维成本
+- 推荐结合剔除、超时、主动更新三种方案共同完成
+- 穿透问题：使用缓存空对象和布隆过滤器来解决，注意它们各自的使用场景和局限性
+- 无底洞问题：分布式缓存中，有更多的机器不保证有更高的性能。有四种批量操作方式：串行命令、串行IO、并行IO、hash_tag
+
+## 十一、Redis云平台CacheCloud
+
+### Redis规模化运维
+
+- 问题
+  - 发布构建繁琐，私搭乱盖
+  - 节点&机器等运维成本
+  - 监控报警初级
+- [CacheCloud](https://github.com/sohutv/cachecloud)
+  1. 一键开启Redis（Standalone、Sentinel、Cluster）
+  2. 机器、应用、实例监控和报警
+  3. 客户端：透明使用、性能上报
+  4. 可视化运维：配置、扩容、Failover、机器/应用/实例上下线
+  5. 已存在Redis直接接入和数据迁移
+- 场景使用
+  1. 全量视频缓存（视频播放API）：跨机房高可用
+  2. 消息队列同步（RedisMQ中间件）
+  3. 分布式布隆过滤器（百万QPS）
+  4. 计数系统：计数（播放数）
+  5. 其他：排行榜、社交（直播）、实时计算（反作弊）等
+
+### 机器部署
+
+1. 机器添加部署脚本：ssh账号、Redis安装部署
+2. Cachecloud添加机器
+
+### 应用接入
+
+![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200320115804.png)
+
+![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200320120059.png)
+
+### 用户功能
+
+### 运维功能
+
+### 总结
+
