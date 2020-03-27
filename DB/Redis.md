@@ -2129,3 +2129,19 @@ public String getPassThrough(String key){
   - 开发测试样例
 
 ### Redis分布式布隆过滤器
+
+- 实现方法：
+  - 多个布隆过滤器：二次路由
+  - 基于pipeline提高效率
+
+## 十四、Redis开发规范
+
+### 键值设计
+
+- Key名设计
+
+  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200327170152.png)
+
+  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200327171733.png)
+
+- Value设计
