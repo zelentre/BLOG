@@ -2136,12 +2136,129 @@ public String getPassThrough(String key){
 
 ## 十四、Redis开发规范
 
-### 键值设计
+### Key名设计
 
-- Key名设计
+![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200327170152.png)
 
-  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200327170152.png)
+![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200327171733.png)
 
-  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200327171733.png)
+### Value设计
 
-- Value设计
+- 拒绝bigkey
+
+  - 强制：
+
+    - string类型控制在10kb以内
+    - hash、list、set、zset元素个数不要超过5000
+    - 反例：一个包含几百万个元素的list、hash等，一个巨大的json字符串
+
+  - bigkey危害
+
+    - 网络阻塞
+    - redis阻塞
+      - 慢查询：hgetall、lrange、zrange
+    - 集群节点数据不均衡
+    - 频繁序列化：应用服务器CPU消耗
+      1. redis客户端本身不负责序列化
+      2. 应用频繁序列化和反序列化bigkey：本地缓存或Redis缓存
+
+  - bigkey发现
+
+    - 应用异常
+
+      ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200406111455.png)
+
+    - redis-cli --bigkeys  `redis-cli -h your.ip -p xxx --bigkeys`
+
+    - scan + debug object
+
+    - 主动报警：网络流量监控、客户端监控
+
+    - 内核热点key问题优化
+
+  - bigkey删除
+
+    1. 阻塞：注意隐性删除（过期、rename等）
+
+       删除hash、list、set、sorted set四种数据结构不同数量不同元素大小的耗时
+
+       |  key类型   | 10万（8个字节） | 100万（8个字节） | 10万（16个字节） | 100万（16个字节） | 10万（128个字节） | 100万（128个字节） |
+       | :--------: | :-------------: | :--------------: | :--------------: | :---------------: | :---------------: | ------------------ |
+       |    hash    |      51ms       |      950ms       |       58ms       |       970ms       |       96ms        | 2000ms             |
+       |    list    |      23ms       |      134ms       |       23ms       |       138ms       |       23ms        | 266ms              |
+       |    set     |      44ms       |      873ms       |       58ms       |       881ms       |       73ms        | 1319ms             |
+       | sorted set |      51ms       |      845ms       |       57ms       |       859ms       |       59ms        | 969ms              |
+
+    2. redis4.0：lazy delete（unlink命令）
+
+       ```java
+       // bigkey 删除方法
+       public void delBigHash(String host, int port, String password, String bigHashKey) {
+               Jedis jedis = new Jedis(host, port);
+               if (password != null && "".equals(password)) {
+                   jedis.auth(password);
+               }
+               ScanParams scanParams = new ScanParams().count(100);
+               String cursor = "0";
+               do {
+                   ScanResult<Map.Entry<String, String>> scanResult = jedis.hscan(bigHashKey, cursor, scanParams);
+                   List<Map.Entry<String, String>> entryList = scanResult.getResult();
+                   if (entryList != null && !entryList.isEmpty()) {
+                       for (Map.Entry<String, String> entry : entryList) {
+                           jedis.hdel(bigHashKey,entry.getKey());
+                       }
+                   }
+                   //cursor = scanResult.getStringCursor();  估计是个老方法  没找到
+                   cursor = scanResult.getCursor();
+               } while (!"0".equals(cursor));
+       
+               //删除bigkey
+               jedis.del(bigHashKey);
+           }
+       ```
+
+    3. bigkey预防
+
+       - 优化数据结构：例如二级拆分
+       - 物理隔离或者万兆网卡：不是治标方案
+       - 命令优化：例如hgetall ->hmget、hscan
+       - 报警和定期优化
+
+  - bigkey总结
+
+    - 牢记Redis单线程特性
+    - 选择合理的数据结构和命令
+    - 清楚自身OPS
+    - 了解bigkey的危害
+
+- 选择合适的数据结构
+
+  - 例如：实体类型（数据结构内存优化：例如ziplist，注意内存和性能的平衡）
+
+    - 反例：`set user:1:name tom; set user:1:age 19; set user:1:favor football;`
+    - 正例：`hmset user:1 name tom age 19 favor football`
+
+  - 需求：picId =>userId(100万)
+
+    - 方案：
+
+      - 全部string：set picId userId
+
+      - 一个hash：hset allPics picId userId
+
+      - 若干个小hash：hset picId/100 pic%100 userId
+
+        ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200406165541.png)
+
+      - 三种方案内存分析
+
+        - 配置（支持动态修改）
+          - hash-max-ziplist-entries 512
+          - hash-max-ziplist-value 64
+        - ziplist
+          - 连续内存
+          - 读写有指针位移，最坏O(n²)
+          - 新增删除有内存重分配
+
+- 过期设计
+
