@@ -2276,4 +2276,83 @@ public String getPassThrough(String key){
 
 ### 命令使用技巧
 
+1. 【推荐】O(n)以上命令关注N的数量
+
+   - 例如：hgetall、lrange、smembers、zrange、sinter等并非不能使用，但需要明确N的值。有遍历的需求可以使用hscan、sscan、zscan代替。
+
+2. 【推荐】禁用命令
+
+   - 禁止线上使用keys、flushall、flushdb等，通过redis的rename机制禁掉命令，或者使用scan的方式渐进式处理
+
+3. 【推荐】合理使用select
+
+   - redis的多数据库较弱，使用数字进行区分
+   - 很多客户端支持较差
+   - 同时多业务用多数据库实际还是单线程处理，会有干扰
+
+4. 【推荐】redis事务功能较弱，不建议过多使用
+
+   - redis的事务功能较弱（不支持回滚）
+   - 而且集群版本（自研和官方）要求一次事务操作的key必须在一个slot上（可以使用hashtag功能解决）
+
+5. 【推荐】redis集群版本在使用Lua上有特殊要求
+
+   - 所有key，必须在1个slot上，否则直接返回error
+   - **"-ERR eval/evalsha command keys must in same slot\r\n"**
+
+6. 【建议】必要情况下使用monitor命令时，要注意不要长时间使用
+
+   ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200414141528.png)
+
+### Java客户端优化
+
 1. 【推荐】
+
+   - 避免多个应用使用一个Redis实例
+   - 正例：不相干的业务拆分，公共数据做服务化
+
+2. 【推荐】
+
+   - 使用连接池，标准使用方式
+
+     ```java
+     //redisHost为实例的IP，redisPort为实例端口，redisPassword为实例的密码，timeout既是连接超时又是读写超时
+     JedisPool jedisPool = new JedisPool(jedisPoolConfig, redisHost, redisPort, timeout, redisPasswor//d);
+     //执命令如下
+     Jedis jedis = null;
+     try {
+         jedis = jedisPool.getResource();
+         //具体的命令
+         jedis.executeCommand()
+     } catch (Exception e) {
+         logger.error(e.getMessage(), e);
+     } finally {
+         //在JedisPool模式下，Jedis会被归还给资源池
+         if (jedis != null) 
+             jedis.close();
+     }
+     ```
+
+     | 序号 |            参数名             |                             含义                             |       默认值       |                           使用建议                           |
+     | :--: | :---------------------------: | :----------------------------------------------------------: | :----------------: | :----------------------------------------------------------: |
+     |  1   |         testWhileIdle         |                     是否开启空闲资源检测                     |       false        |                             true                             |
+     |  2   | timeBetweenEvictionRunsMillis |               空闲资源的检测周期（单位为毫秒）               |     -1：不检测     | 建议设置，周期自行选样，也可以默认，也可以使用JedisPoolConfig中的配置 |
+     |  3   |  minEvictableIdleTimeMillis   | 资源池中资源最小空闲时间（单位为毫秒），达到此值后空闲资源将被移除 | 1000 60 30 =30分钟 | 可根据自身业务决定，大部分默认即可，也可以考虑使用JedisPoolConfig中的配置 |
+     |  4   |    numTestsPerEvictionRun     |                做空闲资源检测时，每次的采样数                |         3          | 可根据自身应用连接数进行微调，如果设置为-1，就是对所有连接做空闲监测 |
+
+     **其中JedisPoolConfig对一些参数的默认设置如下：**
+
+     **testWhileIdle=true**
+
+     **minEvictableIdleTimeMills=60000**
+
+     **timeBetweenEvictionRunsMillis=30000**·
+
+     **numTestsPerEvictionRun=-1**
+
+   - 如何预估最大连接池
+     - maxTotal怎么设置？maxIdle接近MaxTotal即可
+       1. 考虑因素
+          - 业务希望Redis并发量
+          - 客户端执行命令时间
+
