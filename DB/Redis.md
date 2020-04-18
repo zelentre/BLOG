@@ -1,4 +1,4 @@
-# Redis
+# **Redis**
 
 <!-- more -->
 
@@ -2355,4 +2355,102 @@ public String getPassThrough(String key){
        1. 考虑因素
           - 业务希望Redis并发量
           - 客户端执行命令时间
+          - Redis资源：例如node（应用个数）*maxTotal不能超过Redis最大连接数
+          - 资源开销：例如虽然希望控制空闲连接，但是不希望因为连接池的频繁释放创建连接造成不必要开销
+       2. 例子
+          - 一次命令时间（borrow|return resource + Jedis执行命令（含网络））的平均耗时约为1ms，一个连接的QPS大约是1000
+          - 业务期望的QPS是50000
+          - 理论的maxTotal = 50000/1000 = 50 个，可以适当伸缩
+
+## 十五、内存管理
+
+### 内存消耗
+
+- 内存使用统计（进入redis-cli 直接输入 info）
+
+  | 属性名                      | 属性说明                                                  |
+  | :-------------------------- | :-------------------------------------------------------- |
+  | **userd_memory**            | **Redis分配器分配的内存量，也就是实际存储数据的自存总量** |
+  | used_memory_human           | 以可读格式返回Redis使用的内存总量                         |
+  | **used_memory_rss**         | **从操作系统的角度，Redis进程占用的总物理内存**           |
+  | used_memory_peak            | 内存分配器分配的最大内存，代表used_memory的历史峰值       |
+  | used_memory_peak_human      | 以可读的格式显示内存消耗峰值                              |
+  | used_memory_lua             | Lua引擎所消耗的内存                                       |
+  | **mem_fragmentation_ratio** | **used_memory_rss/used_memory比值，表示内存碎片率**       |
+  | mem_allocator               | Redis所使用的内存分配器。默认：jemalloc                   |
+
+  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200416101537.png)
+
+- 内存消耗划分
+
+  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200416105846.png)
+
+  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200416110647.png)
+
+### 内存缓冲
+
+- 缓冲内存-客户端缓冲区
+
+  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200416112157.png)
+
+  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200416112353.png)
+
+  - 普通客户端
+
+    1. 默认：`client-output-buffer-limit normal 0 0 0`
+
+    2. 默认：没有限制客户端缓冲
+
+    3. 注意：防止大的命令或者monitor
+
+       ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200416112914.png)
+
+  - slave客户端
+
+    1. 默认：`client-output-buffer-limit slave 256mb 64mb 60`
+    2. 阻塞：主从延迟较高，或者从节点过多
+    3. 注意：主从网络，从节点不要超过2个
+
+  - pubsub客户端
+
+    1. 默认：``client-output-buffer-limit pubsub 32mb 8mb 60``
+    2. 阻塞：生产大于消费
+    3. 注意：根据实际场景适当调试
+
+- 缓冲内存-复制缓冲区
+
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200416134820.png)
+  - 缓冲内存-AOF缓冲区
+    - 注意：AOF重写期间，AOF的缓冲区，没有容量限制
+    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200416135534.png)
+
+- 对象内存
+  1. key：不要过长，量大不容忽视（Redis3：embstr 39字节）
+  2. value：ziplist、intsetde等优化方式
+- 内存碎片
+  1. 必然存在：jemalloc
+  2. 优化方式：
+     - 避免频繁更新操作：append、setrange等
+     - 安全重启，例如redis sentinel和redis cluster等
+- 子进程内存消耗
+  1. 必然存在：fork（bgsave和bgrewriteaof）
+  2. 优化方式：
+     - 去掉THP特性：2.6.38增加的特性
+     - 观察写入量：copy-on-write
+     - overcommit_memory=1
+
+### 内存管理
+
+- 设置内存上限
+  - 注意：定义实例最大内存，便于管理机器内存，一般要预留30%
+- 动态调整内存上限
+- 内存回收策略
+
+### 内存优化
+
+
+
+
+
+
 
