@@ -2442,15 +2442,226 @@ public String getPassThrough(String key){
 ### 内存管理
 
 - 设置内存上限
+  
   - 注意：定义实例最大内存，便于管理机器内存，一般要预留30%
+  
+    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200420154633.png)
+  
+    ```shell
+    redis > config set maxmemory 6GB
+    redis > config set maxmemory 2GB
+    redis > config rewrite
+    ```
+  
 - 动态调整内存上限
+
 - 内存回收策略
+
+  - 删除过期键值
+
+    1. 惰性删除：访问key -> expired dict -> del key
+
+    2. 定时删除：每秒运行10次，采样删除
+
+       ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200420155255.png)
+
+  - 内存溢出控制策略
+
+    - 超过maxmemory后触发相应策略，由maxmemory-policy控制
+      - Noeviction：默认策略，不会删除任何数据，拒绝所有写入操作并返回端错误信息“（error） OOM command not allowed when userd memory” 此时Redis只响应读操作由maxmemory-policy控制
+      - Volatile-lru：根据LRU算法删除设置了超时属性（expire）的键，直到腾出足够空间为止。如果没有可删除的键对象，回退到noeviction策略
+      - Allkeys-lru：根据LRU算法删除键，不管数据有没有设置超时属性，直到腾出足够空间为止
+      - Allkeys-random：随机删除所有键，直到腾出足够空间为止
+      - volatile-random：随机删除过期键，直到腾出足够空间为止
+      - volatile-ttl：根据键值对象的ttl属性，删除最近将要过期数据。如果没有，回退到noeviction策略
 
 ### 内存优化
 
+- 内存分布
 
+  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200416110647.png)
 
+- 合理选择优化数据结构
 
+  - 需求：计算网站每天独立用户数
+  - 选择：集合、bitmaps、hyperloglog
+  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200420172448.png)
 
+- 客户端内存优化
 
+  - 结构
+    - 输入缓冲区：最大1G
+    - 输出缓冲区，支持按类型设置：
+      1. 普通客户端
+      2. 发布订阅客户端
+      3. 复制客户端
+  - 一次内存暴增（原因）
+    1. 批量写入
+    2. 主从不一致
+  - 处理和预防
+    1. 处理：找到对应的业务方直接干掉
+    2. 预防：
+       1. 运维层面：线上Redis禁用monitor（rename-command）
+       2. 运维层面：适度限制缓冲区大小
+       3. 开发层面：理解monitor的原理，也可以短暂寻找热点key（本地执行）
+       4. 开发层面：使用CacheCloud可以直接监控
+
+- 其他方法
+
+  1. 不要忽视key长度：一亿个键，一个字节也是节省。（键名：简短明了）`user:friends:notify:{id}----->u:f:n:{id}`
+  2. 序列化和压缩方法：拒绝Java原生，采用portobuf、kryo、snappy等
+
+- 需不需要用Redis？
+
+  1. 数据：大数据、冷数据
+  2. 功能性：关系型查询、消息队列
+
+### 总结
+
+1. 内存是宝贵资源
+2. 结合场景选择和优化数据结构
+3. 序列化时有成本的
+4. 不要忽视键长度
+
+## 十六、开发运维那些坑
+
+### Linux内核优化
+
+- vm.overcommit_memory
+
+  - |  值  |                             含义                             |
+    | :--: | :----------------------------------------------------------: |
+    |  0   | 表示内核将检查是否有足够的可用内存。如果有足够的可用内存，内存申请通过，否则内存申请失败，并把错误返回给应用进程 |
+    |  1   |             表示内核允许超量使用内存直到用完为止             |
+    |  2   | 表示内核绝不过量（“never overcommit”）使用内存，即系统整个内存地址空间不能超过swap+50%的RAM值，50%时overcommit_ratio默认值，此参数同样支持修改 |
+
+  - 获取和设置
+
+    - 获取：
+
+      `# cat /proc/sys/vm/overcommit_memory   0 `
+
+    - 设置：
+
+      `echo "vm.overcommit_memory=1" >> /etc/sysctl.conf`
+
+      `sysctl vm.overcommit_memory=1`
+
+  - 最佳实践
+
+    1. Redis设置合理的maxmemory，保证机器有20%~30%的闲置内存
+    2. 集中化管理AOF重写和RDB的bgsave
+    3. 设置vm.overcommit_memory=1,防止极端情况下会造成fork失败
+
+- swappiness
+
+  - |  值  |                             策略                             |
+    | :--: | :----------------------------------------------------------: |
+    |  0   | Linux3.5及以上：宁愿用OOM killer 也不用swap    Linux3.4及更早：宁愿用swap也不用OOM killer |
+    |  1   |          Linux3.5及以上：宁愿用swap也不用OOM killer          |
+    |  60  |                            默认值                            |
+    | 100  |                   操作系统会主动地使用swap                   |
+
+  - 设置
+
+    1. 立即生效：`echo {bestvalue} > /proc/sys/vm/swappiness`
+    2. 永久生效：`echo vm.swappiness={bestvalue}>>/etc/sysctl.conf`
+
+  - 最佳实践
+
+    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200420184749.png)
+
+- THP(Transparent huge page)
+
+  - 作用
+
+    1. 作用：加速fork
+
+    2. 建议：禁用，可能产生更大的内存开销
+
+    3. 设置方法：`echo never>/sys/kernel/mm/transparent_hugepage/enabled`
+
+    4. 坑：源码中是绝对路径，注意不同发行版本的区别
+
+       ```php
+       FILE*fp = fopen("/sys/kernel/mm/transparent_hugepage/enabled","r");
+       if(!fb) return 0;
+       ```
+
+- OOM killer
+
+  - 该机制会监控那些占用内存过大，尤其是瞬间占用内存很快的进程，然后防止内存耗尽而自动把该进程杀掉。内核检测到系统内存不足、挑选并杀掉某个进程的过程可以参考内核源代码linux/mm/oom_kill.c，当系统内存不足的时候，out_of_memory()被触发，然后调用select_bad_process()选择一个”bad”进程杀掉。如何判断和选择一个”bad进程呢？linux选择”bad”进程是通过调用oom_badness()，挑选的算法和想法都很简单很朴实：最bad的那个进程就是那个最占用内存的进程
+
+- [NTP(Net Time Protocol)](https://blog.csdn.net/iloli/article/details/6431757)
+
+- [ulimit](https://blog.csdn.net/skiwnc/article/details/84100095)
+
+- [TCP backlog](https://www.cnblogs.com/Orgliny/p/5780796.html)
+
+### 安全的Redis
+
+- 全球crackit攻击
+
+  - 2015年11月，全球35000+个redis主机受到攻击
+  - 被攻击的redis特征
+    1. Redis所在的机器有外网IP
+    2. Redis以默认端口6379为启动端口，并且是对外网开放的
+    3. Redis是以root用户启动的
+    4. Redis没有设置密码
+    5. Redis的bind设置为0.0.0.0或者""
+
+- Redis安全七法
+
+  1. 设置密码
+     1. 服务端配置：requirepass和masterauth
+     2. 客户端连接：auth命令和-a参数
+     3. 相关建议：
+        1. 密码要足够复杂，防止暴力破解
+        2. masterauth不要忘记
+        3. auth还是通过明文传输
+  2. 伪装危险命令
+     1. 服务端配置：rename-command为空或者随机字符
+     2. 客户端连接：不可用或者使用指定随机字符
+     3. 相关建议：
+        1. 不支持config set动态设置
+        2. RDB和AOF如果包含rename-command之前的命令，将无法使用
+        3. config命令本身是在Redis内核会使用到，不建议设置
+
+  3. bind
+     1. 服务端配置：bind限制的是网卡，并不是客户端ip
+     2. 相关建议：
+        1. bind不支持config set
+        2. bind 127.0.0.1需要谨慎
+        3. 如果存在外网网卡尽量屏蔽掉
+  4. 防火墙：杀手锏
+  5. 定期备份
+  6. 不使用默认端口，防止被弱攻击杀掉
+  7. 使用非root用户启动
+
+### 热点key发现
+
+- 客户端
+
+  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200421100545.png)
+
+- 代理端
+
+  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200421100624.png)
+
+- 服务端
+
+  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200421100655.png)
+
+- 机器收集
+
+  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200421100750.png)
+
+### 总结
+
+|  方案  |                     优点                     |                             缺点                             |
+| :----: | :------------------------------------------: | :----------------------------------------------------------: |
+| 客户端 |                   实现简单                   |     1. 内存泄漏隐患 2. 维护成本高 3. 只能统计单个客户端      |
+|  代理  | 代理是客户端和服务端的桥梁，实现最方便最系统 |                   增加代理端的开发部署成本                   |
+| 服务端 |                   实现简单                   | 1. monitor本身的使用成本和危害，只能短时间使用 2. 只能统计单个redis节点 |
+|  机器  |        对于客户端和服务端无侵入和影响        |       需要专业的运维团队开发，并且增加了机器的部署成本       |
 
