@@ -23,5 +23,5 @@ https://blog.csdn.net/lai1170137052/article/details/102974628
    很多人也貌似出现了这个问题，参考了好几个帖子：
    https://segmentfault.com/q/1010000008223855
    https://www.imooc.com/qadetail/177063
-   我参照改了源,也 不确定这个是否有用
+   我参照改了源,也不确定这个是否有用
    npm config set registry https://registry.npm.taobao.org  
