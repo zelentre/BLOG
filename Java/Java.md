@@ -1,4 +1,5 @@
 # Java零散知识（之后可能会整理）
+[http://hollischuang.gitee.io/tobetopjavaer/#/basics/object-oriented/object-oriented-vs-procedure-oriented](http://hollischuang.gitee.io/tobetopjavaer/#/basics/object-oriented/object-oriented-vs-procedure-oriented)
 
 <!-- more -->
 
