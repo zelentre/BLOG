@@ -1,4 +1,4 @@
-# MongoDB
+# MongoDB（有点乱 之后整理）
 
 <!--more-->
 
@@ -65,4 +65,59 @@
     ```
 
   - **其中 2c79 是 CONTAINER ID，即容器ID**
+
+## 四、MongoDB技术优势总结
+
+- JSON结构和对象模型接近，开发代码量低
+
+- JSON的动态模型意味着更容易响应新的业务需求
+- 复制集提供99.99%高可用
+- 分片架构支持海量数据和无缝扩容
+
+## 五、简单使用
+
+### 使用insert 完成插入操作
+
+1. 操作格式：
+
+   - db.<集合>.insertOne(<JSON对象>)
+
+   - db.<集合>.insertMany([<JSON1>, <JSON2>, ...<JSON3>])
+
+2. 实例：
+
+   - db.fruit.insertOne({name:"apple"})
+   - db.fruit.insertMany([{name:"apple"},{name:"pear"},{name:"orange"}])
+
+### 使用find查询文档
+
+1. 关于find
+
+   - find是MongoDB中查询数据的基本指令，相当于SQL中的SELECT
+   - find返回的是游标
+
+2. find示例
+
+   - db.movies.find({"year":1975})  //单条件查询
+   - db.movies.find({"year":1989,"title":"Batman"})  //多条件and查询
+   - db.movies.find({$and:[{"title":"Batman"},{"category":"action"}]}) //and的另一种形式
+   - db.movies.find({$or:[{"year":1989},{"title":"Batman"}]})  //多条件or查询
+   - db.movies.find({"title":/^B/}) //按正则表达式查找
+
+3. 对照表
+
+   |     SQL      |               MQL               |
+   | :----------: | :-----------------------------: |
+   |     a=1      |              {a:1}              |
+   |     a<>1     |           {a:{$ne:1}}           |
+   |     a>1      |           {a:{$gt:1}}           |
+   |     a>=1     |          {a:{$gte:1}}           |
+   |     a<1      |           {a:{$lt:1}}           |
+   |     a<=1     |          {a:{$lte:1}}           |
+   | a=1 AND b=1  | {a:1,b:1}或{$and:[{a:1},{b:1}]} |
+   |  a=1 OR b=1  |                                 |
+   |  a IS NULL   |                                 |
+   | a IN (1,2,3) |                                 |
+
+   
 

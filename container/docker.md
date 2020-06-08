@@ -10,3 +10,25 @@
  3. Docker Image镜像
   4. DockerContainer容器
   5. [一些docker命令](https://blog.csdn.net/qq_38503329/article/details/97147797)
+
+**docker 安装 mysql（其他类似）**
+
+1. 拉取镜像  指定自己需要的版本，后续启动容器时也需要指定版本（最新版默认不需要）
+
+   ` docker pull mysql:5.7`
+
+2. 运行容器  -p 3306:3306 指定ip、指定宿主机port、指定容器port ip不指定 默认0.0.0.0
+
+   ` docker run -itd --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root mysql:5.7`
+
+3. 其他后续 包括修改配置文件
+
+   `dockerexec -it f7bbac /bin/bash `  //f7bbac 是容器ID docker ps 可查
+
+   ```shell
+   apt-get update
+   apt-get install vim -y
+   cd /etc/mysql/mysql.conf.d/mysqld.cnf
+   vim mysqld.cnf
+   lower_case_table_names=1 //末尾添加 是MySQL不区分大小写 重启后生效
+   ```
