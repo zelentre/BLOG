@@ -28,7 +28,7 @@
    ```shell
    apt-get update
    apt-get install vim -y
-   cd /etc/mysql/mysql.conf.d/mysqld.cnf
+   cd /etc/mysql/mysql.conf.d
    vim mysqld.cnf
    lower_case_table_names=1 //末尾添加 是MySQL不区分大小写 重启后生效
    ```

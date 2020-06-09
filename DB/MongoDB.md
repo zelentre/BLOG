@@ -115,9 +115,10 @@
    |     a<1      |           {a:{$lt:1}}           |
    |     a<=1     |          {a:{$lte:1}}           |
    | a=1 AND b=1  | {a:1,b:1}或{$and:[{a:1},{b:1}]} |
-   |  a=1 OR b=1  |                                 |
-   |  a IS NULL   |                                 |
-   | a IN (1,2,3) |                                 |
+   |  a=1 OR b=1  |       {$or:[{a:1},{b:1}]}       |
+   |  a IS NULL   |       {a:{$exists:false}}       |
+   | a IN (1,2,3) |        {a:{$in:[1,2,3]}}        |
 
-   
+4.   ![image-20200608180446313](https://gitee.com/zelen/IMG/raw/master/PicGo/20200608180434.png)
 
+5. 
