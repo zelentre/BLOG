@@ -121,4 +121,32 @@
 
 4.   ![image-20200608180446313](https://gitee.com/zelen/IMG/raw/master/PicGo/20200608180434.png)
 
-5. 
+5.    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200609104401.png)
+
+6.   ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200609104633.png)
+
+7. ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200609105123.png)
+
+8. ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200609104914.png)
+
+9. 使用drop删除集合
+
+   - 使用db.<集合>.drop()来删除一个集合
+   - 集合中的全部文档都会被删除
+   - 集合相关的索引也会被删除
+   - `db.colTOBeDropped.drop()`
+
+10. 使用dropDatabase删除数据库
+
+    - 使用db.dropDatabase()来删除数据库
+
+    - 数据库相应文件也会被删除，磁盘空间将被释放
+
+    -   ```shell
+      use tempDB
+      db.dropDatabase()
+      show collections // No collectios
+      show dbs // The db is gone
+        ```
+
+    - 
