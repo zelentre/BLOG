@@ -19,7 +19,7 @@
 
 2. 运行容器  -p 3306:3306 指定ip、指定宿主机port、指定容器port ip不指定 默认0.0.0.0
 
-   ` docker run -itd --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root mysql:5.7 --lower_case_table_names=1`
+   ` docker run -itd --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root mysql:5.7`
 
 3. 其他后续 包括修改配置文件
 
@@ -38,7 +38,7 @@
 
 ```shell
 docker pull mysql
-docker run -itd --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root mysql --lower_case_table_names=1
+docker run -itd --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root mysql
 dockerexec -it f7bbac /bin/bash
 select host, user, authentication_string, plugin from user;
 ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'root';
