@@ -14,4 +14,3 @@
 2. 配置：/MATA-INF/spring.factories
 3. 实现：XXXAutoConfiguration
 
-![Web应用](https://raw.githubusercontent.com/zelentre/IMG/master/PicGo/web应用.png)
