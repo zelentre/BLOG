@@ -1,4 +1,23 @@
+---
+title: oauth2
+
+date: 2020-07-07 18:53:59
+
+categories: 
+
+ - Java
+
+ - oauth2
+
+tags: 
+
+ - Java
+
+ - oauth2
+---
+
 任何的身份验证，本质上都是基于对请求方的不信任所产生的
+
 ***
 <!--more-->
 

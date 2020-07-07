@@ -1,3 +1,21 @@
+---
+title: mybatis
+
+date: 2020-07-07 18:50:53
+
+categories: 
+
+ - Java
+
+ - mybatis
+
+tags: 
+
+ - Java
+
+ - mybatis
+---
+
 `>  和 >=`都可以在mybatis的xml中使用
 `<  和 <=`需要使用转译
 

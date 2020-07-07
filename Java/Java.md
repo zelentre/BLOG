@@ -1,3 +1,12 @@
+---
+title: Java基础
+date: 2020-07-07 17:59:18
+categories: 
+ - Java
+ - 基础
+tags: 
+ - Java基础
+---
 # Java零散知识（之后可能会整理）
 [http://hollischuang.gitee.io/tobetopjavaer/#/basics/object-oriented/object-oriented-vs-procedure-oriented](http://hollischuang.gitee.io/tobetopjavaer/#/basics/object-oriented/object-oriented-vs-procedure-oriented)
 

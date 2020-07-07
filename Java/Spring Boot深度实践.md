@@ -1,3 +1,21 @@
+---
+title: spring boot
+
+date: 2020-07-07 18:50:53
+
+categories: 
+
+ - Java
+
+ - spring boot
+
+tags: 
+
+ - Java
+
+ - spring boot
+---
+
 # Spring Boot深度实践
 
 ## 三大特性
