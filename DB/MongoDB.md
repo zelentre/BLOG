@@ -1,3 +1,20 @@
+---
+title: MySQL
+
+date: 2020-07-08 18:01:31
+categories: 
+
+ - DB
+
+ - MongoDB
+
+tags: 
+
+ - MongoDB
+---
+
+
+
 # MongoDB（有点乱 之后整理）
 
 <!--more-->
@@ -147,6 +164,6 @@
       db.dropDatabase()
       show collections // No collectios
       show dbs // The db is gone
-        ```
+      ```
 
     - 

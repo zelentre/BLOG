@@ -1,4 +1,18 @@
-## 宏观
+---
+title: MySQL
+
+date: 2020-07-08 18:01:31
+categories: 
+
+ - DB
+
+ - MySQL
+
+tags: 
+
+ - MySQL
+---
+
 ### 数据库锁
 
  - 粒度小，方便用于集群环境
