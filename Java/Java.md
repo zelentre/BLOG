@@ -7,7 +7,7 @@ categories:
 tags: 
  - Java基础
 ---
-# Java零散知识（之后可能会整理）
+#  一、Java零散知识（之后可能会整理）
 [http://hollischuang.gitee.io/tobetopjavaer/#/basics/object-oriented/object-oriented-vs-procedure-oriented](http://hollischuang.gitee.io/tobetopjavaer/#/basics/object-oriented/object-oriented-vs-procedure-oriented)
 
 <!-- more -->
@@ -176,3 +176,15 @@ d
 6. 静态方法和静态变量创建后始终使用同一块内存，而使用实例的方式会创建多个内存。
 7. 主要区别：静态方法在创建对象前就可以使用了，非静态方法必须通过new出来的对象调用。
 8. 静态方法与实例方法在性能和占用内存上没有明显的区别，是否声明为静态方法需要从类型的非静态字段、事件、面向对象扩展和多态这三方面来考虑。
+
+# 二、BigDecimal详解
+
+1. BigDecimal所创建的是对象，故我们不能使用传统的+、-、*、/等算数运算符
+
+2. 创建 ` BigDecimal a =new BigDecimal(0.1);//0.1可为 int double long String`
+
+3.  add(+)、subtract(-)、multiply(*)、divide(/)、toString(转字符串)、doubleValue(转double。。)
+
+4. compareTo比较大小 -1小于 0 等于 1 大于
+
+5. # [Java之BigDecimal详解](https://www.cnblogs.com/zhangyinhua/p/11545305.html)
