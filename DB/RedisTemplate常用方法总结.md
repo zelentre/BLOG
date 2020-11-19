@@ -1,6 +1,15 @@
+---
+title: RedisTemplate常用方法总结
+date: 2020-11-19 18:36:32
+categories: 
+ - Redis
+tags: 
+ - Redis
+---
+
 # RedisTemplate常用方法总结
 
-# Redis常用的数据类型：
+## Redis常用的数据类型：
 
 - String
 - Hash
@@ -13,7 +22,7 @@
 
 <!--more-->
 
-# String类型
+## String类型
 
 判断是否有key所对应的值，有则返回true，没有则返回false
 
@@ -240,7 +249,7 @@ redisTemplate.opsForValue().setBit(key, offset, value)
 redisTemplate.opsForValue().getBit(key, offset)
 ```
 
-# Hash类型
+## Hash类型
 
 Redis hash 是一个string类型的field和value的映射表，hash特别适合用于存储对象。
 Redis 中每个 hash 可以存储 2^32 - 1 键值对（40多亿）。
@@ -337,7 +346,7 @@ public Cursor<Entry<Object, Object>> hashScan(String key, ScanOptions options) {
 }
 ```
 
-# List类型
+## List类型
 
 通过索引获取列表中的元素
 
@@ -433,7 +442,7 @@ redisTemplate.opsForList().trim(key, start, end)
 redisTemplate.opsForList().size(key)
 ```
 
-# Set类型
+## Set类型
 
 添加元素
 
@@ -543,7 +552,7 @@ redisTemplate.opsForSet().distinctRandomMembers(key, count)
 redisTemplate.opsForSet().scan(key, options)
 ```
 
-# zSet类型
+## zSet类型
 
 ZSetOperations提供了一系列方法对有序集合进行操作
 添加元素(有序集合是按照元素的score值由小到大进行排列)
