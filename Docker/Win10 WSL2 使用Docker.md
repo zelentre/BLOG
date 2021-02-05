@@ -24,7 +24,9 @@ tags:
 
 4. 打开Microsoft Store，下载Ubuntu20.04
 
-5. cmd 查看 `wsl -l --v`
+5. cmd 查看 `wsl -l --v`  
+
+   ![image-20210205113626498](https://gitee.com/zelen/IMG/raw/master/PicGo/image-20210205113626498.png)
 
 6. 查看linux目录 `\\wsl$\Ubuntu-20.04\`
 
@@ -60,28 +62,39 @@ tags:
 
 9. [docker 镜像相关挂载文件](https://zelen.lanzous.com/inqvqlc4msh)将文件放在 `/mnt/wsl/docker/`
 
-10. 安装MySQL相关命令
+## 二、安装相关镜像
 
-    ```shell
-    docker pull mysql
-    # 挂载 随系统启动
-    docker run -it -v /mnt/wsl/docker/mysql/data:/var/lib/mysql -v /mnt/wsl/docker/mysql/config/my.cnf:/etc/mysql/my.cnf --restart=always --name mysql8 -e MYSQL_ROOT_PASSWORD=system123456 -p 3306:3306 -d mysql
-    # 进入容器
-    docker exec -it mysql8 bash
-    mysql -uroot -p
-    system123456
-    # 修改MySQL8为简易密码
-    ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';
-    ALTER USER 'root'@'%' IDENTIFIED BY 'root';
-    ```
+### 安装MySQL相关命令
 
-11. 安装Redis相关命令
+```shell
+docker pull mysql
+# 挂载 随系统启动
+docker run -it -v /mnt/wsl/docker/mysql/data:/var/lib/mysql -v /mnt/wsl/docker/mysql/config/my.cnf:/etc/mysql/my.cnf --restart=always --name mysql8 -e MYSQL_ROOT_PASSWORD=system123456 -p 3306:3306 -d mysql
+# 进入容器
+docker exec -it mysql8 bash
+mysql -uroot -p
+system123456
+# 修改MySQL8为简易密码
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';
+ALTER USER 'root'@'%' IDENTIFIED BY 'root';
+```
 
-    ```shell
-    docker pull redis
-    # 挂载 随系统启动
-    docker run -it -v /mnt/wsl/docker/redis/data:/var/lib/redis -v /mnt/wsl/docker/redis/config/redis.conf:/etc/redis/redis.conf --restart=always --name redis -p 6379:6379 -d redis redis-server /etc/redis/redis.conf --appendonly yes
-    ```
+### 安装Redis相关命令
 
-    
+```shell
+docker pull redis
+# 挂载 随系统启动
+docker run -it -v /mnt/wsl/docker/redis/data:/var/lib/redis -v /mnt/wsl/docker/redis/config/redis.conf:/etc/redis/redis.conf --restart=always --name redis -p 6379:6379 -d redis redis-server /etc/redis/redis.conf --appendonly yes
+```
 
+## 相关参考
+
+https://www.jianshu.com/p/a20c2d58eaac
+
+https://zhuanlan.zhihu.com/p/148511634
+
+https://docs.docker.com/docker-for-windows/wsl/
+
+https://my.oschina.net/u/4313107/blog/4404650
+
+https://www.jianshu.com/p/e79f4c938000
