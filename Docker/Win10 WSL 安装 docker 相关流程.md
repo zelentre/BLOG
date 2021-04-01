@@ -95,28 +95,26 @@ tags:
 
       ```shell
       docker run --name mysql --restart=always -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -v /etc/timezone:/etc/timezone -v /etc/localtime:/etc/localtime -v /usr/local/mysql/data:/var/lib/mysql -v /usr/local/mysql/conf:/etc/mysql/conf.d -v /usr/local/mysql/logs:/logs -d mysql
+      
+   # 若要指定 设置不区分大小写 lower_case_table_names=1 (必须启动时就指定，若之后指定 则需将/usr/local/mysql/data清空)
+      docker run --name mysql --restart=always -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -v /etc/timezone:/etc/timezone -v /etc/localtime:/etc/localtime -v /usr/local/mysql/data:/var/lib/mysql -v /usr/local/mysql/conf:/etc/mysql/conf.d -v /usr/local/mysql/logs:/logs -d mysql --lower-case-table-names=1
+   
+      # 进入容器
+      docker exec -it mysql8 bash
+      mysql -uroot -p
+      123456
+      # 修改MySQL8为简易密码
+      ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';
+      ALTER USER 'root'@'%' IDENTIFIED BY 'root';
       ```
-
+   
    2. Redis配置文件[下载 ](https://zelen.lanzous.com/iektOil70vc) 文件放入路径`/usr/local/redis/conf/redis.conf`
-
+   
       ```shell
       docker run -it -v /usr/local/redis/data:/var/lib/redis -v /usr/local/redis/conf/redis.conf:/etc/redis/redis.conf -v /usr/local/redis/logs:/logs --restart=always --name redis -p 6379:6379 -d redis redis-server /etc/redis/redis.conf --appendonly yes
       ```
 
-### 二、配置文件在docker容器中
-
-**若要修改配置文件需要到指定的容器中进行修改**
-
-1. 镜像启动
-
-   ```shell
-   # MySQL /usr/local/mysql/conf为空文件
-   docker run --name mysql --restart=always -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -v /etc/timezone:/etc/timezone -v /etc/localtime:/etc/localtime -v /usr/local/mysql/data:/var/lib/mysql -v /usr/local/mysql/conf:/etc/mysql/conf.d -v /usr/local/mysql/logs:/logs -d mysql
-   # Redis /usr/local/redis/conf为空文件
-   docker run -it -v /usr/local/redis/data:/var/lib/redis -v /usr/local/redis/conf:/etc/redis/redis.conf -v /usr/local/redis/logs:/logs --restart=always --name redis -p 6379:6379 -d redis redis-server /etc/redis/redis.conf --appendonly yes
-   ```
-
-### 三、其他相关命令
+### 二、其他相关命令
 
 **修改配置文件、下载配置文件等操作**
 
