@@ -92,13 +92,18 @@ sudo mkdir -pv /zne/redis/{conf,data,logs}
 # 将下载的配置文件放置到对应的文件夹下 my.cnf --> /zne/mysql/conf  redis.conf --> /zne/redis/conf
 
 # 2. 下载相关镜像
+# portainer/poratainer 已弃用 https://hub.docker.com/r/portainer/portainer
 docker pull portainer/portainer
+# Portainer 2.0 的所有新版本都将在 portainer/portainer-ce 中发布 推荐使用下面这个
+docker pull portainer/portainer-ce
 docker pull mysql
 docekr pull redis
 
 # 3. 运行镜像
-# Portainer 参考 6 直接浏览器 运行 Ubuntu IP:9000 创建新的用户即可
+# Portainer 参考 6 直接浏览器 运行 Ubuntu IP:9000 创建新的用户即可 废弃
 docker run -p 9000:9000 -p 8000:8000 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /zne/portainer/data:/data -d portainer/portainer
+# Portainer-ce 参考 6 直接浏览器 运行 Ubuntu IP:9000 创建新的用户即可
+docker run -p 9000:9000 -p 8000:8000 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /zne/portainer/data:/data -d portainer/portainer-ce
 # MySQL
 docker run --name mysql --restart=always -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -v /etc/timezone:/etc/timezone -v /etc/localtime:/etc/localtime -v /zne/mysql/data:/var/lib/mysql -v /zne/mysql/conf:/etc/mysql/conf.d -v /zne/mysql/logs:/logs -d mysql
 # 修改MySQL 密码为root 若想用123456的则不必执行下列命令
