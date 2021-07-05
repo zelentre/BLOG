@@ -28,7 +28,7 @@ tags:
 # 简单来说就是：apt = apt-get、apt-cache 和 apt-config 中最常用命令选项的集合
 # 1.安装lrzsz工具，方便windows和linux间的文件上传下载
 sudo apt update
-sudo apt lrzsz
+sudo apt install lrzsz
 # 2.备份镜像源 参考 2
 sudo cp -v /etc/apt/sources.list /etc/apt/sources.list.backup
 # 3.更换镜像源
@@ -108,7 +108,7 @@ docker run -p 9000:9000 -p 8000:8000 --name portainer --restart=always -v /var/r
 docker run --name mysql --restart=always -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -v /etc/timezone:/etc/timezone -v /etc/localtime:/etc/localtime -v /zne/mysql/data:/var/lib/mysql -v /zne/mysql/conf:/etc/mysql/conf.d -v /zne/mysql/logs:/logs -d mysql
 # 修改MySQL 密码为root 若想用123456的则不必执行下列命令
 # 进入容器
-docker exec -it mysql8 bash
+docker exec -it mysql bash
 mysql -uroot -p
 123456
 # 修改MySQL8为简易密码
