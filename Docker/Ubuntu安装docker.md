@@ -82,7 +82,7 @@ sudo usermod -aG docker zne
 sudo reboot
 ```
 
-## docker安装相关镜像及配置
+## 四、docker安装相关镜像及配置
 
 ```shell
 # 1. 创建相关文件 zne为我新创建的文件夹存放我的安装相关数据 此路径为之后安装镜像的相关配置路径 可按照个人习惯创建
@@ -118,6 +118,59 @@ ALTER USER 'root'@'%' IDENTIFIED BY 'root';
 docker run -it -v /zne/redis/data:/var/lib/redis -v /zne/redis/conf/redis.conf:/etc/redis/redis.conf -v /zne/redis/logs:/logs --restart=always --name redis -p 6379:6379 -d redis redis-server /etc/redis/redis.conf --appendonly yes
 ```
 
+### 安装rabbitmq
+
+```shell
+# https://hub.docker.com/_/rabbitmq 查找rabbitmq镜像
+# 此方法需要手动开启它的管理后台(我使用的这种)
+docker pull rabbitmq
+# 拉取带web管理界面的
+docker pull rabbitmq:3.8.19-management
+# 创建相关挂载目录
+sudo mkdir -pv /zne/rabbitmq/{conf,data,logs}
+# 启动镜像
+docker run -p 15672:15672 -p 5672:5672 --name rabbitmq --restart=always -v /zne/rabbitmq/data:/var/lib/rabbitmq/mnesia -v /zne/rabbitmq/logs:/var/log/rabbitmq/log -e RABBITMQ_DEFAULT_USER=admin -e RABBITMQ_DEFAULT_PASS=admin -d rabbitmq
+# 进入容器并开启web管理界面
+docker exec -it rabbitmq bash
+rabbitmq-plugins enable rabbitmq_management
+```
+
+### docker相关命令
+
+```shell
+# 开机启动
+systemctl enable docker
+# 启动docker
+systemctl start docker
+# 关闭
+systemctl stop docker
+# 找镜像 替换mysql
+docker search mysql
+# 下载镜像 此处为指定版本5.7 可直接mysql（下载最新版mysql）
+docker pull mysql:5.7
+# 删除镜像   f6509bac4980为IMAGE ID
+docker rmi f6509bac4980
+# 查看容器列表  -a 查看所有容器
+docker ps -a
+# 停止运行的容器  使用容器名或者容器id
+docker stop container-name/container-id
+docker start container-name/container-id
+# 删除容器
+docker rm container-id
+#容器日志
+docker logs container-name/container-id
+```
+![docker](https://img-blog.csdnimg.cn/2020043011175696.png)
+
+> -i：表示运行容器
+> -d：在run后面加上-d参数,则会创建一个守护式容器在后台运行（这样创建容器后不会自动登录容器，如果只加-it两个参数，创建后就会自动进去容器）。
+> -di：后台运行容器；
+> –name：指定容器名；
+> -p：指定服务运行的端口（5672：应用访问端口；15672：控制台Web端口号）；
+> -v：映射目录或文件（文件共享），格式 宿主机目录：容器目录
+> –hostname：主机名（RabbitMQ的一个重要注意事项是它根据所谓的 “节点名称” 存储数据，默认为主机名）；
+> -e 指定环境变量；（RABBITMQ_DEFAULT_VHOST：默认虚拟机名；RABBITMQ_DEFAULT_USER：默认的用户名；RABBITMQ_DEFAULT_PASS：默认用户名的密码）
+
 ## 相关参考
 
 1. [ubuntu | 镜像站使用帮助 | 清华大学开源软件镜像站 | Tsinghua Open Source Mirror](https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/)
@@ -126,3 +179,4 @@ docker run -it -v /zne/redis/data:/var/lib/redis -v /zne/redis/conf/redis.conf:/
 4. [Install Docker Engine on Ubuntu | Docker Documentation](https://docs.docker.com/engine/install/ubuntu/)
 5. [ubuntu查看和修改时区](https://blog.csdn.net/cau_eric/article/details/90478798)
 6. [Docker 图形化工具 Portainer](https://mp.weixin.qq.com/s/YRqISK4yJo9J9WzzTvD9CQ)
+7. [为什么用docker安装rabbitmq打不开管理页面呢](https://blog.csdn.net/weixin_44763595/article/details/109528165)
