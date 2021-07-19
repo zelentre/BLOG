@@ -126,8 +126,12 @@ docker run -it -v /zne/redis/data:/var/lib/redis -v /zne/redis/conf/redis.conf:/
 docker pull rabbitmq
 # 拉取带web管理界面的
 docker pull rabbitmq:3.8.19-management
+# 带图形化界面（推荐使用这个）
+docker pull rabbitmq:management
 # 创建相关挂载目录
 sudo mkdir -pv /zne/rabbitmq/{conf,data,logs}
+# 图像化镜像启动
+docker run -p 15672:15672 -p 5672:5672 --name rabbitmq --restart=always -v /zne/rabbitmq/data:/var/lib/rabbitmq/mnesia -v /zne/rabbitmq/logs:/var/log/rabbitmq/log -e RABBITMQ_DEFAULT_USER=admin -e RABBITMQ_DEFAULT_PASS=admin -d rabbitmq:management
 # 启动镜像
 docker run -p 15672:15672 -p 5672:5672 --name rabbitmq --restart=always -v /zne/rabbitmq/data:/var/lib/rabbitmq/mnesia -v /zne/rabbitmq/logs:/var/log/rabbitmq/log -e RABBITMQ_DEFAULT_USER=admin -e RABBITMQ_DEFAULT_PASS=admin -d rabbitmq
 # 进入容器并开启web管理界面
