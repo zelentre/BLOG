@@ -114,3 +114,6 @@ DLX也是一个正常的交换机，和一般的交换机没有区别，它能�
 
 **过期时间+死信队列=延时队列**
 
+## 四、集群
+
+​	RabbitMQ本身是基于Erlang编写，Erlang语言天生具备分布式特性（通过通不过Erlang集群各节点的magic cookie来实现）。因此,rabbitmq天然支持clustering。这使得rabbitmq本身不需要像activemq、Kafka那样通过zookeeper分别来实现HA方案和保存集群的元数据。集群是保证可靠性的一种方式，同时可以通过水平扩展以达到增加消息吞吐量能力的目的。在实际使用过程中多采用多机多实例部署方式。
