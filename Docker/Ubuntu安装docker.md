@@ -20,7 +20,7 @@ tags:
 
 ## 二、修改Ubuntu相关配置
 
-**[相关配置文件下载 清华软件源、MySQL配置文件、redis配置文件、docker镜像源配置文件](https://zelen.lanzous.com/ivBGiop8tgh)**
+**[相关配置文件下载 清华软件源、MySQL配置文件、redis配置文件、docker镜像源配置文件](https://zelen.lanzoui.com/i01nPrwwj2h)**
 
 **切换软件源为[清华源](https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/)根据自己的安装版本选择**
 
@@ -139,6 +139,42 @@ docker exec -it rabbitmq bash
 rabbitmq-plugins enable rabbitmq_management
 ```
 
+### 安装MongoDB
+
+```shell
+# 创建相关挂载目录
+sudo mkdir -pv /zne/mongo/{conf,data,logs}
+# 在 /zne/mongo/conf目录下创建mongo配置文件，内容在下面
+touch mongodb.conf
+# 启动镜像 参考 8
+docker run --name mongo --restart=always -p 27017:27017 -v /zne/mongo/data:/data/db -v /zne/mongo/conf:/data/conf -v /zne/mongo/logs:/data/log -d mongo
+```
+
+```shell
+#端口
+port=27017
+#数据库文件存放目录
+dbpath=/data/mongo/data
+#日志文件存放路径
+logpath=/data/mongo/log
+#使用追加方式写日志
+logappend=true
+#以守护线程的方式运行，创建服务器进程
+fork=true
+#最大同时连接数
+maxConns=100
+#不启用验证
+#noauth=true
+#每次写入会记录一条操作日志
+journal=true
+#存储引擎有mmapv1、wiredTiger、mongorocks
+storageEngine=wiredTiger
+#访问IP
+bind_ip=0.0.0.0
+#用户验证
+#auth=true
+```
+
 ### docker相关命令
 
 ```shell
@@ -184,3 +220,5 @@ docker logs container-name/container-id
 5. [ubuntu查看和修改时区](https://blog.csdn.net/cau_eric/article/details/90478798)
 6. [Docker 图形化工具 Portainer](https://mp.weixin.qq.com/s/YRqISK4yJo9J9WzzTvD9CQ)
 7. [为什么用docker安装rabbitmq打不开管理页面呢](https://blog.csdn.net/weixin_44763595/article/details/109528165)
+8. [docker安装mongo容器并挂载外部配置文件及目录](https://blog.csdn.net/weixin_45345374/article/details/116271582)
+
