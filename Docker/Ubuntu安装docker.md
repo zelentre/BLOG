@@ -175,6 +175,16 @@ bind_ip=0.0.0.0
 #auth=true
 ```
 
+### 安装MinIO
+
+```shell
+# 相关参考 9
+# 创建相关挂载目录
+sudo mkdir -pv /zne/minio/{conf,data,logs}
+# 启动镜像
+docker run -p 9090:9000 -p 9001:9001 --name minio --restart=always -v /mydata/minio/data:/data -e MINIO_ROOT_USER=minioadmin -e MINIO_ROOT_PASSWORD=minioadmin -d minio/minio server /data --console-address ":9001"
+```
+
 ### docker相关命令
 
 ```shell
@@ -221,4 +231,4 @@ docker logs container-name/container-id
 6. [Docker 图形化工具 Portainer](https://mp.weixin.qq.com/s/YRqISK4yJo9J9WzzTvD9CQ)
 7. [为什么用docker安装rabbitmq打不开管理页面呢](https://blog.csdn.net/weixin_44763595/article/details/109528165)
 8. [docker安装mongo容器并挂载外部配置文件及目录](https://blog.csdn.net/weixin_45345374/article/details/116271582)
-
+9. [Github标星28K+！MinIO这款可视化的对象存储服务真香！](https://mp.weixin.qq.com/s/qHjOEeQ3CaA0U4a2YBi3Pw)
