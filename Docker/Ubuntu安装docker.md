@@ -49,7 +49,7 @@ timedatectl set-timezone "Asia/Shanghai"
 ## 三、安装docker
 
 ```shell
-# 安装方法挺多的 我是直接按照官方方式安装的 下列命令的相关解释请查看 参考 4
+# 安装方法挺多的 我是直接按照官方方式安装的 可以根据脚本方式安装Install using the convenience script 下列命令的相关解释请查看 参考 4
 # 我是新环境无需执行卸载步骤 如果需要的自行卸载
 sudo apt update
 
