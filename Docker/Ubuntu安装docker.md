@@ -20,7 +20,7 @@ tags:
 
 ## 二、修改Ubuntu相关配置
 
-**[相关配置文件下载 清华软件源、MySQL配置文件、redis配置文件、docker镜像源配置文件](https://zelen.lanzoui.com/i01nPrwwj2h)**
+**[相关配置文件下载 清华软件源、MySQL配置文件、redis配置文件、elasticsearch配置文件、docker镜像源配置文件](https://zelen.lanzoui.com/inpInterbfg)**
 
 **切换软件源为[清华源](https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/)根据自己的安装版本选择**
 
@@ -146,6 +146,8 @@ rabbitmq-plugins enable rabbitmq_management
 sudo mkdir -pv /zne/mongo/{conf,data,logs}
 # 在 /zne/mongo/conf目录下创建mongo配置文件，内容在下面
 touch mongodb.conf
+# 获取镜像
+docker pull mongo
 # 启动镜像 参考 8
 docker run --name mongo --restart=always -p 27017:27017 -v /zne/mongo/data:/data/db -v /zne/mongo/conf:/data/conf -v /zne/mongo/logs:/data/log -d mongo
 ```
@@ -181,8 +183,31 @@ bind_ip=0.0.0.0
 # 相关参考 9
 # 创建相关挂载目录
 sudo mkdir -pv /zne/minio/{conf,data,logs}
+# 获取镜像
+docker pull minio/minio
 # 启动镜像
-docker run -p 9090:9000 -p 9001:9001 --name minio --restart=always -v /mydata/minio/data:/data -e MINIO_ROOT_USER=minioadmin -e MINIO_ROOT_PASSWORD=minioadmin -d minio/minio server /data --console-address ":9001"
+docker run -p 9090:9000 -p 9001:9001 --name minio --restart=always -v /zne/minio/data:/data -e MINIO_ROOT_USER=minioadmin -e MINIO_ROOT_PASSWORD=minioadmin -d minio/minio server /data --console-address ":9001"
+```
+### 安装elasticsearch
+
+```shell
+# 相关参考 10（主要） 11（辅助）
+# 创建相关挂载目录
+sudo mkdir -pv /zne/elk/elasticsearch/{config,data,logs,plugins}
+# 获取镜像 
+docker pull elasticsearch:7.14.0
+# 先最简启动一个elasticsearch 容器 复制他的相关配置文件
+docker run --name elasticsearch -d -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -e "discovery.type=single-node" -p 9200:9200 -p 9300:9300 elasticsearch:7.14.0
+# 复制配置文件
+docker cp elasticsearch:/usr/share/elasticsearch/config /zne/elk/elasticsearch/
+docker cp elasticsearch:/usr/share/elasticsearch/plugins /zne/elk/elasticsearch/
+# 切换身份为root 先将原配置文件重命名，在将配置文件elasticsearch.yml复制到config下(直接在xshell中拖动即可，注意一定要用root)
+mv elasticsearch.yml elasticsearch.yml.old
+# 修改目录权限
+sudo chmod -vR 777 /zne/elk/
+# 删除容器并重新启动
+# 启动镜像
+docker run --name elasticsearch --restart=always -p 9200:9200 -p 9300:9300 -e ES_JAVA_OPTS="-Xms512m -Xmx512m" -e "discovery.type=single-node" -v /etc/timezone:/etc/timezone -v /etc/localtime:/etc/localtime -v /zne/elk/elasticsearch/config/:/usr/share/elasticsearch/config -v /zne/elk/elasticsearch/data:/usr/share/elasticsearch/data -v /zne/elk/elasticsearch/logs:/usr/share/elasticsearch/logs -v /zne/elk/elasticsearch/plugins:/usr/share/elasticsearch/plugins -d elasticsearch:7.14.0
 ```
 
 ### docker相关命令
@@ -232,3 +257,5 @@ docker logs container-name/container-id
 7. [为什么用docker安装rabbitmq打不开管理页面呢](https://blog.csdn.net/weixin_44763595/article/details/109528165)
 8. [docker安装mongo容器并挂载外部配置文件及目录](https://blog.csdn.net/weixin_45345374/article/details/116271582)
 9. [Github标星28K+！MinIO这款可视化的对象存储服务真香！](https://mp.weixin.qq.com/s/qHjOEeQ3CaA0U4a2YBi3Pw)
+10. [lejing-mall/run_elk_install_v7.13.2.sh](https://github.com/Weasley-J/lejing-mall/blob/main/shell/run_elk_install_v7.13.2.sh)
+11. [docker安装elasticsearch（最详细版）](https://blog.csdn.net/qq_40942490/article/details/111594267)
