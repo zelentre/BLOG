@@ -99,7 +99,7 @@ docker pull portainer/portainer
 # Portainer 2.0 的所有新版本都将在 portainer/portainer-ce 中发布 推荐使用下面这个
 docker pull portainer/portainer-ce
 docker pull mysql
-docekr pull redis
+docker pull redis
 
 # 3. 运行镜像
 # Portainer 参考 6 直接浏览器 运行 Ubuntu IP:9000 创建新的用户即可 废弃
