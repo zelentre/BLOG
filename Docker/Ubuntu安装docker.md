@@ -32,7 +32,9 @@ sudo apt install lrzsz
 # 2.备份镜像源 参考 2
 sudo cp -v /etc/apt/sources.list /etc/apt/sources.list.backup
 # 3.更换镜像源
-sudo rm -ef /etc/apt/sources.list
+sudo rm -rf /etc/apt/sources.list
+# 或者直接重命名
+sudo mv /etc/apt/sources.list /etc/apt/sources.list.backup
 # 上传已经编辑好的sources.list到 /etc/apt/ 目录下 或者使用vim编辑sources.list(不推荐 太慢了)
 # 4.更新 参考 3
 # apt update：只检查，不更新（已安装的软件包是否有可用的更新，给出汇总报告）
