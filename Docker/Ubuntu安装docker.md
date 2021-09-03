@@ -20,7 +20,7 @@ tags:
 
 ## 二、修改Ubuntu相关配置
 
-**[相关配置文件下载 清华软件源、MySQL配置文件、redis配置文件、elasticsearch配置文件、docker镜像源配置文件](https://zelen.lanzoui.com/inpInterbfg)**
+**[相关配置文件下载 清华软件源、MySQL配置文件、redis配置文件、elasticsearch配置文件、kibana配置文件、docker镜像源配置文件](https://zelen.lanzoui.com/ihS85tjde5a)**
 
 **切换软件源为[清华源](https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/)根据自己的安装版本选择**
 
@@ -194,10 +194,13 @@ docker run -p 9090:9000 -p 9001:9001 --name minio --restart=always -v /zne/minio
 # 相关参考 10（主要） 11（辅助）
 # 创建相关挂载目录
 sudo mkdir -pv /zne/elk/elasticsearch/{config,data,logs,plugins}
+#如果有需要，创建用户定义的网络（用于连接到连接到同一网络的其他服务（例如：Kibana））
+docker network rm mynet
+docker network create --driver bridge --subnet 172.18.0.0/16 --gateway 172.18.0.1 mynet
 # 获取镜像 
-docker pull elasticsearch:7.14.0
+docker pull elasticsearch:7.14.1
 # 先最简启动一个elasticsearch 容器 复制他的相关配置文件
-docker run --name elasticsearch -d -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -e "discovery.type=single-node" -p 9200:9200 -p 9300:9300 elasticsearch:7.14.0
+docker run --name elasticsearch -d -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -e "discovery.type=single-node" -p 9200:9200 -p 9300:9300 elasticsearch:7.14.1
 # 复制配置文件
 docker cp elasticsearch:/usr/share/elasticsearch/config /zne/elk/elasticsearch/
 docker cp elasticsearch:/usr/share/elasticsearch/plugins /zne/elk/elasticsearch/
@@ -207,8 +210,29 @@ mv elasticsearch.yml elasticsearch.yml.old
 sudo chmod -vR 777 /zne/elk/
 # 删除容器并重新启动
 # 启动镜像
-docker run --name elasticsearch --restart=always -p 9200:9200 -p 9300:9300 -e ES_JAVA_OPTS="-Xms512m -Xmx512m" -e "discovery.type=single-node" -v /etc/timezone:/etc/timezone -v /etc/localtime:/etc/localtime -v /zne/elk/elasticsearch/config/:/usr/share/elasticsearch/config -v /zne/elk/elasticsearch/data:/usr/share/elasticsearch/data -v /zne/elk/elasticsearch/logs:/usr/share/elasticsearch/logs -v /zne/elk/elasticsearch/plugins:/usr/share/elasticsearch/plugins -d elasticsearch:7.14.0
+docker run --name elasticsearch --restart=always --net mynet -p 9200:9200 -p 9300:9300 -e ES_JAVA_OPTS="-Xms512m -Xmx512m" -e "discovery.type=single-node" -v /etc/timezone:/etc/timezone -v /etc/localtime:/etc/localtime -v /zne/elk/elasticsearch/config/:/usr/share/elasticsearch/config -v /zne/elk/elasticsearch/data:/usr/share/elasticsearch/data -v /zne/elk/elasticsearch/logs:/usr/share/elasticsearch/logs -v /zne/elk/elasticsearch/plugins:/usr/share/elasticsearch/plugins -d elasticsearch:7.14.1
 ```
+### 安装kibana
+
+```shell
+# 相关参考 10、11 
+# 创建相关挂载目录
+sudo mkdir -pv /zne/elk/kibana/{config,data,logs,plugins}
+# 获取镜像 
+docker pull docker pull kibana:7.14.1
+# 先最简启动一个kibana 容器 复制他的相关配置文件
+docker run --name kibana -p 5601:5601 -v /etc/timezone:/etc/timezone -v /etc/localtime:/etc/localtime -d kibana:7.14.1
+# 复制配置文件
+docker cp kibana:/usr/share/kibana/config /zne/elk/kibana/
+docker cp kibana:/usr/share/kibana/plugins /zne/elk/kibana/
+# 切换身份为root 先将原配置文件重命名，在将配置文件kibana.yml复制到config下(直接在xshell中拖动即可，注意一定要用root)
+mv kibana.yml kibana.yml.old
+# 删除容器并重新启动
+# 启动镜像
+docker run --name kibana --restart=always --net mynet -p 5601:5601 -v /zne/elk/kibana/config:/usr/share/kibana/config -v /etc/timezone:/etc/timezone -v /etc/localtime:/etc/localtime -d kibana:7.14.1
+```
+
+
 
 ### docker相关命令
 
@@ -259,3 +283,5 @@ docker logs container-name/container-id
 9. [Github标星28K+！MinIO这款可视化的对象存储服务真香！](https://mp.weixin.qq.com/s/qHjOEeQ3CaA0U4a2YBi3Pw)
 10. [lejing-mall/run_elk_install_v7.13.2.sh](https://github.com/Weasley-J/lejing-mall/blob/main/shell/run_elk_install_v7.13.2.sh)
 11. [docker安装elasticsearch（最详细版）](https://blog.csdn.net/qq_40942490/article/details/111594267)
+12. [Install Kibana with Docker | Kibana Guide ](https://www.elastic.co/guide/en/kibana/7.14/docker.html)
+
