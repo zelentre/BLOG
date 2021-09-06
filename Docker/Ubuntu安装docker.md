@@ -221,7 +221,7 @@ docker run --name elasticsearch --restart=always --net mynet -p 9200:9200 -p 930
 # 创建相关挂载目录
 sudo mkdir -pv /zne/elk/kibana/{config,data,logs,plugins}
 # 获取镜像 
-docker pull docker pull kibana:7.14.1
+docker pull kibana:7.14.1
 # 先最简启动一个kibana 容器 复制他的相关配置文件
 docker run --name kibana -p 5601:5601 -v /etc/timezone:/etc/timezone -v /etc/localtime:/etc/localtime -d kibana:7.14.1
 # 复制配置文件
