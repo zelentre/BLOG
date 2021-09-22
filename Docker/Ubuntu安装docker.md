@@ -292,4 +292,5 @@ docker logs container-name/container-id
 10. [lejing-mall/run_elk_install_v7.13.2.sh](https://github.com/Weasley-J/lejing-mall/blob/main/shell/run_elk_install_v7.13.2.sh)
 11. [docker安装elasticsearch（最详细版）](https://blog.csdn.net/qq_40942490/article/details/111594267)
 12. [Install Kibana with Docker | Kibana Guide ](https://www.elastic.co/guide/en/kibana/7.14/docker.html)
+13. [Docker的自定义网络](https://www.cnblogs.com/Kit-L/p/13251786.html)
 
