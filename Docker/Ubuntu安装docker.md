@@ -93,11 +93,11 @@ sudo reboot
 ## 四、docker安装相关镜像及配置
 
 ```shell
-# 1. 创建相关文件 zne为我新创建的文件夹存放我的安装相关数据 此路径为之后安装镜像的相关配置路径 可按照个人习惯创建
-sudo mkdir -pv /zne/portainer/data
-sudo mkdir -pv /zne/mysql/{conf,data,logs} 
-sudo mkdir -pv /zne/redis/{conf,data,logs}
-# 将下载的配置文件放置到对应的文件夹下 my.cnf --> /zne/mysql/conf  redis.conf --> /zne/redis/conf
+# 1. 创建相关文件 可按照个人习惯创建
+sudo mkdir -pv /usr/local/portainer/data
+sudo mkdir -pv /usr/local/mysql/{conf,data,logs} 
+sudo mkdir -pv /usr/local/redis/{conf,data,logs}
+# 将下载的配置文件放置到对应的文件夹下 my.cnf --> /usr/local/mysql/conf  redis.conf --> /usr/local/redis/conf
 
 # 2. 下载相关镜像
 # portainer/poratainer 已弃用 https://hub.docker.com/r/portainer/portainer
@@ -109,11 +109,11 @@ docker pull redis
 
 # 3. 运行镜像
 # Portainer 参考 6 直接浏览器 运行 Ubuntu IP:9000 创建新的用户即可 废弃
-docker run -p 9000:9000 -p 8000:8000 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /zne/portainer/data:/data -d portainer/portainer
+docker run -p 9000:9000 -p 8000:8000 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /usr/local/portainer/data:/data -d portainer/portainer
 # Portainer-ce 参考 6 直接浏览器 运行 Ubuntu IP:9000 创建新的用户即可
-docker run -p 9000:9000 -p 8000:8000 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /zne/portainer/data:/data -d portainer/portainer-ce
+docker run -p 9000:9000 -p 8000:8000 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /usr/local/portainer/data:/data -d portainer/portainer-ce
 # MySQL
-docker run --name mysql --restart=always -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -v /etc/timezone:/etc/timezone -v /etc/localtime:/etc/localtime -v /zne/mysql/data:/var/lib/mysql -v /zne/mysql/conf:/etc/mysql/conf.d -v /zne/mysql/logs:/logs -d mysql
+docker run --name mysql --restart=always -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -v /etc/timezone:/etc/timezone -v /etc/localtime:/etc/localtime -v /usr/local/mysql/data:/var/lib/mysql -v /usr/local/mysql/conf:/etc/mysql/conf.d -v /usr/local/mysql/logs:/logs -d mysql
 # 修改MySQL 密码为root 若想用123456的则不必执行下列命令
 # 进入容器
 docker exec -it mysql bash
@@ -123,7 +123,7 @@ mysql -uroot -p
 ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';
 ALTER USER 'root'@'%' IDENTIFIED BY 'root';
 # Redis
-docker run -it -v /zne/redis/data:/var/lib/redis -v /zne/redis/conf/redis.conf:/etc/redis/redis.conf -v /zne/redis/logs:/logs --restart=always --name redis -p 6379:6379 -d redis redis-server /etc/redis/redis.conf --appendonly yes
+docker run -it -v /usr/local/redis/data:/var/lib/redis -v /usr/local/redis/conf/redis.conf:/etc/redis/redis.conf -v /usr/local/redis/logs:/logs --restart=always --name redis -p 6379:6379 -d redis redis-server /etc/redis/redis.conf --appendonly yes
 ```
 
 ### 安装rabbitmq
@@ -137,11 +137,11 @@ docker pull rabbitmq:3.8.19-management
 # 带图形化界面（推荐使用这个）
 docker pull rabbitmq:management
 # 创建相关挂载目录
-sudo mkdir -pv /zne/rabbitmq/{conf,data,logs}
+sudo mkdir -pv /usr/local/rabbitmq/{conf,data,logs}
 # 图像化镜像启动
-docker run -p 15672:15672 -p 5672:5672 --name rabbitmq --restart=always -v /zne/rabbitmq/data:/var/lib/rabbitmq/mnesia -v /zne/rabbitmq/logs:/var/log/rabbitmq/log -e RABBITMQ_DEFAULT_USER=admin -e RABBITMQ_DEFAULT_PASS=admin -d rabbitmq:management
+docker run -p 15672:15672 -p 5672:5672 --name rabbitmq --restart=always -v /usr/local/rabbitmq/data:/var/lib/rabbitmq/mnesia -v /usr/local/rabbitmq/logs:/var/log/rabbitmq/log -e RABBITMQ_DEFAULT_USER=admin -e RABBITMQ_DEFAULT_PASS=admin -d rabbitmq:management
 # 启动镜像
-docker run -p 15672:15672 -p 5672:5672 --name rabbitmq --restart=always -v /zne/rabbitmq/data:/var/lib/rabbitmq/mnesia -v /zne/rabbitmq/logs:/var/log/rabbitmq/log -e RABBITMQ_DEFAULT_USER=admin -e RABBITMQ_DEFAULT_PASS=admin -d rabbitmq
+docker run -p 15672:15672 -p 5672:5672 --name rabbitmq --restart=always -v /usr/local/rabbitmq/data:/var/lib/rabbitmq/mnesia -v /usr/local/rabbitmq/logs:/var/log/rabbitmq/log -e RABBITMQ_DEFAULT_USER=admin -e RABBITMQ_DEFAULT_PASS=admin -d rabbitmq
 # 进入容器并开启web管理界面
 docker exec -it rabbitmq bash
 rabbitmq-plugins enable rabbitmq_management
@@ -151,13 +151,13 @@ rabbitmq-plugins enable rabbitmq_management
 
 ```shell
 # 创建相关挂载目录
-sudo mkdir -pv /zne/mongo/{conf,data,logs}
-# 在 /zne/mongo/conf目录下创建mongo配置文件，内容在下面
+sudo mkdir -pv /usr/local/mongo/{conf,data,logs}
+# 在 /usr/local/mongo/conf目录下创建mongo配置文件，内容在下面
 touch mongodb.conf
 # 获取镜像
 docker pull mongo
 # 启动镜像 参考 8
-docker run --name mongo --restart=always -p 27017:27017 -v /zne/mongo/data:/data/db -v /zne/mongo/conf:/data/conf -v /zne/mongo/logs:/data/log -d mongo
+docker run --name mongo --restart=always -p 27017:27017 -v /usr/local/mongo/data:/data/db -v /usr/local/mongo/conf:/data/conf -v /usr/local/mongo/logs:/data/log -d mongo
 ```
 
 ```shell
@@ -190,18 +190,18 @@ bind_ip=0.0.0.0
 ```shell
 # 相关参考 9
 # 创建相关挂载目录
-sudo mkdir -pv /zne/minio/{conf,data,logs}
+sudo mkdir -pv /usr/local/minio/{conf,data,logs}
 # 获取镜像
 docker pull minio/minio
 # 启动镜像
-docker run -p 9090:9000 -p 9001:9001 --name minio --restart=always -v /zne/minio/data:/data -e MINIO_ROOT_USER=minioadmin -e MINIO_ROOT_PASSWORD=minioadmin -d minio/minio server /data --console-address ":9001"
+docker run -p 9090:9000 -p 9001:9001 --name minio --restart=always -v /usr/local/minio/data:/data -e MINIO_ROOT_USER=minioadmin -e MINIO_ROOT_PASSWORD=minioadmin -d minio/minio server /data --console-address ":9001"
 ```
 ### 安装elasticsearch
 
 ```shell
 # 相关参考 10（主要） 11（辅助）
 # 创建相关挂载目录
-sudo mkdir -pv /zne/elk/elasticsearch/{config,data,logs,plugins}
+sudo mkdir -pv /usr/local/elk/elasticsearch/{config,data,logs,plugins}
 #如果有需要，创建用户定义的网络（用于连接到连接到同一网络的其他服务（例如：Kibana））
 docker network rm mynet
 docker network create --driver bridge --subnet 172.18.0.0/16 --gateway 172.18.0.1 mynet
@@ -210,34 +210,34 @@ docker pull elasticsearch:7.14.1
 # 先最简启动一个elasticsearch 容器 复制他的相关配置文件
 docker run --name elasticsearch -d -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -e "discovery.type=single-node" -p 9200:9200 -p 9300:9300 elasticsearch:7.14.1
 # 复制配置文件
-docker cp elasticsearch:/usr/share/elasticsearch/config /zne/elk/elasticsearch/
-docker cp elasticsearch:/usr/share/elasticsearch/plugins /zne/elk/elasticsearch/
+docker cp elasticsearch:/usr/share/elasticsearch/config /usr/local/elk/elasticsearch/
+docker cp elasticsearch:/usr/share/elasticsearch/plugins /usr/local/elk/elasticsearch/
 # 切换身份为root 先将原配置文件重命名，在将配置文件elasticsearch.yml复制到config下(直接在xshell中拖动即可，注意一定要用root)
 mv elasticsearch.yml elasticsearch.yml.old
 # 修改目录权限
-sudo chmod -vR 777 /zne/elk/
+sudo chmod -vR 777 /usr/local/elk/
 # 删除容器并重新启动
 # 启动镜像
-docker run --name elasticsearch --restart=always --net mynet -p 9200:9200 -p 9300:9300 -e ES_JAVA_OPTS="-Xms512m -Xmx512m" -e "discovery.type=single-node" -v /etc/timezone:/etc/timezone -v /etc/localtime:/etc/localtime -v /zne/elk/elasticsearch/config/:/usr/share/elasticsearch/config -v /zne/elk/elasticsearch/data:/usr/share/elasticsearch/data -v /zne/elk/elasticsearch/logs:/usr/share/elasticsearch/logs -v /zne/elk/elasticsearch/plugins:/usr/share/elasticsearch/plugins -d elasticsearch:7.14.1
+docker run --name elasticsearch --restart=always --net mynet -p 9200:9200 -p 9300:9300 -e ES_JAVA_OPTS="-Xms512m -Xmx512m" -e "discovery.type=single-node" -v /etc/timezone:/etc/timezone -v /etc/localtime:/etc/localtime -v /usr/local/elk/elasticsearch/config/:/usr/share/elasticsearch/config -v /usr/local/elk/elasticsearch/data:/usr/share/elasticsearch/data -v /usr/local/elk/elasticsearch/logs:/usr/share/elasticsearch/logs -v /usr/local/elk/elasticsearch/plugins:/usr/share/elasticsearch/plugins -d elasticsearch:7.14.1
 ```
 ### 安装kibana
 
 ```shell
 # 相关参考 10、11 
 # 创建相关挂载目录
-sudo mkdir -pv /zne/elk/kibana/{config,data,logs,plugins}
+sudo mkdir -pv /usr/local/elk/kibana/{config,data,logs,plugins}
 # 获取镜像 
 docker pull kibana:7.14.1
 # 先最简启动一个kibana 容器 复制他的相关配置文件
 docker run --name kibana -p 5601:5601 -v /etc/timezone:/etc/timezone -v /etc/localtime:/etc/localtime -d kibana:7.14.1
 # 复制配置文件
-docker cp kibana:/usr/share/kibana/config /zne/elk/kibana/
-docker cp kibana:/usr/share/kibana/plugins /zne/elk/kibana/
+docker cp kibana:/usr/share/kibana/config /usr/local/elk/kibana/
+docker cp kibana:/usr/share/kibana/plugins /usr/local/elk/kibana/
 # 切换身份为root 先将原配置文件重命名，在将配置文件kibana.yml复制到config下(直接在xshell中拖动即可，注意一定要用root)
 mv kibana.yml kibana.yml.old
 # 删除容器并重新启动
 # 启动镜像
-docker run --name kibana --restart=always --net mynet -p 5601:5601 -v /zne/elk/kibana/config:/usr/share/kibana/config -v /etc/timezone:/etc/timezone -v /etc/localtime:/etc/localtime -d kibana:7.14.1
+docker run --name kibana --restart=always --net mynet -p 5601:5601 -v /usr/local/elk/kibana/config:/usr/share/kibana/config -v /etc/timezone:/etc/timezone -v /etc/localtime:/etc/localtime -d kibana:7.14.1
 ```
 
 
