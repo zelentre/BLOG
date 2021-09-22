@@ -53,6 +53,12 @@ timedatectl set-timezone "Asia/Shanghai"
 ```shell
 # 安装方法挺多的 我是直接按照官方方式安装的 可以根据脚本方式安装Install using the convenience script 下列命令的相关解释请查看 参考 4
 # 我是新环境无需执行卸载步骤 如果需要的自行卸载
+
+# 方法一 推荐（脚本方式安装）
+curl -fsSL https://get.docker.com -o get-docker.sh
+
+sudo sh get-docker.sh
+# 方法二
 sudo apt update
 
 sudo apt install apt-transport-https ca-certificates curl gnupg lsb-release
