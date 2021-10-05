@@ -10,13 +10,13 @@ tags:
 
 # Ubuntu安装docker
 
-<!--more--> 
-
 ## 一、准备工作下载相软件、镜像
 
 1. [下载win10 VMware Workstation Pro](https://www.vmware.com/go/getworkstation-win)如果想下载其他版本请[前往](https://www.vmware.com/products/workstation-pro/workstation-pro-evaluation.html)
 2. [下载Ubuntu服务器版镜像](https://releases.ubuntu.com/20.04.2/ubuntu-20.04.2-live-server-amd64.iso)如果想下载其他版本请[前往](https://cn.ubuntu.com/download)
 3. 安装VMware Workstation Pro 激活密钥: `ZF3R0-FHED2-M80TY-8QYGC-NPKYF`  安装镜像，此步骤如果不会请[百度](https://www.baidu.com/s?ie=UTF-8&wd=vmwareworkstationpro如何安装ubuntu镜像)
+
+<!--more--> 
 
 ## 二、修改Ubuntu相关配置
 
