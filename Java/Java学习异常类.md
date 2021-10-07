@@ -36,7 +36,7 @@ Throwable 类是 Java 语言中所有`错误(errors)`和`异常(exceptions)`的�
 
 那么，按照这种逻辑关系，我们可以对 Throwable 及其子类进行归类分析
 
-![img](https://gitee.com/zelen/IMG/raw/master/PicGo/68747470733a2f2f696d67323032302e636e626c6f67732e636f6d2f626c6f672f313531353131312f3230323030342f313531353131312d32303230303430383134303330313935362d313936303630373134362e706e67)
+![image-20211007180139141](https://gitee.com/zelen/IMG/raw/master/PicGo/image-20211007180139141.png)
 
 可以看到，Throwable 位于异常和错误的最顶层，我们查看 Throwable 类中发现它的方法和属性有很多，我们只讨论其中几个比较常用的
 
