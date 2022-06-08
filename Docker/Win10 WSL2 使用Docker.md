@@ -1,4 +1,5 @@
 ---
+title: Win10 WSL2 使用Docker
 date: 2021-02-05 10:14:33
 categories: 
  - wsl
@@ -18,25 +19,30 @@ tags:
 1. win10环境为专业版（不是的自行百度找秘钥）
 2. [安装docker-desktop](https://www.docker.com/products/docker-desktop)
 3. 打开系统虚拟机平台
-   - 首先，需要打开“系统虚拟机平台”功能，在“控制面板\所有控制面板项\程序和功能”中选择“启用或者关闭Windows功能”，勾选对应选项即可：![image-20210205102305690](https://gitee.com/zelen/IMG/raw/master/PicGo/image-20210205102305690.png)
+   - 首先，需要打开“系统虚拟机平台”功能，在“控制面板\所有控制面板项\程序和功能”中选择“启用或者关闭Windows功能”，勾选对应选项即可：![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530170140.png)
 
-![image-20210205102336980](https://gitee.com/zelen/IMG/raw/master/PicGo/image-20210205102336980.png)
+![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530170205.png)
 
 4. 打开Microsoft Store，下载Ubuntu20.04
 
+   - **将Ubuntu安装到D盘，步骤如下**
+- [现在对应版本的Ubuntu](https://docs.microsoft.com/en-us/windows/wsl/install-manual#installing-your-distro)
+- 将文件解压到你要指定的路径 解压
+     - 双击 ubuntu2004.exe运行即可
+
 5. cmd 查看 `wsl -l --v`  
 
-   ![image-20210205113626498](https://gitee.com/zelen/IMG/raw/master/PicGo/image-20210205113626498.png)
+   ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530170227.png)
 
 6. 查看linux目录 `\\wsl$\Ubuntu-20.04\`
 
-   ![image-20210205102754173](https://gitee.com/zelen/IMG/raw/master/PicGo/image-20210205102754173.png)
+   ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530170246.png)
 
 7. docker 相关
 
-   ![image-20210205103053072](https://gitee.com/zelen/IMG/raw/master/PicGo/image-20210205103053072.png)
+   ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530170303.png)
 
-   ![image-20210205103035157](https://gitee.com/zelen/IMG/raw/master/PicGo/image-20210205103035157.png)
+   ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530170332.png)
 
 8. 将docker数据从C盘迁移出去
 

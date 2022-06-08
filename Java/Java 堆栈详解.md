@@ -1,5 +1,5 @@
 ---
-title：Java 堆栈详解
+title: Java 堆栈详解
 date: 2020-10-7 16:03:14
 categories: 
  - Java
@@ -10,19 +10,7 @@ tags:
 
 # Java 堆栈详解
 
->**堆栈都是一种[数据项](https://www.cnblogs.com/zhanggaofeng/p/5672610.html)按序排列的数据结构，只能在一端(称为栈顶(top))对数据项进行插入和删除。**
->
->**要点：堆：顺序随意**    **栈：后进先出(Last-In/First-Out)**
-
->**堆、栈、队列之间的区别是？**
->
->+ 堆是在程序运行时，而不是在程序编译时，申请某个大小的内存空间。即动态分配内存，对其访问和对一般内存的访问没有区别。
->+ 栈就是一个桶，后放进去的先拿出来，它下面本来有的东西要等它出来之后才能出来。（后进先出）
->+ 队列只能在队头做删除操作,在队尾做插入操作.而栈只能在栈顶做插入和删除操作。（先进先出）
-
 <!--more-->
-
-## 理解
 
 1. 寄存器：最快的存储区, 由编译器根据需求进行分配,我们在程序中无法控制.
 2. 栈：存放基本类型的变量数据和对象的引用，但对象本身不存放在栈中，而是存放在堆（new 出来的对象）或者常量池中（字符串常量对象存放在常量池中。）
@@ -45,7 +33,7 @@ tags:
 6. String ss3 = new String("china"); 
 ```
 
-![](https://gitee.com/zelen/IMG/raw/master/PicGo/20201007160913.png)
+![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20201007160913.png)
 
 这里解释一下黄色这3个箭头，对于通过new产生一个字符串（假设为”china”）时，会先去常量池中查找是否已经有了”china”对象，如果没有则在常量池中创建一个此字符串对象，然后堆中再创建一个常量池中此”china”对象的拷贝对象。这也就是有道面试题：String s = new String(“xyz”);产生几个对象？一个或两个，如果常量池中原来没有”xyz”,就是两个。
 
@@ -64,7 +52,7 @@ tags:
 6. public static final int INT3 = 9; 
 ```
 
-![](https://gitee.com/zelen/IMG/raw/master/PicGo/3968b51b-0a56-3ad6-a54e-b2b19e671526.png)
+![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/3968b51b-0a56-3ad6-a54e-b2b19e671526.png)
 对于成员变量和局部变量：成员变量就是方法外部，类的内部定义的变量；局部变量就是方法或语句块内部定义的变量。局部变量必须初始化。
 形式参数是局部变量，局部变量的数据存在于栈内存中。栈内存中的局部变量随着方法的消失而消失。
 成员变量存储在堆中的对象里面，由垃圾回收器负责回收。
@@ -96,7 +84,7 @@ public class Test{
 }
 ```
 
-![](https://gitee.com/zelen/IMG/raw/master/PicGo/5d8dee1f-ceb9-3705-8924-161dd7599f73.png)
+![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/5d8dee1f-ceb9-3705-8924-161dd7599f73.png)
 对于以上这段代码，date为局部变量，i,d,m,y都是形参为局部变量，day，month，year为成员变量。下面分析一下代码执行时候的变化：
 
 1. main方法开始执行：int date = 9;
@@ -108,8 +96,3 @@ public class Test{
 4. BirthDate d1= new BirthDate(7,7,1970); 
    d1为对象引用，存在栈中，对象(new BirthDate())存在堆中，其中d，m，y为局部变量存储在栈中，且它们的类型为基础类型，因此它们的数据也存储在栈中。day,month,year为成员变量，它们存储在堆中(new BirthDate()里面)。当BirthDate构造方法执行完之后，d,m,y将从栈中消失。
 5. main方法执行完之后，date变量，test，d1引用将从栈中消失，new Test(),new BirthDate()将等待垃圾回收。
-
-## 相关参考
-
-[什么是“堆”,"栈","堆栈","队列",它们的区别](https://www.cnblogs.com/guoxiaoyan/p/8664150.html)
-

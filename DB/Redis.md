@@ -1,13 +1,10 @@
 ---
+title: Redis学习
 date: 2020-07-08 18:01:31
 categories: 
-
  - DB
-
  - Redis
-
 tags: 
-
  - Redis
 ---
 
@@ -22,7 +19,7 @@ tags:
 ### redis特性
 1. 速度快
 
-   ![内存](https://gitee.com/zelen/IMG/raw/master/PicGo/20200303174922.png)
+   ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200303174922.png)
 
    - 10W OPS（每秒可以实现10万次读写 官方数字）
    - 数据存在内存中
@@ -35,7 +32,7 @@ tags:
 
 3. 多种数据结构
 
-   ![数据结构](https://gitee.com/zelen/IMG/raw/master/PicGo/20200303180006.png)
+   ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200303180006.png)
 
    - BitMaps：位图
    - HyperLogLog：超小内存唯一值计数
@@ -67,13 +64,13 @@ tags:
 ### Redis典型应用场景
 
 1. 缓存系统
-   - ![缓存](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304092708.png) 当redis中有data时直接返回data，当redis中无data-->storage,storage-->appserver、storage-->redis,以便下次访问直接走redis
+   - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304092708.png) 当redis中有data时直接返回data，当redis中无data-->storage,storage-->appserver、storage-->redis,以便下次访问直接走redis
 2. 计数器
-   - ![计数](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304093255.png)转发数、评论数用缓存计数，还有视频播放数等等
+   - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304093255.png)转发数、评论数用缓存计数，还有视频播放数等等
 3. 消息队列系统
 4. 排行榜
 5. 社交网络
-   - ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304093712.png) 粉丝数、共同关注数。。
+   - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304093712.png) 粉丝数、共同关注数。。
 6. 实时系统
    - 垃圾邮件系统
 
@@ -81,7 +78,7 @@ tags:
 
 1. redis安装
 
-   - ![安装](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304094433.png)
+   - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304094433.png)
    - **创建redis的软连接，方便以后升级**     ` ln -s redis-3.0.7 redis` 
 
 2. 可执行文件说明
@@ -121,12 +118,12 @@ tags:
 
 4. 简单的客户端连接
 
-   - ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304100658.png)
+   - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304100658.png)
 
 5. redis客户端返回值
 
-   - ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304100959.png)
-   - ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304101031.png)
+   - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304100959.png)
+   - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304101031.png)
 
 ### redis常用配置
 
@@ -141,63 +138,63 @@ tags:
 
 - 通用命令
 
-  - keys（redis里的所有的键）![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304105306.png)
+  - keys（redis里的所有的键）![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304105306.png)
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304173232.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530130939.png)
 
   -  **keys命令一般不再生产环境使用** **keys\*怎么用 1.热备从节点 2.scan**
 
   - dbsize（计算数据库大小） 
 
-    ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304105824.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304105824.png)
 
   - exists key（键是否存在） 
 
-  ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304110033.png)
+  ![img](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304110033.png)
 
   - del key [key ...]（删除key，可以多个） 
 
-    ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304110127.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304110033.png)
 
-  - expire key seconds（设置过期时间） ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304110526.png)
+  - expire key seconds（设置过期时间） ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304110526.png)
 
-    ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304110712.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304110712.png)
 
-    ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304110829.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304110829.png)
 
-  - type key（key类型） ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304111007.png)![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304111055.png)
+  - type key（key类型） ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304111007.png)![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304111055.png)
 
   - **时间复杂度大部分是O(1)**
 
 - 数据结构和内部编码
 
-  ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304112932.png)
+  ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304112932.png)
 
-  ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304140640.png)
+  ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304140640.png)
 
-- 单线程架构 ![redis同一时间只会执行一个命令](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304141413.png)**单线程快的原因**
+- 单线程架构 ![redis同一时间只会执行一个命令](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304141413.png)**单线程快的原因**
 
   - 纯内存
-  - 非阻塞IO![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304141813.png)
-  - 避免线程切换和竞态消耗 ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304142116.png)
+  - 非阻塞IO![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304141813.png)
+  - 避免线程切换和竞态消耗 ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304142116.png)
 
 ### 字符串类型
 
 - 结构和命令
 
-  - ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304142451.png)**建议在100KB以内**
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304142451.png)**建议在100KB以内**
 
-  - ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304143253.png)![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304143346.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530131522.png)![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304143346.png)
 
-  - ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200304143927.png)![img](https://gitee.com//zelentre/IMG/raw/master/PicGo/20200304151748.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304143927.png))![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530131643.png)
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304170522.png)![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304170853.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530131719.png)![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530131750.png)
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304171046.png)![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304172437.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530131841.png)![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530131952.png)
 
-     ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304171152.png)
+     ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530132039.png)
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304171244.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530132132.png)
 
 - 快速实战
 
@@ -221,35 +218,35 @@ tags:
         return videoInfo;
     }
     ```
-  - 实现：分布式id生成器 ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304162534.png)![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304162814.png)
+  - 实现：分布式id生成器 ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530132212.png)![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530132242.png)
 
 - 内部编码
 
 - 查漏补缺
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304171507.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530153215.png)
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304171550.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530153316.png)
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304171732.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530153335.png)
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304171823.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530153356.png)
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304171858.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530153417.png)
 
 ### 哈希类型
 
 - 特点
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304175609.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530153436.png)
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304175636.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530153511.png)
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304175926.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530153534.png)
 
 - 重要API
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304180239.png)
+  - ​     ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530153809.png)
 
     ```shell
     127.0.0.1:6379> hset user:1:info age 23
@@ -270,7 +267,7 @@ tags:
     2) "ronaldo"
     ```
 
-  - ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200305103327.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530153641.png)
 
     ```shell
     127.0.0.1:6379> hgetall user:1:info
@@ -284,7 +281,7 @@ tags:
     (integer) 2
     ```
 
-  - ![img](https://gitee.com/zelen/IMG/raw/master/PicGo/20200305103100.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530153840.png)
 
     ```shell
     127.0.0.1:6379> hmset user:2:info age 30 name kaka page 50
@@ -296,7 +293,7 @@ tags:
     2) "kaka"
     ```
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305112446.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530153859.png)
 
     ```shell
     127.0.0.1:6379> hgetall user:2:info
@@ -318,7 +315,7 @@ tags:
 
   - **小心使用hgetall，牢记redis是单线程（耗时问题）**
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305114023.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530153926.png)
 
   - 实现：记录网站每个用户个人主页的访问量`hincrby user:1:info pageview count`
 
@@ -338,20 +335,20 @@ tags:
     }
     ```
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305135110.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530153943.png)
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305135214.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154007.png)
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305135306.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154023.png)
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305135333.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154055.png)
 
 - hash vs string
 
 - 查漏补缺
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305135928.png)
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305135957.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154114.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154136.png)
 
 ### 列表类型
 
@@ -361,31 +358,31 @@ tags:
 
 - 重要API
 
-  - **增**![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305140613.png)
+  - **增**![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154205.png)
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305140650.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154220.png)
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305140841.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154238.png)
 
-  - **删**![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305141347.png)
+  - **删**![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154300.png)
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305141420.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154318.png)
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305141755.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154339.png)
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305141650.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154356.png)
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305141914.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154413.png)
 
-  - **查**![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305142058.png)
+  - **查**![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154430.png)
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305142200.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154446.png)
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305142257.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154515.png)
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305142400.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154539.png)
 
-  - **改**![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305142501.png)
+  - **改**![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154554.png)
 
     ```shell
     127.0.0.1:6379> rpush listkey a b c
@@ -411,30 +408,30 @@ tags:
 
 - 实战
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305143135.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154626.png)
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305143523.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154657.png)
 
 - 查漏补缺
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305143628.png)
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305143723.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154713.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154728.png)
 
 ### 集合类型
 
 - 特点
 
-  - **不能插入重复元素，` srem key music`删除元素**![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305144302.png)
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305144821.png)
+  - **不能插入重复元素，` srem key music`删除元素**![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154816.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154840.png)
   - **无序、无重复、集合间操作**
 
 - 集合内API
 
   - **S开头**
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305150055.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154923.png)
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305164445.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530154940.png)
 
   - **smembers：无序、小心使用**
 
@@ -466,48 +463,48 @@ tags:
 
   - 实现：标签（同事务）
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305170048.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530155001.png)
 
 - 集合间API
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305170220.png)
+  - ![img](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200305170220.png)
   - 实现：共同关注（sinter）
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305170414.png)
+  - ![img](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200305170414.png)
 
 ### 有序集合类型
 
 - 特点
 
-  - 结构![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305170705.png)
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305170743.png)
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305170840.png)
+  - 结构![img](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200305170705.png)
+  - ![img](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200305170743.png)
+  - ![img](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200305170840.png)
 
 - 重要API
 
   - **以Z开头**
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305174533.png)
+  - ![img](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200305174533.png)
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305174633.png)
+  - ![img](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200305174633.png)
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305171233.png)
+  - ![img](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200305171233.png)
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305171320.png)
+  - ![img](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200305171320.png)
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305171437.png)
+  - ![img](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200305171437.png)
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305172209.png)
+  - ![img](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200305172209.png)
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305172314.png)
+  - ![img](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200305172314.png)
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305172429.png)
+  - ![img](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200305172429.png)
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305174255.png)
+  - ![img](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200305174255.png)
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305174339.png)
+  - ![img](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200305174339.png)
 
     ```shell
-  127.0.0.1:6379> zadd player:rank 1000 ronaldo 900 messi 800 c-ronaldo 600 kaka
+    127.0.0.1:6379> zadd player:rank 1000 ronaldo 900 messi 800 c-ronaldo 600 kaka
     (integer) 4
     127.0.0.1:6379> zscore player:rank kaka
     "600"
@@ -552,13 +549,13 @@ tags:
   
 - 实战
 
-  - 实现：排行榜![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305173811.png)
+  - 实现：排行榜![img](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200305173811.png)
 
 - 查漏补缺
 
-  - ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305173929.png)
+  - ![img](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200305173929.png)
 
-    ![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200305173949.png)
+    ![img](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200305173949.png)
 
 ## 三、Redis客户端的使用
 
@@ -568,9 +565,9 @@ tags:
 
   + shell（redis-cli）  Java（jedis）
 
-    ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200306103814.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200306103814.png)
 
-  + ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200306103935.png)
+  + ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200306103935.png)
 
   + Jedis直连
 
@@ -633,15 +630,15 @@ tags:
 
   + Jedis直连
 
-    + ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200306113555.png)
+    + ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200306113555.png)
 
   + Jedis连接池
 
-    + ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200306113844.png)
+    + ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200306113844.png)
 
   + 方案对比
 
-    + ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200306134849.png)
+    + ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200306134849.png)
 
   + JedisPool使用
 
@@ -669,8 +666,8 @@ tags:
 
   + Jedis配置优化
 
-    + ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200306141709.png)
-    + ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200306142536.png)
+    + ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200306141709.png)
+    + ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200306142536.png)
     + 适合的maxTotal（比较难确定）
       + 命令平均执行时间 0.1ms = 0.001s。
       + 业务需要50000 QPS。
@@ -685,7 +682,7 @@ tags:
       + 建议预热minIdle
         + 减少第一次启动后的新连接开销
     + 常见问题
-      - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200306144528.png)
+      - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200306144528.png)
     + 解决思路
       - 慢查询阻塞：池子连接都被hang住。
       - 资源池参数不合理：例如QPS高、池子小。
@@ -698,11 +695,11 @@ tags:
 
 1. 生命周期
 
-   - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309095118.png)
+   - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309095118.png)
 
 2. 两个配置
 
-   ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309095543.png)
+   ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309095543.png)
 
    + slowlog-max-len
      1. 先进先出队列
@@ -738,11 +735,11 @@ tags:
 
 - 什么是流水线
 
-  - **一次网路命令通信模型**![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304171244.png)
+  - **一次网路命令通信模型**![img](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304171244.png)
 
-  - **批量网络命令通信模型**![img](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200304171152.png)
-  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309103325.png)
-  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309103738.png)
+  - **批量网络命令通信模型**![img](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200304171152.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309103325.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309103738.png)
 
 - 客户端使用
 
@@ -792,53 +789,53 @@ tags:
 
 - 模型
 
-  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309111739.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309111739.png)
   - **订阅这可以订阅多个频道**
 
 - API
 
   - publish
 
-    - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309112125.png)
+    - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309112125.png)
 
   - subscribe
 
-    - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309112203.png)
+    - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309112203.png)
 
   - unsubscribe
 
-    - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309112241.png)
+    - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309112241.png)
 
   - 其他
 
-    ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309112346.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309112346.png)
 
 - 发布订阅与消息队列
 
-  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309112429.png)
-  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309112608.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309112429.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309112608.png)
 
 ### Bitmap
 
 - 位图
 
-  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309113011.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309113011.png)
 
 - 相关命令
 
-  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309143205.png)
-  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309143831.png)
-  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309143926.png)
-  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309144012.png)
-  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309144120.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309143205.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309143831.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309143926.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309144012.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309144120.png)
 
 - 独立用户统计
 
   1. 使用set和Bitmap
   2. 1亿用户，5千万独立
 
-  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309144549.png)
-  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309144651.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309144549.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309144651.png)
   - **使用经验**
     - 1. type=string，最大512MB
       2. 注意setbit时的偏移量，可能有较大耗时
@@ -865,34 +862,34 @@ tags:
 
 - 内存消耗
 
-  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309151432.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309151432.png)
 
 - 使用经验
 
-  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309151656.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309151656.png)
 
 ### GEO
 
 - GEO是什么
 
-  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309151922.png)
-  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309152004.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309151922.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309152004.png)
 
 - 5个城市经纬度
 
-  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309152029.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309152029.png)
 
 - 相关命令
 
-  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309152309.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309152309.png)
 
-  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309152422.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309152422.png)
 
-  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309152513.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309152513.png)
 
-  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309152538.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309152538.png)
 
-    ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309152646.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309152646.png)
 
 - 相关说明
 
@@ -907,34 +904,34 @@ tags:
 - 什么是持久化
   - redis所有数据保持在内存中，对数据的更新将异步地保存到磁盘上
 - 持久化的实现方式
-  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309154132.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309154132.png)
 
 ### RDB
 
 - 什么是RDB
 
-  - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309154714.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309154714.png)
 
 - 触发机制-主要三种方式
 
   - save（同步）
 
-    - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309155136.png)
-    - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309155204.png)
-    - ![](https://gitee.com/zelentre/IMG/raw/master/PicGo/20200309155246.png)
+    - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309155136.png)
+    - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309155204.png)
+    - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309155246.png)
 
   - bgsave（异步）
 
-    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309164147.png)
-    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309164246.png)
-    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309164333.png)
-    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309164353.png)
+    - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530160629.png)
+    - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309164246.png)
+    - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309164333.png)
+    - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309164353.png)
 
   - 自动
 
     - **自动生成RDB**
 
-      ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309165036.png)
+      ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309165036.png)
 
       ```shell
       # 配置文件
@@ -947,7 +944,7 @@ tags:
       rdbcompression yes
       rdbchecksum yes
       ```
-      ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309165940.png)
+      ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309165940.png)
 
 - 触发机制-不容忽视方式
 
@@ -967,34 +964,34 @@ tags:
 
 - RDB现存问题
   - 耗时、耗性能
-    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309173446.png)
+    - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309173446.png)
   - 不可控、丢失数据
-    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309173612.png)
+    - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309173612.png)
 - 什么是AOF
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309173720.png)
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309173807.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309173720.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309173807.png)
 - AOF三种策略
   - always
-    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309174020.png)
+    - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309174020.png)
   - everysec
-    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309174135.png)
+    - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309174135.png)
   - no
-    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309174219.png)
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309174304.png)
+    - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309174219.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309174304.png)
 - AOF重写
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309174657.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309174657.png)
   - 作用：
     - 减少硬盘占用量
     - 加速恢复速度
   - AOF重写实现两种方式
     - bgrewriteaof
-      - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309175535.png)
+      - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309175535.png)
     - AOF重写配置
-      - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309175607.png)
-      - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309180145.png)
-      - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309180238.png)
-      - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309180304.png)
-      - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200309180622.png)
+      - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309175607.png)
+      - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309180145.png)
+      - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309180238.png)
+      - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309180304.png)
+      - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200309180622.png)
 
 ### RDB和AOF的抉择
 
@@ -1059,11 +1056,11 @@ tags:
 
 ### AOF追加阻塞
 
-- ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310114122.png)
+- ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200310114122.png)
 - AOF阻塞定位
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310134905.png)
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310134922.png)
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310134939.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200310134905.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200310134922.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200310134939.png)
 
 ## 七、Redis复制的原理与优化
 
@@ -1079,11 +1076,11 @@ tags:
 
   - **一主一从**
 
-    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310140307.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200310140307.png)
 
   - **一主多从**
 
-    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310140451.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200310140451.png)
 
   - **作用**
 
@@ -1100,8 +1097,8 @@ tags:
 
 - slaveof命令
 
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310141243.png)
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310141458.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200310141243.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200310141458.png)
 
 - 配置
 
@@ -1121,7 +1118,7 @@ tags:
 
 - **全量复制**
 
-  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310152018.png)
+  ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200310152018.png)
 
 - **全量复制开销**
 
@@ -1133,7 +1130,7 @@ tags:
 
 - **部分复制**
 
-  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310160012.png)
+  ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200310160012.png)
 
 ### 故障处理
 
@@ -1141,17 +1138,17 @@ tags:
 
   - slave宕掉
 
-    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310160740.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200310160740.png)
 
   - master宕掉
 
-    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310160902.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200310160902.png)
 
 ### 开发运维常见问题
 
 1. 读写分离
 
-   ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310161840.png)
+   ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200310161840.png)
 
    1. 读流量分摊到从节点
    2. 可能遇到的问题：
@@ -1183,14 +1180,14 @@ tags:
 
    1. 单主节点复制风暴：
 
-      ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310173149.png)
+      ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200310173149.png)
 
       - 问题：主节点重启，多从节点复制
       - 解决：更换复制拓扑
 
    2. 单机器复制风暴
 
-      ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310173236.png)
+      ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200310173236.png)
 
       - 机器宕机后，大量全量复制
       - 主节点分散多机器
@@ -1201,27 +1198,27 @@ tags:
 
 - 手动故障转移
 
-  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200310160902.png)
+  ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200310160902.png)
 
 - 写能力和存储能力受限
 
 ### 架构说明
 
-- ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200311092857.png)
+- ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200311092857.png)
 
-- ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200311093130.png)
+- ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200311093130.png)
 
-  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200311093208.png)
+  ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200311093208.png)
 
 ### 安装配置
 
 1. 配置开启主从节点
    - 主节点
-   - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200311162522.png)
+   - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200311162522.png)
    - 从节点
-   - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200311162637.png)
+   - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200311162637.png)
    - 主要配置
-   - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200311162829.png)
+   - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200311162829.png)
 2. 配置开启sentinel监控主节点。（sentinel是特殊的redis）
 3. 实际应该多机器
 4. 详细配置节点
@@ -1230,11 +1227,11 @@ tags:
 
 - 请求流程
 
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200311165122.png)
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200311165212.png)
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200311165229.png)
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200311165336.png)
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200311165359.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200311165122.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200311165212.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200311165229.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200311165336.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200311165359.png)
   - **客户端接入流程：**
     1. Sentinel地址集合
     2. masterName
@@ -1311,18 +1308,18 @@ tags:
      - 发现slave节点
      - 确认主从关系
 
-     ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200312113712.png)
+     ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200312113712.png)
 
   2. 每2秒每个sentinel通过master节点的channel交换信息（pub/sub）
 
      - 通过 `_sentinel_:hello`频道交换
      - 交换对节点的“看法”和自身信息
 
-     ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200312134718.png)
+     ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200312134718.png)
 
   3. 每1秒每个sentinel对其他sentinel和redis执行ping
 
-     ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200312153224.png)
+     ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200312153224.png)
 
 - 主观下线和客观下线
 
@@ -1373,7 +1370,7 @@ tags:
 
       `sentinel failover <masterName>`
 
-      ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200312165933.png)
+      ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200312165933.png)
 
     - 从节点：临时下线还是永久下线，例如是否做一些清理工作，但是要考虑读写分离的情况
 
@@ -1431,17 +1428,17 @@ tags:
 
 ### 数据分布
 
-- ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313101436.png)
+- ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200313101436.png)
 
 - 顺序分布和哈希分布
 
   - 顺序分布
 
-    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313110955.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200313110955.png)
 
   - 哈希分布（例如节点取模）
 
-    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313111241.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200313111241.png)
 
 - 数据分布对比
 
@@ -1454,11 +1451,11 @@ tags:
 
   - 节点取余分区：hash(Key)%nodes
 
-    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313111241.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200313111241.png)
 
-    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313134742.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200313134742.png)
 
-    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313135502.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200313135502.png)
 
   - 节点取余：
 
@@ -1468,11 +1465,11 @@ tags:
 
   - 一致性哈希分区
 
-    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313140707.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200313140707.png)
 
     - n1 和 n2之间的key的数据将偏移到n5
 
-      ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313141030.png)
+      ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200313141030.png)
 
     - 一致性哈希
       - 客户端分片：哈希+顺时针（优化取余）
@@ -1489,14 +1486,14 @@ tags:
 
     - 虚拟槽分配
 
-      ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313142046.png)
+      ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200313142046.png)
 
 ### 搭建集群
 
 - 基本架构
 
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313142530.png)
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313142550.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200313142530.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200313142550.png)
 
 - Redis Cluster架构
 
@@ -1504,19 +1501,19 @@ tags:
 
     - cluster-enabled:yes  即集群启动
 
-      ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313142550.png)
+      ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200313142550.png)
 
   - meet
 
-    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313151106.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200313151106.png)
 
   - 指派槽
 
     - 客户端与指派槽
 
-      ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313151255.png)
+      ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200313151255.png)
 
-    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313151145.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200313151145.png)
 
   - 复制
 
@@ -1560,17 +1557,17 @@ tags:
 
     2. meet
 
-       - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313161429.png)
+       - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200313161429.png)
 
     3. 指派槽
 
-       - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313161916.png)
+       - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200313161916.png)
 
     4. 主从
 
        - 设置主从
 
-         - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200313162242.png)
+         - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200313162242.png)
 
     5. 总结
 
@@ -1590,7 +1587,7 @@ tags:
 
 - 伸缩原理
 
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316135757.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200316135757.png)
 
 - 扩容集群
 
@@ -1608,7 +1605,7 @@ tags:
 
   - 加入集群
 
-    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316140616.png)
+    - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200316140616.png)
     - 作用：
       - 为它迁移槽和数据实习扩容
       - 作为从节点负责故障转移
@@ -1620,7 +1617,7 @@ tags:
   - 迁移槽和数据
 
     - 槽迁移计划
-      - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316143153.png)
+      - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200316143153.png)
     - 迁移数据
       1. 对目标节点发送：`cluster setslot {slot} importing {sourceNodeId}`命令，让目标节点准备导入槽的数据
       2. 对源节点发送：`cluster setslot {slot} migrating {targetNodeId}`命令，让源节点准备迁出槽的数据
@@ -1628,7 +1625,7 @@ tags:
       4. 在源节点上执行`migrate {targetId} {targetPort} key 0 {timeout}`命令把指定key迁移
       5. 重复执行步骤3~4知道槽下所有的键数据迁移到目标节点
       6. 向集群内所有主节点发送`cluster setslot {slot} node {tartgetNodeId}`命令，通知槽分配给目标节点 
-      7. ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316144823.png)
+      7. ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200316144823.png)
     - 添加从节点
 
 - 缩容集群
@@ -1637,15 +1634,15 @@ tags:
 
 - moved重定向
 
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316152159.png)
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316152247.png)
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316152428.png)
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316152657.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200316152159.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200316152247.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200316152428.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200316152657.png)
 
 - ask重定向
 
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316152940.png)
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316153110.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200316152940.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200316153110.png)
   - moved和ask
     - 两者都是客户单重定向
     - moved：槽已经确定迁移
@@ -1658,7 +1655,7 @@ tags:
     1. 从集群中选一个可运行节点，使用cluster slots初始化槽和节点映射
     2. 将cluster slots的结果映射到本地，为每个节点创建JedisPool
     3. 准备执行命令
-       - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316154352.png)
+       - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200316154352.png)
 
   - smart客户端使用：JedisCluster
 
@@ -1708,19 +1705,19 @@ tags:
 
         1. 串行mget
 
-           - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316171442.png)
+           - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200316171442.png)
 
         2. 串行IO
 
-           - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316171622.png)
+           - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200316171622.png)
 
         3. 并行IO
 
-           - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316171711.png)
+           - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200316171711.png)
 
         4. hash_tag
 
-           - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200316172031.png)
+           - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200316172031.png)
 
         5. 总结
 
@@ -1738,11 +1735,11 @@ tags:
   - 通过ping/pong消息实现故障发现：不需要sentinel
   - 主观下线
     - 定义：某个节点认为另一个节点不可用，“偏见”
-    - 流程：![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200317091147.png)
+    - 流程：![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200317091147.png)
   - 客观下线
     - 定义：当半数以上持有槽的主节点都标记某几点主观下线
-    - 逻辑流程：![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200317091350.png)
-    - 流程：![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200317091506.png)
+    - 逻辑流程：![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200317091350.png)
+    - 流程：![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200317091506.png)
       - 通知集群内所有节点标记故障节点为客观下线
       - 通知故障节点的从节点触发故障转移流程
 - 故障恢复
@@ -1751,9 +1748,9 @@ tags:
     - 超过`cluster-node-timeout`*`cluster-slave-validity-factor`取消资格（都是默认值得话为150s）
     - cluster-slave-validity-factor：默认是10
   - 准备选举时间
-    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200317094316.png)
+    - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200317094316.png)
   - 选举投票
-    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200317094419.png)
+    - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200317094419.png)
   - 替换主节点
     1.  当前从节点取消复制变为主节点（slave no one）
     2. 执行clusterDelSlot撤销故障主节点负责的槽，并执行clusterAddSlot把这些槽分配给自己
@@ -1771,7 +1768,7 @@ tags:
     - 节点故障或者正在故障转移：（error）CLUSTERDOWN The cluster is down
   - 大多数业务无法容忍，cluster-require-full-coverage建议设置为no
 - 带宽消耗
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200317104154.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200317104154.png)
   - 消息发送频率：节点发现与其他节点最后通信时间超过cluster-node-timeout/2时会直接发送ping消息
   - 消息数据量：slots槽数组（2KB空间）和整个集群1/10的状态数据（10个节点状态数据约1KB）
   - 节点部署的机器规模：集群分布的机器越多且每台机器划分的节点数越均匀，则集群内整体的可用带宽越高
@@ -1784,7 +1781,7 @@ tags:
     - cluster-node-timeout：带宽和故障转移速度的均衡
     - 尽量均匀分配到多机器上：保证高可用和带宽
 - Pub/Sub广播
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200317112845.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200317112845.png)
   - 问题：publish在集群每个节点广播：加重宽带
   - 解决：单独“走”一套Redis Sentinel
 - 集群倾斜
@@ -1895,7 +1892,7 @@ tags:
 
 ### 缓存粒度控制
 
-![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200318155735.png)
+![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200318155735.png)
 
 1. 从MySQL获取用户信息：`select * from user where id={id}`
 2. 设置用户信息缓存：`set user:{id}` ` select * from user where id={id}`
@@ -1909,7 +1906,7 @@ tags:
 
 ### 缓存穿透优化
 
-![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200318161322.png)
+![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200318161322.png)
 
 - 原因：
 
@@ -1924,7 +1921,7 @@ tags:
 
 - 解决
 
-  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200318164417.png)
+  ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200318164417.png)
 
 - 问题：
 
@@ -1948,14 +1945,14 @@ public String getPassThrough(String key){
 }
 ```
 
-- ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200318165903.png)
+- ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200318165903.png)
 
 ### 无底洞问题优化
 
 - 问题：
   - 2010年，Facebook有了3000个Memcache节点
   - 发现问题：“加”机器性能没能提升，反而下降
-- ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200318174658.png)
+- ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200318174658.png)
 - 优化IO的几种方法
   1. 命令本身优化：例如慢查询keys、hgetall bigkey
   2. 减少网络通信次数
@@ -1969,7 +1966,7 @@ public String getPassThrough(String key){
 
 ### 热点key重建优化
 
-- ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200318175519.png)
+- ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200318175519.png)
 
 - 三个目标
 
@@ -1981,7 +1978,7 @@ public String getPassThrough(String key){
 
   - 互斥锁（mutex key）
 
-    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200318175933.png)
+    - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200318175933.png)
 
       ```java
       String get(String key){
@@ -2008,7 +2005,7 @@ public String getPassThrough(String key){
 
     2. 功能层面：为每个value添加逻辑过期时间，但发现超过逻辑过期时间后，会使用单独的线程去构建缓存
 
-       ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200318180917.png)
+       ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200318180917.png)
 
        ```java
        String get(final String key){
@@ -2075,9 +2072,9 @@ public String getPassThrough(String key){
 
 ### 应用接入
 
-![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200320115804.png)
+![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200320115804.png)
 
-![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200320120059.png)
+![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200320120059.png)
 
 ## 十二、小结
 
@@ -2123,7 +2120,7 @@ public String getPassThrough(String key){
 
 - 实际误差率公式
 
-  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200325164844.png)
+  ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200325164844.png)
 
   - m/n与误差率成反比，k与误差率成反比
 
@@ -2136,7 +2133,7 @@ public String getPassThrough(String key){
 
 ### Redis单机布隆过滤器
 
-- ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200325171234.png)
+- ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200325171234.png)
 - 实现方法
   - 定义布隆过滤器构造参数：m、n、k、误差概率
   - 定义布隆过滤器操作函数：add和contain
@@ -2153,9 +2150,9 @@ public String getPassThrough(String key){
 
 ### Key名设计
 
-![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200327170152.png)
+![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200327170152.png)
 
-![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200327171733.png)
+![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200327171733.png)
 
 ### Value设计
 
@@ -2181,7 +2178,7 @@ public String getPassThrough(String key){
 
     - 应用异常
 
-      ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200406111455.png)
+      ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200406111455.png)
 
     - redis-cli --bigkeys  `redis-cli -h your.ip -p xxx --bigkeys`
 
@@ -2263,7 +2260,7 @@ public String getPassThrough(String key){
 
       - 若干个小hash：hset picId/100 pic%100 userId
 
-        ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200406165541.png)
+        ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200406165541.png)
 
       - 三种方案内存分析
 
@@ -2317,7 +2314,7 @@ public String getPassThrough(String key){
 
 6. 【建议】必要情况下使用monitor命令时，要注意不要长时间使用
 
-   ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200414141528.png)
+   ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200414141528.png)
 
 ### Java客户端优化
 
@@ -2394,21 +2391,21 @@ public String getPassThrough(String key){
   | **mem_fragmentation_ratio** | **used_memory_rss/used_memory比值，表示内存碎片率**       |
   | mem_allocator               | Redis所使用的内存分配器。默认：jemalloc                   |
 
-  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200416101537.png)
+  ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200416101537.png)
 
 - 内存消耗划分
 
-  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200416105846.png)
+  ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200416105846.png)
 
-  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200416110647.png)
+  ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200416110647.png)
 
 ### 内存缓冲
 
 - 缓冲内存-客户端缓冲区
 
-  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200416112157.png)
+  ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200416112157.png)
 
-  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200416112353.png)
+  ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200416112353.png)
 
   - 普通客户端
 
@@ -2418,7 +2415,7 @@ public String getPassThrough(String key){
 
     3. 注意：防止大的命令或者monitor
 
-       ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200416112914.png)
+       ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200416112914.png)
 
   - slave客户端
 
@@ -2434,10 +2431,10 @@ public String getPassThrough(String key){
 
 - 缓冲内存-复制缓冲区
 
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200416134820.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200416134820.png)
   - 缓冲内存-AOF缓冲区
     - 注意：AOF重写期间，AOF的缓冲区，没有容量限制
-    - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200416135534.png)
+    - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200416135534.png)
 
 - 对象内存
   1. key：不要过长，量大不容忽视（Redis3：embstr 39字节）
@@ -2460,7 +2457,7 @@ public String getPassThrough(String key){
   
   - 注意：定义实例最大内存，便于管理机器内存，一般要预留30%
   
-    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200420154633.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200420154633.png)
   
     ```shell
     redis > config set maxmemory 6GB
@@ -2478,7 +2475,7 @@ public String getPassThrough(String key){
 
     2. 定时删除：每秒运行10次，采样删除
 
-       ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200420155255.png)
+       ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200420155255.png)
 
   - 内存溢出控制策略
 
@@ -2494,13 +2491,13 @@ public String getPassThrough(String key){
 
 - 内存分布
 
-  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200416110647.png)
+  ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200416110647.png)
 
 - 合理选择优化数据结构
 
   - 需求：计算网站每天独立用户数
   - 选择：集合、bitmaps、hyperloglog
-  - ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200420172448.png)
+  - ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200420172448.png)
 
 - 客户端内存优化
 
@@ -2584,7 +2581,7 @@ public String getPassThrough(String key){
 
   - 最佳实践
 
-    ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200420184749.png)
+    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200420184749.png)
 
 - THP(Transparent huge page)
 
@@ -2657,19 +2654,19 @@ public String getPassThrough(String key){
 
 - 客户端
 
-  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200421100545.png)
+  ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200421100545.png)
 
 - 代理端
 
-  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200421100624.png)
+  ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200421100624.png)
 
 - 服务端
 
-  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200421100655.png)
+  ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200421100655.png)
 
 - 机器收集
 
-  ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200421100750.png)
+  ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200421100750.png)
 
 ### 总结
 

@@ -4,7 +4,7 @@ date:  2021-07-05 10:37:49
 categories: 
  - DB
  - MySQL
-tag：MySQL
+tag: MySQL
 ---
 
 # MySQL学习

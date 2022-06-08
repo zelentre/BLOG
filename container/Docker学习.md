@@ -1,13 +1,9 @@
 ---
-title: Docker
-
+title: Docker学习
 date: 2020-07-08 18:01:31
 categories: 
-
  - Docker
-
 tags: 
-
  - Docker
 ---
 
@@ -19,7 +15,7 @@ tags:
 
 ## Docker简述
 
-![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200505140751.png)
+![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200505140751.png)
 
 1. Docker能干什么
    1. 简化配置
@@ -33,7 +29,7 @@ tags:
 
 ## 一、容器技术和Docker简介
 
-![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200505142429.png)
+![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200505142429.png)
 
 - 虚拟化的优点
   - 资源池：一个物理机的资源分配到了不同的虚拟机里

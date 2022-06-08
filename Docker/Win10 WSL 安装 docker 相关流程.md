@@ -1,5 +1,5 @@
 ---
-title: MySQL
+title: Win10 WSL 安装 docker 相关流程
 date: 2021-03-28 20:47:55
 categories: 
  - wsl
@@ -24,11 +24,11 @@ tags:
 
    - 在LxRunOffline下载目录按住SHIFT并右键鼠标，选择“在此处打开Powershell窗口”，进入界面后输入.\LxRunOffline.exe list即可查询目前本机有的子系统以及位置
 
-     ![image-20210328205752655](https://gitee.com/zelen/IMG/raw/master/PicGo/image-20210328205752655.png)
+     ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/image-20210328205752655.png)
 
    - 子系统迁移  **使用`lxrunoffline move`进行迁移 ， -n 指定你要迁移的系统名 ，-d 指定你新系统的迁移路径**
 
-     ![image-20210328210100012](https://gitee.com/zelen/IMG/raw/master/PicGo/image-20210328210100012.png)
+     ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/image-20210328210100012.png)
 
    - 使用`LxRunOffline.exe get-dir`查询系统目录，查看是否迁移成功  `LxRunOffline.exe get-dir -n 子系统名称`
 
@@ -36,10 +36,8 @@ tags:
 
 5. 安装 docker，若C盘足够同样忽略一下 步骤
 
-   - 看似![wsl开启](https://gitee.com/zelen/IMG/raw/master/PicGo/image-20210328211606211.png)
-   - 镜像加速 [阿里云](https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors) 容器镜像服务-->镜像工具-->镜像加速器-->加速地址![image-20210328211652150](https://gitee.com/zelen/IMG/raw/master/PicGo/image-20210328211652150.png)
-
-   - 将docker数据从C盘迁移出去
+   - 看图![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/image-20210328211606211.png)
+   - 镜像加速 [阿里云](https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors) 容器镜像服务-->镜像工具-->镜像加速器-->加速地址![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/image-20210328211652150.png)将docker数据从C盘迁移出去
 
    - 关闭docker
 
@@ -51,21 +49,21 @@ tags:
      wsl --export docker-desktop-data D:\wsl\docker-desktop-data\docker-desktop-data.tar
      wsl --export docker-desktop D:\wsl\docker-desktop\docker-desktop.tar
      ```
-
+   
    - 注销docker-desktop-data 
 
      ````shell
      wsl --unregister docker-desktop-data
      wsl --unregister docker-desktop
      ````
-
+   
    - 重新导入docker-desktop-data
 
      ```shell
      wsl --import docker-desktop-data D:\wsl\docker-desktop-data\ D:\wsl\docker-desktop-data\docker-desktop-data.tar --version 2
      wsl --import docker-desktop D:\wsl\docker-desktop\ D:\wsl\docker-desktop\docker-desktop.tar --version 2
      ```
-
+   
    - 重启docker
 
 ## 二、docker 镜像下载及启动（以Ubuntu为例）
@@ -95,26 +93,28 @@ tags:
 
       ```shell
       docker run --name mysql --restart=always -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -v /etc/timezone:/etc/timezone -v /etc/localtime:/etc/localtime -v /usr/local/mysql/data:/var/lib/mysql -v /usr/local/mysql/conf:/etc/mysql/conf.d -v /usr/local/mysql/logs:/logs -d mysql
-      
-   # 若要指定 设置不区分大小写 lower_case_table_names=1 (必须启动时就指定，若之后指定 则需将/usr/local/mysql/data清空)
-      docker run --name mysql --restart=always -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -v /etc/timezone:/etc/timezone -v /etc/localtime:/etc/localtime -v /usr/local/mysql/data:/var/lib/mysql -v /usr/local/mysql/conf:/etc/mysql/conf.d -v /usr/local/mysql/logs:/logs -d mysql --lower-case-table-names=1
-   
-      # 进入容器
-      docker exec -it mysql8 bash
-      mysql -uroot -p
-      123456
-      # 修改MySQL8为简易密码
-      ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';
-      ALTER USER 'root'@'%' IDENTIFIED BY 'root';
       ```
-   
+
    2. Redis配置文件[下载 ](https://zelen.lanzous.com/iektOil70vc) 文件放入路径`/usr/local/redis/conf/redis.conf`
-   
+
       ```shell
       docker run -it -v /usr/local/redis/data:/var/lib/redis -v /usr/local/redis/conf/redis.conf:/etc/redis/redis.conf -v /usr/local/redis/logs:/logs --restart=always --name redis -p 6379:6379 -d redis redis-server /etc/redis/redis.conf --appendonly yes
       ```
 
-### 二、其他相关命令
+### 二、配置文件在docker容器中
+
+**若要修改配置文件需要到指定的容器中进行修改**
+
+1. 镜像启动
+
+   ```shell
+   # MySQL /usr/local/mysql/conf为空文件
+   docker run --name mysql --restart=always -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -v /etc/timezone:/etc/timezone -v /etc/localtime:/etc/localtime -v /usr/local/mysql/data:/var/lib/mysql -v /usr/local/mysql/conf:/etc/mysql/conf.d -v /usr/local/mysql/logs:/logs -d mysql
+   # Redis /usr/local/redis/conf为空文件
+   docker run -it -v /usr/local/redis/data:/var/lib/redis -v /usr/local/redis/conf:/etc/redis/redis.conf -v /usr/local/redis/logs:/logs --restart=always --name redis -p 6379:6379 -d redis redis-server /etc/redis/redis.conf --appendonly yes
+   ```
+
+### 三、其他相关命令
 
 **修改配置文件、下载配置文件等操作**
 

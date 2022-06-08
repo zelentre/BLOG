@@ -1,4 +1,5 @@
 ---
+title: Redis在win10 docker上的相关安装
 date: 2020-08-18 09:39:41
 categories: 
  - Docker
@@ -18,7 +19,7 @@ docker run -it -v E:/Docker/docker/redis/data:/var/lib/redis -v E:/Docker/docker
 
   [相关参考](https://www.cnblogs.com/chenlizhi/p/13654922.html)
 
-![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200818094507.png)
+![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530130216.png)
 
 [参考](https://blog.csdn.net/qq_37334135/article/details/77717248)
 

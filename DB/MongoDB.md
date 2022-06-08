@@ -1,6 +1,6 @@
 ---
 title: MongoDB
-date:  2021-07-28 14:03:34  
+date: 2020-07-08 18:01:31
 categories: 
  - DB
  - MongoDB
@@ -8,7 +8,9 @@ tags:
  - MongoDB
 ---
 
-# MongoDB学习
+
+
+# MongoDB（有点乱 之后整理）
 
 <!--more-->
 
@@ -24,29 +26,7 @@ tags:
     - 键值对数据库
     - 文档数据库MongoDB
 
-|                   NoSQL                   |            RDBMS             |
-| :---------------------------------------: | :--------------------------: |
-|              代表不仅仅是SQL              |     高度组织化机构化数据     |
-|            没有声明性查询语言             |    结构化查询语言（SQL）     |
-|             没有预定义的模式              | 数据和关系都存储在单独的表中 |
-| 键-值对存储，列存储，文档存储，图形数据库 |  数据操纵语言，数据定义语言  |
-|         最终一致性，而非ACID属性          |         严格的一致性         |
-|         非结构化和不可预知的数据          |           基础事务           |
-|                  CAP定理                  |                              |
-|        高性能、高可用性和可伸缩性         |                              |
-
 ## 二、MongoDB相关概念
-
-|                         SQL术语概念                          |                       MongoDB术语概念                        |
-| :----------------------------------------------------------: | :----------------------------------------------------------: |
-|                      database（数据库）                      |                      database（数据库）                      |
-|                         table（表）                          |                      collection（集合）                      |
-|                          row（行）                           |              document or BSON document（文档）               |
-|                         column（列）                         |                        field（字段）                         |
-|                        index（索引）                         |                        index（索引）                         |
-|                    table joins（表连接）                     |       embedded documen and linking（嵌入的文档和链接）       |
-| primary key specify any unique column or column combination as primary key（指定任意唯一的列或列组合作为主键） | primary key in mongodb,the primary key is automatically set to the _id field（在mongodb中，主键被自动设置为__id字段） |
-|                 aggregation（e.g.group by）                  |                           聚合操作                           |
 
 - 业务应用场景
   - 传统的关系型数据库（如MySQL），在数据操作的“三高”需求以及应对Web2.0的网站需求面前，显得力不从心。 
@@ -88,32 +68,15 @@ tags:
 
 - docker安装MongoDB：
 
-```shell
+  - ```shell
     docker pull mongo
     docker run -itd --name mongo -p 27017:27017 mongo --auth
     docker exec -it 2c79 mongo admin
     db.createUser({user: 'root', pwd: 'root', roles:[{ role: "root", db:"admin" }]});
     db.auth("root","root");
-```
+    ```
 
   - **其中 2c79 是 CONTAINER ID，即容器ID**
-  
-- **MongoDB用户与权限管理**
-
-  | 权限                 | 说明                                                         |
-  | -------------------- | ------------------------------------------------------------ |
-  | read                 | 允许用户读取指定的数据库                                     |
-  | readWrite            | 允许用户读写指定数据库                                       |
-  | userAdmin            | 允许用户向system.users集合写入，可以在指定数据库里创建、删除和管理用户 |
-  | dbAdmin              | 允许用户在指定数据库中执行管理函数，如索引创建、删除，查看统计或访问system.profile |
-  | clusterAdmin         | 必须在admin数据库中定义，赋予用户所有分片和复制集相关函数的管理权限 |
-  | readAnyDatabase      | 必须在admin数据库中定义，赋予用户所有数据库的读权限          |
-  | readWriteAnyDatabase | 必须在admin数据库中定义，赋予用户所有数据库的读写权限        |
-  | userAdminAnyDatabase | 必须在admin数据库中定义，赋予用户所有数据库的userAdmin权限   |
-  | dbAdminAnyDatabase   | 必须在admin数据库中定义，赋予用户所有数据库的dbAdmin权限     |
-  | root                 | 必须在admin数据库中定义，超级账号，超级权限                  |
-
-  
 
 ## 四、MongoDB技术优势总结
 
@@ -168,35 +131,34 @@ tags:
    |  a IS NULL   |       {a:{$exists:false}}       |
    | a IN (1,2,3) |        {a:{$in:[1,2,3]}}        |
 
-4. 查询相关
-   ![image-20200608180446313](https://gitee.com/zelen/IMG/raw/master/PicGo/20200608180434.png)
+4.   ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200608180434.png)
 
-5. 删除相关
-   ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200609104401.png)
+5.    ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200609104401.png)
 
-6.更新相关
-   ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200609104633.png)
+6.   ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200609104633.png)
 
-   ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200609105123.png)
+7. ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200609105123.png)
 
-   ![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200609104914.png)
+8. ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200609104914.png)
 
-7. 使用drop删除集合
+9. 使用drop删除集合
 
    - 使用db.<集合>.drop()来删除一个集合
    - 集合中的全部文档都会被删除
    - 集合相关的索引也会被删除
-   `db.colTOBeDropped.drop()`
+   - `db.colTOBeDropped.drop()`
 
-8. 使用dropDatabase删除数据库
+10. 使用dropDatabase删除数据库
 
     - 使用db.dropDatabase()来删除数据库
 
     - 数据库相应文件也会被删除，磁盘空间将被释放
 
-    ```shell
+    -   ```shell
       use tempDB
       db.dropDatabase()
       show collections // No collectios
       show dbs // The db is gone
-    ```
+      ```
+
+    - 

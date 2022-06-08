@@ -208,7 +208,7 @@ docker network create --driver bridge --subnet 172.18.0.0/16 --gateway 172.18.0.
 # 获取镜像 
 docker pull elasticsearch:7.14.1
 # 先最简启动一个elasticsearch 容器 复制他的相关配置文件
-docker run --name elasticsearch -d -e ES_JAVA_OPTS="-Xms128m -Xmx512m" -e "discovery.type=single-node" -p 9200:9200 -p 9300:9300 elasticsearch:7.14.1
+docker run --name elasticsearch -d -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -e "discovery.type=single-node" -p 9200:9200 -p 9300:9300 elasticsearch:7.14.1
 # 复制配置文件
 docker cp elasticsearch:/usr/share/elasticsearch/config /usr/local/elk/elasticsearch/
 docker cp elasticsearch:/usr/share/elasticsearch/plugins /usr/local/elk/elasticsearch/
@@ -218,7 +218,7 @@ mv elasticsearch.yml elasticsearch.yml.old
 sudo chmod -vR 777 /usr/local/elk/
 # 删除容器并重新启动
 # 启动镜像
-docker run --name elasticsearch --restart=always --net mynet -p 9200:9200 -p 9300:9300 -e ES_JAVA_OPTS="-Xms128m -Xmx512m" -e "discovery.type=single-node" -v /etc/timezone:/etc/timezone -v /etc/localtime:/etc/localtime -v /usr/local/elk/elasticsearch/config/:/usr/share/elasticsearch/config -v /usr/local/elk/elasticsearch/data:/usr/share/elasticsearch/data -v /usr/local/elk/elasticsearch/logs:/usr/share/elasticsearch/logs -v /usr/local/elk/elasticsearch/plugins:/usr/share/elasticsearch/plugins -d elasticsearch:7.14.1
+docker run --name elasticsearch --restart=always --net mynet -p 9200:9200 -p 9300:9300 -e ES_JAVA_OPTS="-Xms512m -Xmx512m" -e "discovery.type=single-node" -v /etc/timezone:/etc/timezone -v /etc/localtime:/etc/localtime -v /usr/local/elk/elasticsearch/config/:/usr/share/elasticsearch/config -v /usr/local/elk/elasticsearch/data:/usr/share/elasticsearch/data -v /usr/local/elk/elasticsearch/logs:/usr/share/elasticsearch/logs -v /usr/local/elk/elasticsearch/plugins:/usr/share/elasticsearch/plugins -d elasticsearch:7.14.1
 ```
 ### 安装kibana
 

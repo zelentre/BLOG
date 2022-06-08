@@ -1,18 +1,11 @@
 ---
-title: spring boot
-
+title: Spring Boot深度实践
 date: 2020-07-07 18:50:53
-
 categories: 
-
  - Java
-
  - spring boot
-
 tags: 
-
  - Java
-
  - spring boot
 ---
 
@@ -32,4 +25,5 @@ tags:
 2. 配置：/MATA-INF/spring.factories
 3. 实现：XXXAutoConfiguration
 
-![Web应用](https://gitee.com/zelen/IMG/raw/master/PicGo/web应用.png)
+![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530165833.png)
+

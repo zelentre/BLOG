@@ -1,5 +1,6 @@
 ---
-date: 2020-08-18 09:39:41
+title: mongo在win10 docker上的相关安装
+date: 2020-9-2 15:44:13
 categories: 
  - Docker
  - mongo
@@ -8,7 +9,9 @@ tags:
  - mongo
 ---
 
-# mongo 再win10 docker上的相关安装
+# mongo在win10 docker上的相关安装
+
+<!--more-->
 
 ```shell
 docker pull mongo

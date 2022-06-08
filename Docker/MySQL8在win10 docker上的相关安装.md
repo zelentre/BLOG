@@ -1,4 +1,5 @@
 ---
+title: MySQL8在win10 docker上的相关安装
 date: 2020-08-18 09:39:41
 categories: 
  - Docker
@@ -12,15 +13,17 @@ tags:
 
 ```shell
 docker pull mysql
-# 挂载本地磁盘路径需手动创建 随系统自动启动
-docker run -it -v E:/Docker/docker/mysql/data:/var/lib/mysql -v E:/Docker/docker/mysql/config/my.cnf:/etc/mysql/my.cnf --restart=always --name mysql8 -e MYSQL_ROOT_PASSWORD=system123 -p 3307:3306 -d mysql
+# 挂载本地磁盘路径需手动创建(路径自己随便) 随系统自动启动 (建议使用这条)
+docker run -it -v E:/Docker/docker/mysql/data:/var/lib/mysql -v E:/Docker/docker/mysql/config/my.cnf:/etc/mysql/my.cnf --restart=always --name mysql8 -e MYSQL_ROOT_PASSWORD=system123456 -p 3306:3306 -d mysql
 # 不随系统自动启动
-docker run -it --rm  -v E:/Docker/docker/mysql/data:/var/lib/mysql -v E:/Docker/docker/mysql/config/my.cnf:/etc/mysql/my.cnf --name mysql80 -e MYSQL_ROOT_PASSWORD=system123456 -p 3308:3306 -d mysql
+docker run -it --rm  -v E:/Docker/docker/mysql/data:/var/lib/mysql -v E:/Docker/docker/mysql/config/my.cnf:/etc/mysql/my.cnf --name mysql8 -e MYSQL_ROOT_PASSWORD=system123456 -p 3306:3306 -d mysql
 ```
+
+<!-- more -->
 
 [挂载文件](https://zelen.lanzous.com/i9dxgfqvq6j)  [相关参考](https://my.oschina.net/summergao/blog/3066063)
 
-![](https://gitee.com/zelen/IMG/raw/master/PicGo/20200818094507.png)
+![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200818094507.png)
 
 **将挂载文件所在目录开放给docker**
 
