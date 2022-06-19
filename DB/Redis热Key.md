@@ -1,4 +1,5 @@
 ---
+title: Redis热Key
 date: 2022-06-19 09:54:04
 categories: 
  - DB
