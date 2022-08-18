@@ -37,3 +37,7 @@ tags:
  select * from user where name = 'kk' for update;
  select * from user where id <> 3 for update;
 ```
+
+## SQL执行顺序
+
+![image-20220818104203296](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20220818104203296.png)
