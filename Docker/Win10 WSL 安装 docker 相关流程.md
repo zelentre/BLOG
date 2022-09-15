@@ -24,11 +24,11 @@ tags:
 
    - 在LxRunOffline下载目录按住SHIFT并右键鼠标，选择“在此处打开Powershell窗口”，进入界面后输入.\LxRunOffline.exe list即可查询目前本机有的子系统以及位置
 
-     ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/image-20210328205752655.png)
+     ![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20210328205752655.png)
 
    - 子系统迁移  **使用`lxrunoffline move`进行迁移 ， -n 指定你要迁移的系统名 ，-d 指定你新系统的迁移路径**
 
-     ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/image-20210328210100012.png)
+     ![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20210328210100012.png)
 
    - 使用`LxRunOffline.exe get-dir`查询系统目录，查看是否迁移成功  `LxRunOffline.exe get-dir -n 子系统名称`
 
@@ -36,8 +36,8 @@ tags:
 
 5. 安装 docker，若C盘足够同样忽略一下 步骤
 
-   - 看图![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/image-20210328211606211.png)
-   - 镜像加速 [阿里云](https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors) 容器镜像服务-->镜像工具-->镜像加速器-->加速地址![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/image-20210328211652150.png)将docker数据从C盘迁移出去
+   - 看图![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20210328211606211.png)
+   - 镜像加速 [阿里云](https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors) 容器镜像服务-->镜像工具-->镜像加速器-->加速地址![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20210328211652150.png)将docker数据从C盘迁移出去
 
    - 关闭docker
 

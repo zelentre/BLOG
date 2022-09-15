@@ -65,7 +65,7 @@ tags:
 
 **B-树就是B树，多路搜索树，树高一层意味着多一次的磁盘I/O**，下图是3阶B树
 
-![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/2021013023233065.png)
+![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/2021013023233065.png)
 
 B树的特征：
 
@@ -79,7 +79,7 @@ B树的特征：
 
 > B+树是B-树的变体，也是一种多路搜索树
 
-![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20210130232533425.png)
+![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/20210130232533425.png)
 
 B+树的特征：
 
@@ -91,7 +91,7 @@ B+树的特征：
 ### 3.2. HASH
 > 哈希索引就是采用一定的哈希算法，把键值换算成新的哈希值，检索时不需要类似B+数那样给从根节点到叶子节点逐级查找，只需一次哈希算法即可立即定位到相应的位置，速度非常高快。
 
-![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220308214810.png)
+![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/20220308214810.png)
 
 **哈希索引仅仅能满足`"=",“IN"和”<=>"`查询，不能使用范围查询。** 也不支持任何范围查询，例如`WHERE price > 100`。
 由于**Hash**索引比较的是进行Hash运算之后的Hash值，所以它只能用于等值的过滤，不能用于基于范围的过滤，因为经过相应的Hash算法处理之后的Hash值的大小关系，并不能保证和Hash运算前完全一样。
@@ -100,7 +100,7 @@ B+树的特征：
 
 **索引是占据物理空间的，在不同的存储引擎中，索引存在的文件也不同。**存储引擎室基于表的，以下分别使用MyISAM和InnoDB存储引擎建立两张表。
 
-![存储引擎是基于表的，以下建立两张别使用MyISAM和InnoDB引擎的表，看看其在文件系统中对应的文件存储格式。](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20210130233352294.png)
+![存储引擎是基于表的，以下建立两张别使用MyISAM和InnoDB引擎的表，看看其在文件系统中对应的文件存储格式。](https://gcore.jsdelivr.net/gh/znej/pic/picgo/20210130233352294.png)
 
 #### 3.3.1. 存储引擎为MyISAM：
 

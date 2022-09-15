@@ -19,7 +19,7 @@ docker run -it -v E:/Docker/docker/redis/data:/var/lib/redis -v E:/Docker/docker
 
   [相关参考](https://www.cnblogs.com/chenlizhi/p/13654922.html)
 
-![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530130216.png)
+![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/20220530130216.png)
 
 [参考](https://blog.csdn.net/qq_37334135/article/details/77717248)
 

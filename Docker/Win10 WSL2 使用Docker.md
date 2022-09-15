@@ -19,9 +19,9 @@ tags:
 1. win10环境为专业版（不是的自行百度找秘钥）
 2. [安装docker-desktop](https://www.docker.com/products/docker-desktop)
 3. 打开系统虚拟机平台
-   - 首先，需要打开“系统虚拟机平台”功能，在“控制面板\所有控制面板项\程序和功能”中选择“启用或者关闭Windows功能”，勾选对应选项即可：![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530170140.png)
+   - 首先，需要打开“系统虚拟机平台”功能，在“控制面板\所有控制面板项\程序和功能”中选择“启用或者关闭Windows功能”，勾选对应选项即可：![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/20220530170140.png)
 
-![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530170205.png)
+![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/20220530170205.png)
 
 4. 打开Microsoft Store，下载Ubuntu20.04
 
@@ -32,17 +32,17 @@ tags:
 
 5. cmd 查看 `wsl -l --v`  
 
-   ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530170227.png)
+   ![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/20220530170227.png)
 
 6. 查看linux目录 `\\wsl$\Ubuntu-20.04\`
 
-   ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530170246.png)
+   ![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/20220530170246.png)
 
 7. docker 相关
 
-   ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530170303.png)
+   ![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/20220530170303.png)
 
-   ![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20220530170332.png)
+   ![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/20220530170332.png)
 
 8. 将docker数据从C盘迁移出去
 

@@ -23,7 +23,7 @@ docker run -it --rm  -v E:/Docker/docker/mysql/data:/var/lib/mysql -v E:/Docker/
 
 [挂载文件](https://zelen.lanzous.com/i9dxgfqvq6j)  [相关参考](https://my.oschina.net/summergao/blog/3066063)
 
-![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/20200818094507.png)
+![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/20200818094507.png)
 
 **将挂载文件所在目录开放给docker**
 

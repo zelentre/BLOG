@@ -14,13 +14,13 @@ tags:
 ***
 <!--more-->
 
-![理解oauth2](https://fastly.jsdelivr.net/gh/znej/pic/picgo/oauth2.png)
+![理解oauth2](https://gcore.jsdelivr.net/gh/znej/pic/picgo/oauth2.png)
 
 1. 资源所有者（resource owner）即用户本身
 2. 客户端/第三方应用（client）即你将要访问的网站BLOGI
 3. 资源服务器（resource server）例如 GitHub
 4. 授权服务器（authorization server）可以与资源服务器放到一起 
 
-![oauth2协议](https://fastly.jsdelivr.net/gh/znej/pic/picgo/oauth2-1.png)
+![oauth2协议](https://gcore.jsdelivr.net/gh/znej/pic/picgo/oauth2-1.png)
 
-![oauth2协议角色与流程](https://fastly.jsdelivr.net/gh/znej/pic/picgo/oauth2-2.png)
+![oauth2协议角色与流程](https://gcore.jsdelivr.net/gh/znej/pic/picgo/oauth2-2.png)

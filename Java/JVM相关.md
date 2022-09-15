@@ -14,7 +14,7 @@ tags:
 
 ### 一、JVM内存调优
 
-![](https://fastly.jsdelivr.net/gh/znej/pic/picgo/image-20210423154342856.png)
+![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20210423154342856.png)
 
 **对JVM内存的系统级的调优主要目的是减少GC的频率和Full GC的次数**
 
