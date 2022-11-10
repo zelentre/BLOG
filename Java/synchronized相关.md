@@ -22,6 +22,8 @@ synchronized主要有三种使用形式：
 - 修饰同步代码块
   - 锁的对象是 synchronized后面括号里配置的对象，可以是某个对象，也可以是某个类的.class对象
 
+<!--more-->
+
 ### 二、synchronized的特性
 
 #### 原子性
@@ -245,4 +247,4 @@ public class SynchronizedDemo03 {
 4. 使用synchronized修饰实例对象时，如果一个线程正在访问实例对象的一个synchronized方法时，其它线程不仅不能访问该synchronized方法，该对象的其它synchronized方法也不能访问，因为一个对象只有一个监视器锁对象，但是其它线程可以访问该对象的非synchronized方法。
 5. 线程A访问实例对象的非static synchronized方法时，线程B也可以同时访问实例对象的static synchronized方法，因为前者获取的是实例对象的监视器锁，而后者获取的是类对象的监视器锁，两者不存在互斥关系。
 
-![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/20221104235337.png)
+![image-20221107224846415](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20221107224846415.png)
