@@ -119,7 +119,7 @@ Redis 的IO多路复用：Redis 利用 epoll 来实现 IO 多路复用，将链�
 到事件分派器，事件分派器将事件分发给事件处理器。
 ```
 
-![image-20220620113043699](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20220620113043699.png)
+![image-20220620113043699](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/image-20220620113043699.png)
 
 ## 5.Redis 缓存雪崩、缓存穿透、缓存击穿？
 
@@ -134,7 +134,7 @@ Redis 的IO多路复用：Redis 利用 epoll 来实现 IO 多路复用，将链�
 而对数据库造成了巨大的压力，导致数据库宕机的情况叫做缓存雪崩。
 ```
 
-![image-20220620113506386](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20220620113506386.png)
+![image-20220620113506386](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/image-20220620113506386.png)
 
 **原因&解决方案**
 
@@ -177,13 +177,13 @@ Redis 的IO多路复用：Redis 利用 epoll 来实现 IO 多路复用，将链�
 
    - 我们可以把每次从数据库查询的数据都保存到缓存中（如果查询数据库也为空，直接设置一个默认值存放到缓存，这样第二次到缓冲中获取就有值了，而不会继续访问数据库），为了提高前台用户的使用体验 (解决长时间内查询不到任何信息的情况)，我们可以将空结果的缓存时间设置得短一些，例如 3~5 分钟。这种办法最简单粗暴，适合少量key情况。
 
-     ![image-20220620115729379](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20220620115729379.png)
+     ![image-20220620115729379](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/image-20220620115729379.png)
 
 2. 使用布隆过滤器（Bloom Filter）
 
    - 我们可以使用布隆过滤器来减少对数据库的请求，布隆过滤器的原理是将数据库的数据哈希到 bitmap中，每次查询之前，先使用布隆过滤器过滤掉一定不存在的无效请求，从而避免了无效请求给数据库带来的查询压力。
 
-     ![image-20220620190213554](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20220620190213554.png)
+     ![image-20220620190213554](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/image-20220620190213554.png)
 
 [Redis 布隆过滤器](https://juejin.cn/post/7058511684716986382)
 

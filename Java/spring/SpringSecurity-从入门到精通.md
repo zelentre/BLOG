@@ -1,6 +1,6 @@
 # SpringSecurity从入门到精通
 
-![image-20211219121555979](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20211219121555979.png)
+![image-20211219121555979](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/image-20211219121555979.png)
 
 ## 0. 简介
 
@@ -99,7 +99,7 @@ public class HelloController {
 
 ### 2.1 登陆校验流程
 
-![image-20211215094003288](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20211215094003288.png)
+![image-20211215094003288](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/image-20211215094003288.png)
 
 ### 2.2 原理初探
 
@@ -111,7 +111,7 @@ public class HelloController {
 
 ​	SpringSecurity的原理其实就是一个过滤器链，内部包含了提供各种功能的过滤器。这里我们可以看看入门案例中的过滤器。
 
-![image-20211214144425527](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20211214144425527.png)
+![image-20211214144425527](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/image-20211214144425527.png)
 
 ​	图中只展示了核心过滤器，其它的非核心过滤器并没有在图中展示。
 
@@ -125,7 +125,7 @@ public class HelloController {
 
 ​	我们可以通过Debug查看当前系统中SpringSecurity过滤器链中有哪些过滤器及它们的顺序。
 
-![image-20211214145824903](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20211214145824903.png)
+![image-20211214145824903](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/image-20211214145824903.png)
 
 
 
@@ -133,7 +133,7 @@ public class HelloController {
 
 #### 2.2.2 认证流程详解
 
-![image-20211214151515385](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20211214151515385.png)
+![image-20211214151515385](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/image-20211214151515385.png)
 
 概念速查:
 
@@ -1031,7 +1031,7 @@ public class LoginUser implements UserDetails {
 
 注意：如果要测试，需要往用户表中写入用户数据，并且如果你想让用户的密码是明文存储，需要在密码前加{noop}。例如
 
-![image-20211216123945882](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20211216123945882.png)
+![image-20211216123945882](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/image-20211216123945882.png)
 
 这样登陆的时候就可以用sg作为用户名，1234作为密码来登陆了。
 
@@ -1502,7 +1502,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 ​	RBAC权限模型（Role-Based Access Control）即：基于角色的权限控制。这是目前最常被开发者使用也是相对易用、通用权限模型。
 
-​	![image-20211222110249727](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20211222110249727.png)
+​	![image-20211222110249727](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/image-20211222110249727.png)
 
 ##### 3.2.3.2 准备工作
 

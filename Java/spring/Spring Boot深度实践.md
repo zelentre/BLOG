@@ -25,5 +25,5 @@ tags:
 2. 配置：/MATA-INF/spring.factories
 3. 实现：XXXAutoConfiguration
 
-![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/20220530165833.png)
+![](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/20220530165833.png)
 

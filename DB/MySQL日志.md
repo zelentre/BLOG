@@ -13,11 +13,11 @@ tags:
 
 - **binlog（归档日志）**：是Server层生成的日志，主要**用于数据备份和主从复制**。
 
-  ![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/20221010095847.png)
+  ![](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/20221010095847.png)
 
 <!--more-->
 
-![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/20221010095003.png)
+![](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/20221010095003.png)
 
 **执行一条update语句，期间发生了什么？**
 

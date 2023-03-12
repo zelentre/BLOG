@@ -131,15 +131,15 @@ tags:
    |  a IS NULL   |       {a:{$exists:false}}       |
    | a IN (1,2,3) |        {a:{$in:[1,2,3]}}        |
 
-4.   ![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/20200608180434.png)
+4.   ![](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/20200608180434.png)
 
-5.    ![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/20200609104401.png)
+5.    ![](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/20200609104401.png)
 
-6.   ![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/20200609104633.png)
+6.   ![](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/20200609104633.png)
 
-7. ![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/20200609105123.png)
+7. ![](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/20200609105123.png)
 
-8. ![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/20200609104914.png)
+8. ![](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/20200609104914.png)
 
 9. 使用drop删除集合
 

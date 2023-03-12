@@ -44,11 +44,11 @@ tags:
 
 >1. 同步异步问题（串行）：将订单信息写入数据库成功后，发送注册邮件，在发送注册短信。以上三个任务全部完成后，返回给客户端
 >
->   ![image-20210721145751320](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20210721145751320.png)
+>   ![image-20210721145751320](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/image-20210721145751320.png)
 >
 >2. 同步异步问题（并行、异步线程池）：将订单写入数据库成功后，同时进行注册邮件、注册短信的发送，完成以上三个任务后，返回给客户端，与串行的差别是，并行的方式可以提高处理的时间
 >
->   ![image-20210721172427071](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20210721172427071.png)
+>   ![image-20210721172427071](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/image-20210721172427071.png)
 >
 >   存在问题：
 >
@@ -60,7 +60,7 @@ tags:
 >
 >3. 异步消息队列的方式：
 >
->   ![image-20210721173920110](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20210721173920110.png)
+>   ![image-20210721173920110](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/image-20210721173920110.png)
 >
 >   好处：
 >
@@ -76,11 +76,11 @@ tags:
 >
 >     按照以上约定，用户的响应时间相当于是订单信息写入数据库的时间。注册邮件、短信发送写入消息队列后，直接返回（写入消息队列的速度很快，基本可以忽略）。因此架构改变后，系统的吞吐量提高到每秒20QPS，比串行提高了三倍，比并行提高了两倍
 >
->4. ![image-20210721175005637](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20210721175005637.png)
+>4. ![image-20210721175005637](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/image-20210721175005637.png)
 >
 >5. 流量削峰
 >
->   ![image-20210721175150300](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20210721175150300.png)
+>   ![image-20210721175150300](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/image-20210721175150300.png)
 
 
 
@@ -102,7 +102,7 @@ tags:
 
 **死信交换机：**Dead Letter Exchange(缩写：DLX)当消息称为死信后，会被重新发送到另一个交换机，这个交换机就是DLX死信交换机。
 
-![image-20210722170415668](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20210722170415668.png)
+![image-20210722170415668](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/image-20210722170415668.png)
 
 消息变成死信，可能是由于以下的原因：
 

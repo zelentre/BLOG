@@ -33,7 +33,7 @@ tags:
 6. String ss3 = new String("china"); 
 ```
 
-![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/20201007160913.png)
+![](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/20201007160913.png)
 
 这里解释一下黄色这3个箭头，对于通过new产生一个字符串（假设为”china”）时，会先去常量池中查找是否已经有了”china”对象，如果没有则在常量池中创建一个此字符串对象，然后堆中再创建一个常量池中此”china”对象的拷贝对象。这也就是有道面试题：String s = new String(“xyz”);产生几个对象？一个或两个，如果常量池中原来没有”xyz”,就是两个。
 
@@ -52,7 +52,7 @@ tags:
 6. public static final int INT3 = 9; 
 ```
 
-![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/3968b51b-0a56-3ad6-a54e-b2b19e671526.png)
+![](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/3968b51b-0a56-3ad6-a54e-b2b19e671526.png)
 对于成员变量和局部变量：成员变量就是方法外部，类的内部定义的变量；局部变量就是方法或语句块内部定义的变量。局部变量必须初始化。
 形式参数是局部变量，局部变量的数据存在于栈内存中。栈内存中的局部变量随着方法的消失而消失。
 成员变量存储在堆中的对象里面，由垃圾回收器负责回收。
@@ -84,7 +84,7 @@ public class Test{
 }
 ```
 
-![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/5d8dee1f-ceb9-3705-8924-161dd7599f73.png)
+![](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/5d8dee1f-ceb9-3705-8924-161dd7599f73.png)
 对于以上这段代码，date为局部变量，i,d,m,y都是形参为局部变量，day，month，year为成员变量。下面分析一下代码执行时候的变化：
 
 1. main方法开始执行：int date = 9;

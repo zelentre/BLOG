@@ -33,7 +33,7 @@ tags:
 2. 使用redis之前，统计上报
    - 修改我们的业务代码，在操作redis之前，加入key使用次数的统计逻辑，定时把收集到的数据上报到统一的服务进行聚合计算，这样我们就可以找到那些热点key。缺点就是对我们的业务代码有一定的侵入性。
 3.  服务代理层上报
-   - ![image-20220619204410712](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20220619204410712.png)
+   - ![image-20220619204410712](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/image-20220619204410712.png)
 4. 使用redis提供的命令
    - 例如monitor、 redis-cli加上hotkeys选项等，不过这种方式执行起来很慢，可能会降低redis的处理请求的性能，慎用
 5. redis节点抓包分析

@@ -137,7 +137,7 @@ public class SynchronizedDemo{
 
 使用`java -p -v .\SynchronizedDemo.class`命令对字节码进行反汇编，查看字节码指令：
 
-![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/20221104213047.png)
+![](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/20221104213047.png)
 
 ##### monitorenter指令
 
@@ -196,7 +196,7 @@ public class SynchronizedDemo02 {
 
 使用`javap -p -v .\SynchronizedDemo02.class`命令对字节码进行反汇编，查看字节码指令：
 
-![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/20221104231848.png)
+![](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/20221104231848.png)
 
 如上图，我们可以看到同步方法在反汇编后，不再是通过插入monitorentry和monitorexit指令实现，而是会增加 ACC_SYNCHRONIZED 标识隐式实现的，如果方法表结构（method_info Structure）中的ACC_SYNCHRONIZED标志被设置，那么线程在执行方法前会先去获取对象的monitor对象，如果获取成功则执行方法代码，执行完毕后释放monitor对象，如果monitor对象已经被其它线程获取，那么当前线程被阻塞。
 
@@ -218,7 +218,7 @@ public class SynchronizedDemo03 {
 
 使用`javap -p -v .\SynchronizedDemo03.class`命令对字节码进行反汇编，查看字节码指令：
 
-![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/20221104233859.png)
+![](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/20221104233859.png)
 
 ### 四、synchronized锁对象存在哪里？
 
@@ -226,7 +226,7 @@ public class SynchronizedDemo03 {
 
 **存在锁对象的对象头的MarkWord标记字中。如下图：**
 
-![](https://gcore.jsdelivr.net/gh/znej/pic/picgo/20221104234441.png)
+![](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/20221104234441.png)
 
 ### 五、synchronized与lock的区别？
 
@@ -247,4 +247,4 @@ public class SynchronizedDemo03 {
 4. 使用synchronized修饰实例对象时，如果一个线程正在访问实例对象的一个synchronized方法时，其它线程不仅不能访问该synchronized方法，该对象的其它synchronized方法也不能访问，因为一个对象只有一个监视器锁对象，但是其它线程可以访问该对象的非synchronized方法。
 5. 线程A访问实例对象的非static synchronized方法时，线程B也可以同时访问实例对象的static synchronized方法，因为前者获取的是实例对象的监视器锁，而后者获取的是类对象的监视器锁，两者不存在互斥关系。
 
-![image-20221107224846415](https://gcore.jsdelivr.net/gh/znej/pic/picgo/image-20221107224846415.png)
+![image-20221107224846415](https://testingcf.jsdelivr.net/gh/znej/pic/picgo/image-20221107224846415.png)
